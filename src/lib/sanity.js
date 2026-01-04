@@ -1,0 +1,106 @@
+import { createClient } from '@sanity/client'
+import imageUrlBuilder from '@sanity/image-url'
+
+export const client = createClient({
+  projectId: '8jhw3vic',
+  dataset: 'production',
+  useCdn: false, // Disable CDN for real-time updates during development
+  apiVersion: '2024-01-01'
+})
+
+// Helper for generating image URLs
+const builder = imageUrlBuilder(client)
+
+export function urlFor(source) {
+  return builder.image(source)
+}
+
+// Fetch all projects (optionally excluding one ID)
+export async function getProjects(excludeId = null) {
+  const query = excludeId 
+    ? `*[_type == "project" && _id != $excludeId] | order(year desc) {
+        _id,
+        title,
+        slug,
+        category,
+        year,
+        showInWorkList,
+        sliderHoverStatus,
+        "image": image.asset->url,
+        "heroImage": heroImage.asset->url,
+        "rawImage": image,
+        "rawHeroImage": heroImage
+      }`
+    : `*[_type == "project"] | order(year desc) {
+        _id,
+        title,
+        slug,
+        category,
+        year,
+        showInWorkList,
+        sliderHoverStatus,
+        "image": image.asset->url,
+        "heroImage": heroImage.asset->url,
+        "rawImage": image,
+        "rawHeroImage": heroImage
+      }`;
+      
+  return client.fetch(query, excludeId ? { excludeId } : {});
+}
+
+// Fetch single project by slug + related projects
+export async function getProjectBySlug(slug) {
+  const project = await client.fetch(`
+    *[_type == "project" && slug.current == $slug][0] {
+      _id,
+      title,
+      slug,
+      category,
+      year,
+      description,
+      link,
+      client,
+      services,
+      challenge,
+      solution,
+      result,
+      content,
+      sliderHoverStatus,
+      "image": image.asset->url,
+      "heroImage": heroImage.asset->url,
+      "challengeImage": challengeImage.asset->url,
+      "solutionImage": solutionImage.asset->url
+    }
+  `, { slug });
+
+  // If project found, fetch related (random 3-5 for now, or just next ones)
+  // For simplicity, let's just fetch 2 random other projects
+  if (project) {
+    const related = await client.fetch(`
+      *[_type == "project" && _id != $currentId && showInWorkList != false] | order(_createdAt desc)[0...2] {
+        _id,
+        title,
+        slug,
+        category,
+        year,
+        "image": image.asset->url
+      }
+    `, { currentId: project._id });
+    project.relatedProjects = related;
+  }
+
+  return project;
+}
+
+// Fetch all testimonials
+export async function getTestimonials() {
+  return client.fetch(`
+    *[_type == "testimonial"] {
+      _id,
+      quote,
+      author,
+      role,
+      marqueeRow
+    }
+  `)
+}
