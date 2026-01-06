@@ -1,9 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import TypewriterText from './TypewriterText';
 import VerticalSlider from './VerticalSlider';
 
 const Hero = ({ startAnimation }) => {
+  const navigate = useNavigate();
   return (
     <section className="hero-grid">
       {/* Left Content Area */}
@@ -47,6 +49,29 @@ const Hero = ({ startAnimation }) => {
           }}>
             Positioning, messaging, website, funnel, automations. Wired together into one system that sells.
           </p>
+          
+          <div className="mobile-only" style={{ marginTop: '2rem' }}>
+            <button 
+              onClick={() => navigate('/book')}
+              style={{
+                padding: '12px 24px',
+                backgroundColor: '#1a1a1a',
+                border: '1px solid #1a1a1a',
+                borderRadius: '100px',
+                fontSize: '0.9rem',
+                textTransform: 'uppercase',
+                fontFamily: 'Inter',
+                fontWeight: 500,
+                letterSpacing: '0.05em',
+                cursor: 'pointer',
+                color: '#ffffff',
+                textDecoration: 'none',
+                width: 'fit-content'
+              }}
+            >
+              Book a Call
+            </button>
+          </div>
         </div>
 
         {/* Mobile Slider - Horizontal at bottom */}

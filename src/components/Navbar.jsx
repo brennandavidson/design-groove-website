@@ -6,15 +6,51 @@ const Navbar = () => {
   const { scrollY } = useScroll();
   const [showHamburger, setShowHamburger] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [viewportHeight, setViewportHeight] = useState(0);
-  const [viewportWidth, setViewportWidth] = useState(0);
   
-  const [hasScrolled, setHasScrolled] = useState(false);
+  // Lazy initialize dimensions to prevent layout shifts
+  const [viewportHeight, setViewportHeight] = useState(() => typeof window !== 'undefined' ? window.innerHeight : 0);
+  const [viewportWidth, setViewportWidth] = useState(() => typeof window !== 'undefined' ? window.innerWidth : 0);
+  
+  // Lazy initialize scroll state to prevent flashing on refresh
+  const [hasScrolled, setHasScrolled] = useState(() => typeof window !== 'undefined' ? window.scrollY > 10 : false);
   const [isAtBottom, setIsAtBottom] = useState(false);
+  const [isAtTop, setIsAtTop] = useState(() => typeof window !== 'undefined' ? window.scrollY < 50 : true);
   
   const location = useLocation();
   const navigate = useNavigate();
   const isHomePage = location.pathname === '/';
+
+  // NEW: Control visibility of the absolute hero navbar to prevent flash on refresh
+  const [isHeroNavVisible, setIsHeroNavVisible] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const hasVisited = sessionStorage.getItem('hasVisited');
+      // If visited (refresh), default hidden. If first visit, default visible.
+      if (hasVisited) return false;
+      return true;
+    }
+    return true;
+  });
+
+  useEffect(() => {
+    // Scroll handler to toggle visibility based on position
+    const handleScroll = () => {
+      // Only relevant on home page
+      if (location.pathname === '/') {
+        // Show if we are in the first viewport (Hero)
+        setIsHeroNavVisible(window.scrollY < window.innerHeight);
+      }
+    };
+
+    // CRITICAL: Delay initial check by 50ms to allow browser scroll restoration
+    // This prevents showing the nav when refreshing at the bottom (where scrollY is momentarily 0)
+    const timer = setTimeout(handleScroll, 50);
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [location.pathname]);
 
   useEffect(() => {
     setViewportHeight(window.innerHeight);
@@ -30,49 +66,45 @@ const Navbar = () => {
   // Update hamburger visibility based on page and scroll
   useEffect(() => {
     // Check for mobile/tablet breakpoint
-    const isMobile = viewportWidth < 900;
+    const isMobile = viewportWidth <= 900;
 
     // Mobile/Tablet Logic: Always show sticky white header with hamburger
     if (isMobile) {
       setShowHamburger(true);
-      // Reset scroll state immediately to avoid any flash
-      setHasScrolled(false);
+      // Reset scroll state immediately to avoid any flash - but respect current scroll
+      setHasScrolled(window.scrollY > 10);
+      setIsAtTop(window.scrollY < 50);
     } else if (!isHomePage) {
       // Desktop - Not Home Page
       setShowHamburger(false); // Hide hamburger on other pages
       
-      // Prevent flash: Always start as false on new page
-      setHasScrolled(false);
+      // Update based on CURRENT scroll immediately (no timeout if possible)
+      const currentScroll = window.scrollY;
+      setHasScrolled(currentScroll > 10);
       
-      // Check scroll after a brief delay to allow page transitions/scroll-to-top to finish
-      const timer = setTimeout(() => {
-        const currentScroll = window.scrollY;
-        setHasScrolled(currentScroll > 10);
-        
-        // Check if at bottom logic...
-        const checkBottom = () => {
-            const layoutHeight = document.documentElement.scrollHeight;
-            const windowHeight = window.innerHeight;
-            // Use a threshold, e.g. 50px
-            if (layoutHeight > windowHeight) { // Ensure page is scrollable
-               setIsAtBottom(layoutHeight - (currentScroll + windowHeight) < 50);
-            } else {
-               setIsAtBottom(true); // Short page, technically at bottom
-            }
-        };
-        checkBottom();
-      }, 100);
-      
-      return () => clearTimeout(timer);
+      // Check if at bottom logic...
+      const checkBottom = () => {
+          const layoutHeight = document.documentElement.scrollHeight;
+          const windowHeight = window.innerHeight;
+          // Use a threshold, e.g. 50px
+          if (layoutHeight > windowHeight) { // Ensure page is scrollable
+             setIsAtBottom(layoutHeight - (currentScroll + windowHeight) < 50);
+          } else {
+             setIsAtBottom(true); // Short page, technically at bottom
+          }
+      };
+      checkBottom();
     } else {
       // Desktop - Home Page
       // Re-evaluate based on current scroll
-      setShowHamburger(scrollY.get() > viewportHeight * 0.8);
+      const threshold = viewportHeight * 0.8;
+      const currentScroll = window.scrollY || scrollY.get(); // Fallback to window if scrollY not ready
+      setShowHamburger(currentScroll > threshold);
     }
   }, [isHomePage, viewportHeight, viewportWidth, scrollY, location.pathname]); // Added viewportWidth
 
   useMotionValueEvent(scrollY, "change", (latest) => {
-    const isMobile = viewportWidth < 900;
+    const isMobile = viewportWidth <= 900;
     
     if (isMobile) {
         // Always show hamburger on mobile
@@ -83,9 +115,11 @@ const Navbar = () => {
       // Desktop Home: Show hamburger when scrolled past 80% of the viewport (hero)
       const threshold = viewportHeight * 0.8;
       setShowHamburger(latest > threshold);
+      setIsAtTop(latest < 50);
     } else {
       // Desktop Other: Hide hamburger, use full nav
       setShowHamburger(false);
+      setIsAtTop(latest < 50);
       // Update hasScrolled for sticky border effect
       setHasScrolled(latest > 10);
       
@@ -152,19 +186,22 @@ const Navbar = () => {
       {isHomePage ? (
         <nav
           style={{
-            position: viewportWidth < 900 ? 'fixed' : 'absolute', // Fixed on mobile, Absolute on Desktop
+            position: viewportWidth <= 900 ? 'fixed' : 'absolute', // Fixed on mobile, Absolute on Desktop
             top: 0,
             left: 0,
-            width: viewportWidth < 900 ? '100%' : '70vw', // Full width on mobile
-            zIndex: viewportWidth < 900 ? 1000 : 9, // Higher Z on mobile
-            backgroundColor: viewportWidth < 900 ? '#ffffff' : 'transparent', // White bg on mobile
-            boxShadow: (viewportWidth < 900 && hasScrolled) ? '0 1px 0 0 #e5e5e5' : 'none', // Only border on scroll for mobile
+            width: viewportWidth <= 900 ? '100%' : '70vw', // Full width on mobile
+            zIndex: viewportWidth <= 900 ? 1000 : 9, // Higher Z on mobile
+            backgroundColor: viewportWidth <= 900 ? '#ffffff' : 'transparent', // White bg on mobile
+            boxShadow: (viewportWidth <= 900 && hasScrolled) ? '0 1px 0 0 #e5e5e5' : 'none', // Only border on scroll for mobile
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            height: viewportWidth < 900 ? '60px' : '120px', // Tighter height on mobile
+            height: viewportWidth <= 900 ? '60px' : '120px', // Tighter height on mobile
             padding: '0 4vw',
-            transition: 'box-shadow 0.3s ease' // Smooth border transition
+            transition: 'box-shadow 0.3s ease, opacity 0.2s ease, visibility 0.2s ease', // Added opacity/vis transition
+            // Hide on Desktop if scrolled down (prevents flash). Always visible on Mobile.
+            visibility: (viewportWidth <= 900 || isHeroNavVisible) ? 'visible' : 'hidden',
+            opacity: (viewportWidth <= 900 || isHeroNavVisible) ? 1 : 0
           }}
         >
           {/* Logo */}
@@ -173,7 +210,7 @@ const Navbar = () => {
               src="/assets/dg-logo-dark.svg" 
               alt="Design Groove" 
               style={{ 
-                height: viewportWidth < 900 ? '26px' : '32px', // Slightly larger logo on mobile
+                height: viewportWidth <= 900 ? '26px' : '32px', // Slightly larger logo on mobile
                 width: 'auto' 
               }} 
             />
@@ -184,11 +221,11 @@ const Navbar = () => {
             className="desktop-only"
             style={{ 
               alignItems: 'center', 
-              gap: viewportWidth < 1400 ? '2rem' : '4rem', // Dynamic gap for laptops
+              gap: viewportWidth < 1800 ? '1rem' : '4rem', // CHANGED: Apply tight gap up to 1800px
               display: 'flex' 
             }}
           >
-            {['Work', 'Services', 'Our Process', 'About', 'Contact'].map((item) => (
+            {viewportWidth >= 1800 && ['Work', 'Services', 'Our Process', 'About', 'Contact'].map((item) => (
               <a 
                 key={item}
                 href={
@@ -236,12 +273,49 @@ const Navbar = () => {
                 cursor: 'pointer',
                 color: '#ffffff',
                 textDecoration: 'none',
-                marginLeft: viewportWidth < 1400 ? '1rem' : '2rem', // Reduced margin
+                marginLeft: viewportWidth < 1800 ? '0' : '2rem', // Use gap for spacing when < 1800
                 transition: 'all 0.3s ease'
               }}
             >
               Get in Touch
             </a>
+
+            {/* Inline Hamburger for Compact Desktop (900-1800px) */}
+            {viewportWidth > 900 && viewportWidth < 1800 && (
+              <button
+                onClick={toggleMenu}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: 0,
+                  marginLeft: 0, // CHANGED: Removed explicit margin to rely on gap
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  opacity: isAtTop ? 1 : 0, // Only show at very top
+                  pointerEvents: isAtTop ? 'auto' : 'none',
+                  transition: 'opacity 0.3s ease'
+                }}
+              >
+                <div style={{ 
+                  width: '50px', 
+                  height: '50px', 
+                  borderRadius: '50%', 
+                  border: '1px solid #e5e5e5', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center',
+                  backgroundColor: '#ffffff'
+                }}>
+                  <svg width="24" height="16" viewBox="0 0 24 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                     <rect width="24" height="2" rx="1" fill="#1a1a1a"/>
+                     <rect y="7" width="24" height="2" rx="1" fill="#1a1a1a"/>
+                     <rect y="14" width="24" height="2" rx="1" fill="#1a1a1a"/>
+                  </svg>
+                </div>
+              </button>
+            )}
           </div>
         </nav>
       ) : (
@@ -253,32 +327,50 @@ const Navbar = () => {
             left: 0,
             width: '100%',
             zIndex: 1000, // On top of content
-            backgroundColor: (hasScrolled && !isAtBottom) ? '#ffffff' : 'transparent',
+            backgroundColor: viewportWidth <= 900 ? '#ffffff' : ((hasScrolled && !isAtBottom) ? '#ffffff' : 'transparent'), // White on mobile to match Home
             // Use box-shadow for the line to avoid border layout/color issues and prevent black flash
-            boxShadow: (hasScrolled && !isAtBottom) ? '0 1px 0 0 #e5e5e5' : 'none',
+            boxShadow: (viewportWidth <= 900) ? (hasScrolled ? '0 1px 0 0 #e5e5e5' : 'none') : ((hasScrolled && !isAtBottom) ? '0 1px 0 0 #e5e5e5' : 'none'),
             transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
-            height: viewportWidth < 900 ? '64px' : '100px', // Responsive height
+            height: viewportWidth <= 900 ? '60px' : '100px', // Match Home mobile height (60px)
             padding: 0 // Padding moved to inner container
           }}
         >
           <div style={{
-            maxWidth: '1800px',
-            margin: '0 auto',
-            padding: '0 2vw', // Matches Work grid padding
             width: '100%',
             height: '100%',
+            padding: viewportWidth <= 900 ? '0 4vw' : '0 4vw', // Always 4vw to match section-spacing
             display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center'
+            justifyContent: 'center'
           }}>
+            <div style={{
+              width: '100%',
+              maxWidth: '1800px',
+              height: '100%',
+              padding: 0, // No extra padding on inner container
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }}>
             {/* Logo */}
             <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={() => navigate('/')}>
-              <img src="/assets/dg-logo-dark.svg" alt="Design Groove" style={{ height: '32px', width: 'auto' }} />
+              <img 
+                src="/assets/dg-logo-dark.svg" 
+                alt="Design Groove" 
+                style={{ 
+                  height: viewportWidth <= 900 ? '26px' : '32px', // Match Home mobile logo size (26px)
+                  width: 'auto' 
+                }} 
+              />
             </div>
 
             {/* Desktop Links */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4rem' }}>
-              {['Work', 'Services', 'Our Process', 'About', 'Contact'].map((item) => (
+            <div className="desktop-only" style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: viewportWidth < 1220 ? '1rem' : '4rem' // Reduced gap for compact mode (CTA + Hamburger)
+            }}>
+              {/* Show Desktop Links for widths >= 1220px */}
+              {viewportWidth >= 1220 && ['Work', 'Services', 'Our Process', 'About', 'Contact'].map((item) => (
                 <a 
                   key={item}
                   href={
@@ -325,13 +417,52 @@ const Navbar = () => {
                   cursor: 'pointer',
                   color: '#ffffff',
                   textDecoration: 'none',
-                  marginLeft: '2rem',
+                  marginLeft: viewportWidth < 1220 ? '0' : '2rem',
                   transition: 'all 0.3s ease'
                 }}
               >
                 Get in Touch
               </a>
+
+               {/* Inline Hamburger for Compact Desktop (900-1220px) */}
+               {viewportWidth > 900 && viewportWidth < 1220 && (
+                <button
+                  onClick={toggleMenu}
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: 0,
+                    marginLeft: 0, // Removed margin, relying on gap
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    // Always visible here as it replaces full nav
+                    opacity: 1, 
+                    pointerEvents: 'auto',
+                    transition: 'opacity 0.3s ease'
+                  }}
+                >
+                  <div style={{ 
+                    width: '50px', 
+                    height: '50px', 
+                    borderRadius: '50%', 
+                    border: '1px solid #e5e5e5', 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center',
+                    backgroundColor: '#ffffff'
+                  }}>
+                    <svg width="24" height="16" viewBox="0 0 24 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                       <rect width="24" height="2" rx="1" fill="#1a1a1a"/>
+                       <rect y="7" width="24" height="2" rx="1" fill="#1a1a1a"/>
+                       <rect y="14" width="24" height="2" rx="1" fill="#1a1a1a"/>
+                    </svg>
+                  </div>
+                </button>
+              )}
             </div>
+          </div>
           </div>
         </nav>
       )}
@@ -361,19 +492,21 @@ const Navbar = () => {
         className="hamburger-button"
         initial={{ opacity: 0, y: -10 }}
         animate={{ 
-          opacity: showHamburger ? 1 : 0,
-          y: showHamburger ? 0 : -10,
-          pointerEvents: showHamburger ? 'auto' : 'none'
+          opacity: (showHamburger || isMenuOpen) ? 1 : 0,
+          y: (showHamburger || isMenuOpen) ? 0 : -10,
+          pointerEvents: (showHamburger || isMenuOpen) ? 'auto' : 'none'
         }}
         transition={{ duration: 0.3 }}
         onClick={toggleMenu}
         style={{
           position: 'fixed',
-          top: viewportWidth < 900 ? '10px' : '2rem', // Center in 60px nav (10 top + 40 height + 10 bottom = 60)
-          right: '4vw',
+          top: viewportWidth <= 900 ? '10px' : '2rem', // Center in 60px nav (10 top + 40 height + 10 bottom = 60)
+          right: (isMenuOpen) ? '4vw' : // Menu Open: Top Right
+                 (viewportWidth > 900 && viewportWidth < 1800 && isAtTop) ? '34vw' : // Compact Desktop + At Top: Inline (34vw)
+                 '4vw', // All other cases (Standard Desktop, Mobile, Scrolled): Top Right
           zIndex: 1000,
-          width: viewportWidth < 900 ? '40px' : '50px', // Larger button on mobile
-          height: viewportWidth < 900 ? '40px' : '50px',
+          width: viewportWidth <= 900 ? '40px' : '50px', // Larger button on mobile
+          height: viewportWidth <= 900 ? '40px' : '50px',
           borderRadius: '50%',
           borderWidth: '1px',
           borderStyle: 'solid',
@@ -389,15 +522,15 @@ const Navbar = () => {
       >
         {/* Hamburger Icon Container - SVG for pixel-perfect rendering */}
         <div style={{ 
-          width: viewportWidth < 900 ? '20px' : '24px', // Larger icon
-          height: viewportWidth < 900 ? '14px' : '16px', 
+          width: viewportWidth <= 900 ? '20px' : '24px', // Larger icon
+          height: viewportWidth <= 900 ? '14px' : '16px', 
           display: 'flex', 
           alignItems: 'center', 
           justifyContent: 'center' 
         }}>
           <svg 
-            width={viewportWidth < 900 ? "20" : "24"} 
-            height={viewportWidth < 900 ? "14" : "16"} 
+            width={viewportWidth <= 900 ? "20" : "24"} 
+            height={viewportWidth <= 900 ? "14" : "16"} 
             viewBox="0 0 24 16" 
             fill="none" 
             xmlns="http://www.w3.org/2000/svg" 
@@ -493,7 +626,7 @@ const Navbar = () => {
                   }
                 }}
             style={{
-              fontSize: viewportWidth < 900 ? '2.5rem' : '4rem', // Smaller text on mobile
+              fontSize: viewportWidth <= 900 ? '2.5rem' : '4rem', // Smaller text on mobile
               fontFamily: 'Instrument Serif',
               fontWeight: 400,
               fontStyle: 'italic',
@@ -509,6 +642,52 @@ const Navbar = () => {
                 {item}
               </motion.a>
             ))}
+            
+            <motion.a
+                href="/book"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIsMenuOpen(false);
+                  navigate('/book');
+                }}
+                initial="hidden"
+                animate="visible"
+                whileHover="hover"
+                variants={{
+                  hidden: { opacity: 0, y: 30 },
+                  visible: { 
+                    opacity: 1, 
+                    y: 0,
+                    transition: { 
+                      delay: 0.05 + 5 * 0.08,
+                      duration: 0.4,
+                      ease: "easeOut"
+                    }
+                  },
+                  hover: { 
+                    scale: 1.05,
+                    transition: { duration: 0.2 }
+                  }
+                }}
+                style={{ 
+                  marginTop: '1rem',
+                  padding: '16px 32px',
+                  backgroundColor: '#1a1a1a',
+                  border: '1px solid #1a1a1a',
+                  borderRadius: '100px',
+                  fontSize: '1.1rem',
+                  textTransform: 'uppercase',
+                  fontFamily: 'Inter',
+                  fontWeight: 500,
+                  letterSpacing: '0.05em',
+                  cursor: 'pointer',
+                  color: '#ffffff',
+                  textDecoration: 'none',
+                  display: 'inline-block'
+                }}
+            >
+              Get in Touch
+            </motion.a>
           </motion.div>
         )}
       </AnimatePresence>

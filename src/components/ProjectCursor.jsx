@@ -37,6 +37,7 @@ const ProjectCursor = ({ isHovered, text = "View Case Study" }) => {
 
   return (
     <motion.div
+      className="project-cursor-container"
       style={{
         position: 'fixed',
         top: 0,

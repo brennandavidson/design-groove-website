@@ -15,7 +15,7 @@ const Preloader = ({ onComplete }) => {
     // 2. Wait for the toggle animation + delight pause, then slide up
     const exitTimer = setTimeout(() => {
       setIsLoading(false);
-      window.scrollTo(0, 0);
+      // Removed window.scrollTo(0, 0) to preserve scroll position on refresh
       if (onComplete) onComplete();
     }, 2200);
 

@@ -18,7 +18,7 @@ const revealVariants = {
 
 const AboutPage = () => {
   useEffect(() => {
-    window.scrollTo(0, 0);
+    // window.scrollTo(0, 0); // Managed by App.jsx
   }, []);
 
   const containerRef = useRef(null);

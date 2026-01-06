@@ -11,8 +11,8 @@ const WorkCollection = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Scroll to top on mount
-    window.scrollTo(0, 0);
+    // Scroll to top on mount - REMOVED for App-level handling
+    // window.scrollTo(0, 0);
 
     getProjects().then((data) => {
       if (data) {
@@ -24,36 +24,47 @@ const WorkCollection = () => {
 
   return (
     <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', width: '100%' }}>
-      <section style={{ 
-        padding: '12rem 0 6rem', // Top padding to clear fixed navbar
-        minHeight: '100vh' // Ensure section takes up full height to push footer down
+      <style>{`
+        .work-collection-padding {
+          padding-top: 16rem !important; /* Matches Services.jsx desktop padding */
+        }
+        @media (max-width: 900px) {
+          .work-collection-padding {
+            padding-top: 10rem !important; /* Mobile: 6rem spacing + 4rem (approx 60px) nav allowance */
+          }
+        }
+      `}</style>
+      <section className="section-spacing work-collection-padding" style={{ 
+        minHeight: '100vh' 
       }}>
         {/* Global Cursor for this section */}
         <ProjectCursor isHovered={hoveredProject !== null} />
 
-        <div style={{ 
-          padding: '0 4vw 6rem',
+        <div className="section-header-spacing" style={{ 
+          paddingLeft: '4vw',
+          paddingRight: '4vw',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           textAlign: 'center'
         }}>
-          <AnimatedHeading 
-            text="Work Collection"
-            highlightWords={["Collection"]}
-          />
+          {/* Replaced AnimatedHeading with standard H1 to match Services page style exactly */}
+          <h1 style={{ 
+            fontFamily: 'Instrument Serif', 
+            fontSize: window.innerWidth <= 900 ? 'clamp(2.5rem, 10vw, 4rem)' : 'clamp(3rem, 6vw, 6rem)', 
+            lineHeight: 1, 
+            fontWeight: 400, 
+            color: '#1a1a1a', 
+            marginBottom: 0, // Removed margin to prevent stacking with container padding
+            marginTop: 0 // Explicitly remove top margin to ensure exact padding match
+          }}>
+            <span style={{ color: '#1a1a1a' }}>Our </span>
+            <span style={{ color: '#0078F2', fontStyle: 'italic' }}>Work</span>
+          </h1>
         </div>
 
         {/* Aligned Grid Container */}
-        <div style={{ 
-          display: 'grid', 
-          gridTemplateColumns: '1fr 1fr', 
-          columnGap: '2vw', 
-          rowGap: '6rem', 
-          padding: '0 2vw', 
-          maxWidth: '1800px', 
-          margin: '0 auto'
-        }}>
+        <div className="work-grid">
           {projects.map((project, index) => (
             <ProjectCard
               key={project._id}

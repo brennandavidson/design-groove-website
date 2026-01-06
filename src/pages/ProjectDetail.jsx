@@ -104,7 +104,7 @@ const ProjectDetail = () => {
 
   useEffect(() => {
     // Scroll to top on mount
-    window.scrollTo(0, 0);
+    // window.scrollTo(0, 0); // Managed by App.jsx
     setIsLoading(true);
 
     getProjectBySlug(slug).then((data) => {
@@ -166,17 +166,102 @@ const ProjectDetail = () => {
 
   return (
     <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', width: '100%' }}>
+      <style>{`
+        .project-detail-container {
+          padding: 12rem 4vw 6rem;
+          width: 100%;
+        }
+        .project-detail-inner {
+          max-width: 1800px;
+          margin: 0 auto;
+          display: flex;
+          flex-direction: column;
+          gap: 4rem;
+        }
+        .back-button {
+          position: absolute;
+          top: 2rem;
+          left: 2rem;
+          z-index: 10;
+          text-decoration: none;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          background-color: #ffffff;
+          padding: 12px 24px;
+          border-radius: 100px;
+          color: #1a1a1a;
+          transition: transform 0.3s ease;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .content-grid {
+          display: grid;
+          grid-template-columns: 2fr 1fr;
+          gap: 4vw;
+          border-top: 1px solid #e5e5e5;
+          padding-top: 6rem;
+        }
+        .related-projects-section {
+          padding: 0 4vw 12rem;
+          width: 100%;
+        }
+        .related-projects-inner {
+          max-width: 1800px;
+          margin: 0 auto;
+          display: flex;
+          flex-direction: column;
+          gap: 6rem;
+        }
+        .related-projects-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          column-gap: 2vw;
+          row-gap: 6rem;
+        }
+        .related-header {
+           display: flex; 
+           justify-content: space-between; 
+           align-items: baseline; 
+           padding-bottom: 2rem;
+        }
+
+        @media (max-width: 900px) {
+          .project-detail-container {
+            padding: 8rem 4vw 2rem; /* Reduced bottom padding from 4rem to 2rem */
+          }
+          .back-button {
+            top: 1rem;
+            left: 1rem;
+            padding: 8px 16px;
+          }
+          .content-grid {
+            grid-template-columns: 1fr;
+            padding-top: 4rem;
+            gap: 4rem;
+          }
+          .related-projects-section {
+            padding: 0 4vw 6rem;
+          }
+          .related-projects-inner {
+            gap: 2rem; /* Reduced gap from 6rem */
+          }
+          .related-projects-grid {
+            grid-template-columns: 1fr;
+            row-gap: 4rem;
+          }
+          .related-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+            padding-bottom: 0.5rem; /* Reduced from 2rem */
+          }
+        }
+      `}</style>
       <ProjectCursor isHovered={hoveredProject !== null} />
       
       {/* Main Content */}
-      <section style={{ 
-        padding: '12rem 2vw 6rem', // Matches WorkCollection layout
-        maxWidth: '1800px', 
-        margin: '0 auto',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '4rem'
-      }}>
+      <section className="project-detail-container">
+        <div className="project-detail-inner">
         
         {/* Header: Title + Meta */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
@@ -255,22 +340,7 @@ const ProjectDetail = () => {
           {/* Back to Projects Button */}
           <Link 
             to="/work"
-            style={{
-              position: 'absolute',
-              top: '2rem',
-              left: '2rem',
-              zIndex: 10,
-              textDecoration: 'none',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              backgroundColor: '#ffffff',
-              padding: '12px 24px',
-              borderRadius: '100px',
-              color: '#1a1a1a',
-              transition: 'transform 0.3s ease',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
-            }}
+            className="back-button"
             onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.03)'}
             onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
           >
@@ -347,13 +417,7 @@ const ProjectDetail = () => {
           </div>
 
           {/* Remaining Rich Content & Sidebar */}
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: '2fr 1fr', 
-            gap: '4vw',
-            borderTop: '1px solid #e5e5e5',
-            paddingTop: '6rem'
-          }}>
+          <div className="content-grid">
             {/* Main Case Study Content (Portable Text) */}
             <div>
               {/* If we have 'content', use PortableText. Fallback to description if not. */}
@@ -413,19 +477,14 @@ const ProjectDetail = () => {
             </div>
           </div>
         </div>
+      </div>
       </section>
 
       {/* You Might Also Like Section */}
       {project.relatedProjects && project.relatedProjects.length > 0 && (
-        <section style={{ 
-          padding: '0 2vw 12rem', 
-          maxWidth: '1800px', 
-          margin: '0 auto',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '6rem'
-        }}>
-           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', borderBottom: '1px solid #e5e5e5', paddingBottom: '2rem' }}>
+        <section className="related-projects-section">
+          <div className="related-projects-inner">
+           <div className="related-header">
             <h2 style={{ 
               fontFamily: 'Instrument Serif', 
               fontSize: '3rem', 
@@ -449,12 +508,7 @@ const ProjectDetail = () => {
             </Link>
           </div>
 
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: '1fr 1fr', 
-            columnGap: '2vw', 
-            rowGap: '6rem' 
-          }}>
+          <div className="related-projects-grid">
             {project.relatedProjects.map((relatedProject, index) => (
               <ProjectCard
                 key={relatedProject._id}
@@ -463,6 +517,7 @@ const ProjectDetail = () => {
                 setHoveredProject={setHoveredProject}
               />
             ))}
+          </div>
           </div>
         </section>
       )}

@@ -3,7 +3,7 @@ import { InlineWidget } from "react-calendly";
 
 const BookPage = () => {
   useEffect(() => {
-    window.scrollTo(0, 0);
+    // window.scrollTo(0, 0); // Managed by App.jsx
   }, []);
 
   return (

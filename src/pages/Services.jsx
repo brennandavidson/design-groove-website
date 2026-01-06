@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect, createRef } from 'react';
-import { motion, useInView, useScroll, useTransform } from 'framer-motion';
+import { motion, useInView, useScroll, useTransform, useMotionValueEvent, AnimatePresence, useSpring } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import Contact from '../components/Contact';
 
@@ -7,12 +7,12 @@ import Contact from '../components/Contact';
 const serviceData = [
   {
     title: "Strategy & Messaging",
-    intro: "Define who you are and why you matter. Strategy, positioning, and identity systems built to be consistent, scalable, and unforgettable across every touchpoint.",
+    intro: "Define who you are and why you matter. Strategy, positioning, and identity systems built to be scalable.",
     items: [
       "Offer architecture",
-      "Positioning and audience clarity",
       "Core messaging and voice",
       "Sales and launch copy",
+      "Positioning and audience clarity",
       "Email sequences"
     ],
     image: "https://images.unsplash.com/photo-1506729623306-b5a934d88b53?q=80&w=2070&auto=format&fit=crop",
@@ -25,8 +25,8 @@ const serviceData = [
       "Visual identity design",
       "Website design",
       "Sales pages and landing pages",
-      "Logo Design",
       "Pitch decks and presentations",
+      "Logo Design",
       "Brand guidelines"
     ],
     image: "https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=2000&auto=format&fit=crop",
@@ -187,9 +187,181 @@ const AccordionItem = ({ q, a, index }) => {
   );
 };
 
+// New Mobile Scroll Layout Component
+const MobileScrollLayout = ({ serviceData }) => {
+  console.log("MobileScrollLayout rendering, serviceData:", serviceData?.length);
+  
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
+
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 40,
+    damping: 20,
+    restDelta: 0.001
+  });
+
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    if (!serviceData || serviceData.length === 0) return;
+    const total = serviceData.length;
+    const index = Math.min(
+      Math.floor(latest * total),
+      total - 1
+    );
+    setActiveIndex(index);
+  });
+
+  if (!serviceData || serviceData.length === 0) return null;
+
+
+  return (
+    <div 
+      ref={containerRef} 
+      style={{ 
+        height: `${serviceData.length * 100}vh`, // 100vh per slide
+        position: 'relative' 
+      }}
+    >
+      <div style={{ 
+        position: 'sticky', 
+        top: 0, 
+        height: '100vh', 
+        overflow: 'hidden',
+        backgroundColor: '#fff',
+        display: 'flex',
+        flexDirection: 'column',
+        zIndex: 5
+      }}>
+        
+        {/* Top: Image Area */}
+        <div style={{ 
+          height: '50vh', // Fixed height for image area
+          width: '100%', 
+          position: 'relative',
+          marginTop: '60px' // Align to top of sticky container + nav height (60px)
+        }}>
+          {serviceData.map((service, index) => (
+            <motion.div
+              key={index}
+              style={{ 
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%', 
+                height: '100%', 
+                zIndex: index, // Base stacking order
+              }}
+              initial={false} // Prevent initial animation on mount
+              animate={{ 
+                clipPath: index <= activeIndex ? "inset(0% 0 0 0)" : "inset(100% 0 0 0)",
+              }}
+              transition={{ duration: 1, ease: "easeInOut" }} // Smoother transition
+            >
+              <img
+                src={service.image}
+                alt={service.title}
+                style={{ 
+                  width: '100%', 
+                  height: '100%', 
+                  objectFit: 'cover' 
+                }} 
+              />
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Middle: Progress Bar */}
+        <div style={{ 
+          width: 'calc(100% - 8vw)', // Match padding
+          height: '4px', 
+          backgroundColor: '#eee',
+          borderRadius: '2px',
+          margin: '1.5rem auto', // Center horizontally, spacing vert
+          overflow: 'hidden',
+          flexShrink: 0 // Prevent squishing
+        }}>
+          <motion.div 
+            style={{ 
+              width: '100%', 
+              height: '100%', 
+              backgroundColor: '#000',
+              transformOrigin: 'left',
+              scaleX: smoothProgress
+            }}
+          />
+        </div>
+
+        {/* Bottom: Text Content */}
+        <div style={{ 
+          flex: 1, 
+          position: 'relative', 
+          width: '100%',
+          overflow: 'hidden'
+        }}>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeIndex}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.4 }}
+              style={{ 
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                padding: '0 4vw 2rem',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'flex-start'
+              }}
+            >
+                <span style={{ display: 'block', fontFamily: 'Inter', fontSize: '0.9rem', color: '#999', marginBottom: '0.5rem' }}>
+                    {(activeIndex + 1).toString().padStart(2, '0')}
+                </span>
+                <h2 style={{ fontFamily: 'Instrument Serif', fontSize: '2.5rem', lineHeight: 1.1, color: '#1a1a1a', marginBottom: '1rem' }}>
+                    {serviceData[activeIndex].title}
+                </h2>
+                <p style={{ fontFamily: 'Inter', fontSize: '1rem', lineHeight: 1.5, color: '#4a4a4a', marginBottom: '1.5rem' }}>
+                    {serviceData[activeIndex].intro}
+                </p>
+                
+                {/* Items List - Desktop style (clean text list) */}
+                <div style={{ 
+                    display: 'grid', 
+                    gridTemplateColumns: '1fr 1fr', 
+                    gap: '0.5rem 1rem', 
+                    marginTop: '1rem', 
+                    paddingBottom: '1rem' 
+                }}>
+                    {serviceData[activeIndex].items.map((item, i) => (
+                          <span key={i} style={{ 
+                              fontFamily: 'Inter', 
+                              fontSize: '0.85rem', 
+                              color: '#888', // Lighter grey per request
+                              lineHeight: 1.4
+                          }}>
+                            {item}
+                          </span>
+                    ))}
+                </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
 // Component to detect when a section is in view
 // Forwarding ref to allow parent to track scroll progress
-const ServiceSection = React.forwardRef(({ service, index }, ref) => {
+const ServiceSection = React.forwardRef(({ service, index, isMobile }, ref) => {
   
   // Split items into two even columns
   const midPoint = Math.ceil(service.items.length / 2);
@@ -202,11 +374,11 @@ const ServiceSection = React.forwardRef(({ service, index }, ref) => {
     <div 
       ref={ref}
       style={{ 
-        minHeight: '100vh', 
+        minHeight: isMobile ? 'auto' : '100vh', 
         display: 'flex', 
         flexDirection: 'column', 
         justifyContent: 'center',
-        padding: '6rem 0',
+        padding: isMobile ? '4rem 4vw' : '6rem 0', // Reset mobile padding
       }}
     >
       <motion.div
@@ -215,6 +387,7 @@ const ServiceSection = React.forwardRef(({ service, index }, ref) => {
         transition={{ duration: 0.6, ease: "easeOut" }}
         viewport={{ once: true, margin: "-100px" }}
       >
+        
         {/* Number Marker - Floating, subtle */}
         <span style={{ display: 'block', fontFamily: 'Inter', fontSize: '0.9rem', color: '#999', marginBottom: '1rem' }}>
             {formattedIndex}
@@ -231,7 +404,12 @@ const ServiceSection = React.forwardRef(({ service, index }, ref) => {
         </p>
         
         {/* 2-Column List Layout (No Bullets): Smaller, Lighter, Tighter */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', maxWidth: '800px' }}>
+        <div style={{ 
+          display: 'grid', 
+          gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', // Stack on mobile
+          gap: isMobile ? '1rem' : '2rem', 
+          maxWidth: '800px' 
+        }}>
           {/* Left Column */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             {leftCol.map((item, i) => (
@@ -295,14 +473,14 @@ const StickyImageLayer = ({ service, triggerRef, index, isFirst }) => {
 
 const ServicesPage = () => {
   const [isButtonHovered, setIsButtonHovered] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(0);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   // Create refs for each text section to track their scroll progress
   const sectionRefs = useRef(serviceData.map(() => createRef()));
 
   // Scroll to top on mount and handle resize
   useEffect(() => {
-    window.scrollTo(0, 0);
+    // window.scrollTo(0, 0); // Managed by App.jsx
     setWindowWidth(window.innerWidth);
     const handleResize = () => setWindowWidth(window.innerWidth);
     window.addEventListener('resize', handleResize);
@@ -319,20 +497,38 @@ const ServicesPage = () => {
       
       {/* Header Section - Enhanced Padding and Structure */}
       {/* Increased top padding to 20rem to match Statement.jsx and push sticky content down */}
-      <section style={{ padding: '16rem 2vw 12rem', maxWidth: '1800px', margin: '0 auto', textAlign: 'center' }}>
+      <section style={{ 
+        padding: windowWidth <= 900 ? '10rem 4vw 4rem' : '16rem 4vw 12rem', 
+        width: '100%', 
+        textAlign: 'center' 
+      }}>
         <motion.h1 
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          style={{ fontFamily: 'Instrument Serif', fontSize: 'clamp(3rem, 6vw, 6rem)', lineHeight: 1, fontWeight: 400, color: '#1a1a1a', marginBottom: '2rem' }}
+          style={{ 
+            fontFamily: 'Instrument Serif', 
+            fontSize: windowWidth <= 900 ? 'clamp(2.5rem, 10vw, 4rem)' : 'clamp(3rem, 6vw, 6rem)', 
+            lineHeight: 1, 
+            fontWeight: 400, 
+            color: '#1a1a1a', 
+            marginBottom: 0, // Removed margin to prevent stacking with container padding
+            textWrap: 'balance', // Improves wrapping on mobile
+            maxWidth: '100%',
+            margin: '0 auto 0 auto' // Removed bottom margin here too
+          }}
         >
-          Everything your business<br />needs to sell
+          {windowWidth <= 900 ? (
+            "Everything your business needs to sell"
+          ) : (
+            <>Everything your business<br />needs to sell</>
+          )}
         </motion.h1>
         <motion.p 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          style={{ fontFamily: 'Inter', fontSize: 'clamp(1rem, 1.5vw, 1.2rem)', lineHeight: 1.6, color: '#4a4a4a', maxWidth: '600px', margin: '0 auto 2rem auto' }}
+          style={{ fontFamily: 'Inter', fontSize: 'clamp(1rem, 1.5vw, 1.2rem)', lineHeight: 1.6, color: '#4a4a4a', maxWidth: '600px', margin: '1rem auto 2rem auto' }} // Standardized to 1rem top margin
         >
           Strategy, brand, website, automation, and ongoing support from one team that gets how it all connects.
         </motion.p>
@@ -366,73 +562,74 @@ const ServicesPage = () => {
       </section>
 
       {/* NEW: What We Do Overview Strip - Clean Row Layout (No Borders) */}
-      <section style={{ 
-        marginBottom: '25vh' // Significant gap to ensure image is hidden on load
-      }}>
-        <div style={{ 
-          maxWidth: '1800px', 
-          margin: '0 auto', 
-          padding: '0 2vw',
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-          gap: '2rem'
+      {/* HIDDEN ON MOBILE as requested */}
+      {windowWidth > 900 && (
+        <section style={{ 
+          marginBottom: '25vh', // Significant gap to ensure image is hidden on load
+          padding: '0 4vw' // Added padding to container
         }}>
-          {serviceData.map((s, index) => (
-            <OverviewItem 
-              key={index} 
-              item={s} 
-              index={index} 
-              scrollToSection={() => {
-                const targetRef = sectionRefs.current[index];
-                if (targetRef && targetRef.current) {
-                  targetRef.current.scrollIntoView({ behavior: 'smooth' });
-                }
-              }} 
-            />
-          ))}
-        </div>
-      </section>
-
-      {/* Main Content: Sticky Image + Scrolling Text */}
-      <section style={{ width: '100%', position: 'relative' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: windowWidth > 900 ? '1fr 1fr' : '1fr' }}>
-          
-          {/* LEFT: Scrolling Text Sections */}
-          {/* We apply padding here to align with the rest of the site's 1800px max-width container */}
-          {/* Left padding = max(2vw, space to align with 1800px container) */}
           <div style={{ 
-            paddingLeft: 'max(2vw, calc((100vw - 1800px) / 2 + 2vw))', 
-            paddingRight: '4rem',
-            paddingBottom: '10vh'
+            maxWidth: '1800px', 
+            margin: '0 auto', 
+            padding: '0', // Removed padding from grid
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+            gap: '2rem'
           }}>
-            {serviceData.map((service, index) => (
-              <ServiceSection 
-                key={index}
-                // Store ref in our array to track this section's position
-                ref={sectionRefs.current[index]}
-                service={service} 
+            {serviceData.map((s, index) => (
+              <OverviewItem 
+                key={index} 
+                item={s} 
                 index={index} 
+                scrollToSection={() => {
+                  const targetRef = sectionRefs.current[index];
+                  if (targetRef && targetRef.current) {
+                    targetRef.current.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }} 
               />
             ))}
           </div>
+        </section>
+      )}
 
-          {/* RIGHT: Sticky Image Container with Scroll-Driven Mask Reveal */}
-          {/* Full Bleed Right Column */}
-          {windowWidth > 900 && (
+      {/* Main Content: Sticky Image + Scrolling Text */}
+      <section style={{ width: '100%', position: 'relative' }}>
+        {windowWidth > 900 ? (
+          /* DESKTOP LAYOUT */
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+            
+            {/* LEFT: Scrolling Text Sections */}
+            <div style={{ 
+              paddingLeft: 'max(4vw, calc((100vw - 1800px) / 2))',
+              paddingRight: '4rem',
+              paddingBottom: '10vh'
+            }}>
+              {serviceData.map((service, index) => (
+                <ServiceSection 
+                  key={index}
+                  ref={sectionRefs.current[index]}
+                  service={service} 
+                  index={index} 
+                  isMobile={false}
+                />
+              ))}
+            </div>
+
+            {/* RIGHT: Sticky Image Container */}
             <div style={{ position: 'relative', height: '100%' }}>
               <div style={{ 
                 position: 'sticky', 
-                top: '100px', // Aligned to bottom of 100px sticky Navbar
+                top: '100px', 
                 width: '100%',
-                height: 'calc(100vh - 100px)', // Fill the vertical space
+                height: 'calc(100vh - 100px)', 
                 overflow: 'hidden',
-                backgroundColor: '#f0f0f0' // Base background
+                backgroundColor: '#f0f0f0' 
               }}>
                 {serviceData.map((service, index) => (
                    <StickyImageLayer 
                       key={index}
                       service={service}
-                      // Pass the corresponding text section ref to drive the animation
                       triggerRef={sectionRefs.current[index]}
                       index={index}
                       isFirst={index === 0}
@@ -440,14 +637,27 @@ const ServicesPage = () => {
                 ))}
               </div>
             </div>
-          )}
-
-        </div>
+          </div>
+        ) : (
+          /* MOBILE LAYOUT - Pinned Scroll with Progress */
+          <MobileScrollLayout serviceData={serviceData} />
+        )}
       </section>
 
       {/* FAQ Section - Clean Layout */}
-      <section style={{ maxWidth: '1000px', margin: '0 auto', padding: '12rem 2vw' }}>
-         <h2 style={{ fontFamily: 'Instrument Serif', fontSize: '4rem', fontWeight: 400, color: '#1a1a1a', marginBottom: '6rem', textAlign: 'center' }}>
+      <section style={{ 
+        maxWidth: '1000px', 
+        margin: '0 auto', 
+        padding: windowWidth <= 900 ? '4rem 4vw' : '12rem 4vw' 
+      }}>
+         <h2 style={{ 
+           fontFamily: 'Instrument Serif', 
+           fontSize: 'clamp(2.5rem, 4vw, 4rem)', 
+           fontWeight: 400, 
+           color: '#1a1a1a', 
+           marginBottom: windowWidth <= 900 ? '2rem' : '6rem', // Reduced to 2rem on mobile
+           textAlign: 'center' 
+         }}>
            Questions?
          </h2>
          <div>

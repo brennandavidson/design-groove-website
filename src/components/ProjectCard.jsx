@@ -1,16 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
 const ProjectCard = ({ project, index, setHoveredProject }) => {
   const [isHovered, setHovered] = useState(false);
+  const cardRef = useRef(null);
+  const mouseRef = useRef({ x: 0, y: 0 });
+
+  // Track global mouse position to check hover status during scroll
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      mouseRef.current = { x: e.clientX, y: e.clientY };
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  // Smart hover check on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      if (isHovered && cardRef.current) {
+        // Check if the mouse is still over the card element
+        const elementUnderMouse = document.elementFromPoint(mouseRef.current.x, mouseRef.current.y);
+        
+        // If the element under mouse is NOT the card or inside the card, disable hover
+        if (elementUnderMouse && !cardRef.current.contains(elementUnderMouse)) {
+          setHovered(false);
+          setHoveredProject(null);
+        }
+      }
+    };
+
+    if (isHovered) {
+      window.addEventListener('scroll', handleScroll, { passive: true });
+    }
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [isHovered, setHoveredProject]);
 
   const handleMouseEnter = () => {
+    // Disable hover effects on mobile/tablet (using 900px breakpoint)
+    if (window.innerWidth <= 900) return;
     setHovered(true);
     setHoveredProject(project._id);
   };
 
   const handleMouseLeave = () => {
+    // Consistent check although less critical for leave
+    if (window.innerWidth <= 900) return;
     setHovered(false);
     setHoveredProject(null);
   };
@@ -21,6 +60,7 @@ const ProjectCard = ({ project, index, setHoveredProject }) => {
       style={{ textDecoration: 'none', display: 'block', width: '100%' }}
     >
       <motion.div
+        ref={cardRef}
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -44,7 +84,7 @@ const ProjectCard = ({ project, index, setHoveredProject }) => {
           position: 'relative',
           marginBottom: '2rem'
         }}>
-          {project.image && (
+          {project.image ? (
             <motion.img 
               src={project.image} 
               alt={project.title}
@@ -56,6 +96,9 @@ const ProjectCard = ({ project, index, setHoveredProject }) => {
               animate={{ scale: isHovered ? 1.03 : 1 }}
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             />
+          ) : (
+            // Placeholder/Skeleton Style
+            <div style={{ width: '100%', height: '100%', backgroundColor: '#e0e0e0' }} />
           )}
         </div>
 
@@ -63,33 +106,58 @@ const ProjectCard = ({ project, index, setHoveredProject }) => {
         <div style={{ 
           display: 'flex', 
           justifyContent: 'space-between', 
-          alignItems: 'baseline', 
-          padding: '0 0.5rem'
+          alignItems: 'flex-start',
+          padding: '0 0.5rem',
+          flexWrap: 'wrap', 
+          rowGap: '0.5rem'
         }}>
-          <h3 style={{ 
-            fontSize: '2rem', 
-            fontFamily: 'Instrument Serif', 
-            fontWeight: 400,
-            margin: 0,
-            color: '#1a1a1a'
-          }}>
-            {project.title}
-          </h3>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <h3 style={{ 
+              fontSize: '2rem', 
+              fontFamily: 'Instrument Serif', 
+              fontWeight: 400,
+              margin: 0,
+              color: '#1a1a1a',
+              lineHeight: 1.1
+            }}>
+              {project.title}
+            </h3>
+            
+            {/* View Project -> (Now below title on Mobile) */}
+            <div className="mobile-only" style={{
+              fontFamily: 'Instrument Serif',
+              fontSize: '1.25rem', 
+              color: '#1a1a1a',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px',
+              marginTop: '1rem' // More top padding
+            }}>
+              <span style={{ fontStyle: 'italic' }}>View</span> Project &rarr;
+            </div>
+          </div>
+          
+          {/* Category — Year (Back to Right Side for All Screens) */}
           <div style={{ 
             fontFamily: 'Inter', 
             fontSize: '0.85rem', 
             textTransform: 'uppercase',
             letterSpacing: '0.05em',
             opacity: 0.6,
-            color: '#1a1a1a' // Explicit color to override Link default
+            color: '#1a1a1a',
+            alignSelf: 'flex-start', // Changed from baseline to flex-start
+            marginTop: '0.6rem' // Visual adjustment to align with Title cap height
           }}>
             {project.category} — {project.year}
           </div>
         </div>
+        
+        <style>{`
+          /* No specific media queries needed for this layout as it uses standard classes */
+        `}</style>
       </motion.div>
     </Link>
   );
 };
 
 export default ProjectCard;
-

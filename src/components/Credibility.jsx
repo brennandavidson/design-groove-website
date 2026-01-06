@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const logoFiles = [
   'ash-cooling-and-heating.png',
@@ -22,9 +22,21 @@ const logoFiles = [
 ];
 
 const Credibility = () => {
+  // Lazy initialize to prevent layout shift on hydration
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' ? window.innerWidth < 900 : false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 900);
+    // No need to call checkMobile() immediately as we did it in initializer
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   // Duplicate the logos enough times to ensure smooth scrolling
   // We have 18 logos, which is a good amount. We probably just need 2 sets for the loop.
   const displayLogos = [...logoFiles, ...logoFiles];
+  const gapSize = isMobile ? '2rem' : '5rem';
+  const minWidth = isMobile ? '120px' : '160px';
 
   return (
     <section className="section-spacing" style={{ 
@@ -33,21 +45,21 @@ const Credibility = () => {
       display: 'flex', // Flex to center
       flexDirection: 'column',
       alignItems: 'center',
-      paddingTop: '5rem' // Increased slightly to separate from Heading, but still closer than default
+      paddingTop: isMobile ? '3rem' : '5rem' // Responsive top padding
     }}>
       <div style={{ width: '100%', maxWidth: '1200px' }}> {/* Increased max-width to fit more logos */}
-        <p style={{ 
-          marginBottom: '1.5rem', // Tighter lockup with logos
-          opacity: 0.5, 
-          textTransform: 'uppercase', 
-          letterSpacing: '0.05em', 
-          fontSize: '0.8rem',
-          fontFamily: 'Inter',
-          color: '#1a1a1a',
-          textAlign: 'center' // Center text
-        }}>
-          Trusted by creators, startups, service businesses, and more
-        </p>
+      <p style={{ 
+        marginBottom: '1rem', // Tighter lockup with logos
+        opacity: 0.5, 
+        textTransform: 'uppercase', 
+        letterSpacing: '0.05em', 
+        fontSize: '0.8rem',
+        fontFamily: 'Inter',
+        color: '#1a1a1a',
+        textAlign: 'center' // Center text
+      }}>
+        Trusted by creators, startups, and service businesses
+      </p>
 
         <div style={{
           position: 'relative',
@@ -59,17 +71,17 @@ const Credibility = () => {
           <div style={{
             display: 'flex',
             width: 'fit-content',
-            gap: '5rem', // Space between the two sets of logos
+            gap: gapSize, // Space between the two sets of logos
             animation: 'scrollLogos 60s linear infinite' // Slower animation for more logos
           }}>
             {/* First Set */}
-            <div style={{ display: 'flex', gap: '5rem', alignItems: 'center' }}>
+            <div style={{ display: 'flex', gap: gapSize, alignItems: 'center' }}>
               {logoFiles.map((file, index) => (
                 <div key={`set1-${index}`} style={{ 
                   display: 'flex', 
                   alignItems: 'center', 
                   justifyContent: 'center',
-                  minWidth: '160px', // Ensure logos have space
+                  minWidth: minWidth, // Ensure logos have space
                   height: '80px' // Fixed height container
                 }}>
                   <img 
@@ -92,13 +104,13 @@ const Credibility = () => {
             </div>
 
             {/* Duplicate Set for Loop */}
-            <div style={{ display: 'flex', gap: '5rem', alignItems: 'center' }}>
+            <div style={{ display: 'flex', gap: gapSize, alignItems: 'center' }}>
               {logoFiles.map((file, index) => (
                 <div key={`set2-${index}`} style={{ 
                   display: 'flex', 
                   alignItems: 'center', 
                   justifyContent: 'center',
-                  minWidth: '160px',
+                  minWidth: minWidth,
                   height: '80px'
                 }}>
                   <img 
@@ -126,7 +138,7 @@ const Credibility = () => {
       <style>{`
         @keyframes scrollLogos {
           0% { transform: translateX(0); }
-          100% { transform: translateX(calc(-50% - 2.5rem)); } /* Move by 50% + half the gap */
+          100% { transform: translateX(calc(-50% - ${isMobile ? '1rem' : '2.5rem'})); } /* Move by 50% + half the gap */
         }
       `}</style>
     </section>

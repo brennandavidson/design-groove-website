@@ -4,7 +4,7 @@ import AnimatedHeading from './AnimatedHeading';
 
 const Statement = () => {
   return (
-    <section className="section-spacing" style={{
+    <section className="section-spacing statement-padding-override" style={{
       backgroundColor: '#ffffff',
       display: 'flex', // Changed to flex for easy centering
       justifyContent: 'center',

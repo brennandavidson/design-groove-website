@@ -40,6 +40,7 @@ const BlurChar = ({ char, index }) => {
 
 const Contact = () => {
   const [showSky, setShowSky] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   
   // Use a Ref + useInView hook for robust scroll detection
   const containerRef = useRef(null);
@@ -47,6 +48,13 @@ const Contact = () => {
     once: false, 
     amount: 0.2 // Trigger when 20% of the container is visible (more reliable)
   });
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 900);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     if (isContainerInView) {
@@ -80,10 +88,10 @@ const Contact = () => {
         transition={{ duration: 2.5, ease: "easeInOut" }} // Slower, more majestic fade
         style={{
           position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
+          top: -2,
+          left: -2,
+          width: 'calc(100% + 4px)', // Extend slightly to prevent 1px border artifacts
+          height: 'calc(100% + 4px)',
           zIndex: 0,
           pointerEvents: 'none'
         }}
@@ -94,7 +102,16 @@ const Contact = () => {
       {/* Attach ref to this wrapper container for better scroll detection */}
       <div 
         ref={containerRef}
-        style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', position: 'relative', zIndex: 6 }}
+        style={{ 
+          flex: 1, 
+          display: 'flex', 
+          flexDirection: 'column', 
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          position: 'relative', 
+          zIndex: 6,
+          paddingTop: isMobile ? '80px' : '0'
+        }}
       >
         
         {/* Main Heading - Controlled by isContainerInView state */}
@@ -135,7 +152,7 @@ const Contact = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={isContainerInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ delay: 1.0, duration: 0.8 }} // Appears after text finishes
-          style={{ display: 'flex', justifyContent: 'center', marginTop: '4rem', position: 'relative', zIndex: 1 }}
+          style={{ display: 'flex', justifyContent: 'center', marginTop: isMobile ? '2rem' : '4rem', position: 'relative', zIndex: 1 }}
         >
           <a 
             href="/book"

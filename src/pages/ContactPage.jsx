@@ -4,7 +4,7 @@ import Contact from '../components/Contact';
 
 const ContactPage = () => {
   useEffect(() => {
-    window.scrollTo(0, 0);
+    // window.scrollTo(0, 0); // Managed by App.jsx
   }, []);
 
   const [formState, setFormState] = useState({

@@ -4,8 +4,6 @@ export default defineCliConfig({
   api: {
     projectId: '8jhw3vic',
     dataset: 'production'
-  }
+  },
+  studioHost: 'design-groove'
 })
-
-
-

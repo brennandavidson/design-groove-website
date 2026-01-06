@@ -704,7 +704,14 @@ const Services = () => {
   ];
 
   return (
-    <section id="our-process" className="section-spacing">
+    <section id="our-process" className="section-spacing mobile-top-padding-fix">
+      <style>{`
+        @media (max-width: 900px) {
+          .mobile-top-padding-fix {
+            padding-top: 4rem !important; /* Force explicit top padding on mobile to create gap */
+          }
+        }
+      `}</style>
       <div className="section-header-spacing" style={{ 
         paddingLeft: '4vw',
         paddingRight: '4vw',

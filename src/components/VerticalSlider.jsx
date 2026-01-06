@@ -109,16 +109,17 @@ const VerticalSlider = ({ orientation = 'vertical' }) => {
         }
         
         .infinite-slider-container:hover .slider-track-${orientation} {
-          animation-play-state: paused;
+          animation-play-state: ${isVertical ? 'paused' : 'running'};
         }
       `}</style>
-      <div className={`slider-track-${orientation}`}>
+      <div className={`slider-track-${orientation}`} style={{ pointerEvents: isVertical ? 'auto' : 'none' }}>
         {displayItems.map((item, index) => (
            <div 
            key={index}
            onMouseEnter={() => setHoverText(getCursorText(item.status))}
            onClick={() => {
-             if (item.status !== 'concept' && item.status !== 'coming-soon' && item.slug) {
+             // Only allow navigation on vertical (desktop) orientation
+             if (isVertical && item.status !== 'concept' && item.status !== 'coming-soon' && item.slug) {
                navigate(`/work/${item.slug.current}`);
              }
            }}
@@ -131,9 +132,10 @@ const VerticalSlider = ({ orientation = 'vertical' }) => {
              display: 'flex',
              position: 'relative',
              marginTop: isVertical ? '-1px' : '0',
-             marginLeft: isVertical ? '0' : '-1px',
+             marginLeft: '0',
              transform: 'none',
-             transformOrigin: 'center'
+             transformOrigin: 'center',
+             cursor: isVertical ? 'none' : 'default' // Disable pointer cursor on mobile
            }}
          >
            <img 
@@ -144,7 +146,8 @@ const VerticalSlider = ({ orientation = 'vertical' }) => {
               height: isVertical ? 'auto' : '100%', 
               objectFit: 'cover',
               display: 'block',
-              backfaceVisibility: 'hidden'
+              backfaceVisibility: 'hidden',
+              pointerEvents: 'none' // Prevent image drag/interaction
             }} 
           />
         </div>

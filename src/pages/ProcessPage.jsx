@@ -7,7 +7,7 @@ import Contact from '../components/Contact';
 
 // 1. Strategy: "The Audit to Blueprint"
 // Concept: Audit -> Breakdown (Brand/Offers/Tech/Customers) -> Convergence -> Blueprint
-const StrategyWidget = () => {
+const StrategyWidget = ({ scale = 1 }) => {
   const containerRef = useRef(null);
   
   // Dimensions
@@ -71,14 +71,14 @@ const StrategyWidget = () => {
   };
 
   return (
-    <div ref={containerRef} style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f8f9fa', borderRadius: '24px', overflow: 'hidden', position: 'relative' }}>
+    <div ref={containerRef} style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
       
       {/* Background Grid */}
       <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(#e5e7eb 1px, transparent 1px), linear-gradient(90deg, #e5e7eb 1px, transparent 1px)', backgroundSize: '40px 40px', opacity: 0.4 }} />
 
       {/* Main Container */}
       <motion.div 
-        style={{ width: '400px', height: '300px', position: 'relative' }}
+        style={{ width: '400px', height: '300px', position: 'relative', transform: `scale(${scale})`, transformOrigin: 'center center' }}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-50px" }}
@@ -197,8 +197,8 @@ const StrategyWidget = () => {
           variants={itemVariants}
         >
           <span style={{ position: 'relative', zIndex: 1 }}>Customers</span>
-           {/* Pulse Overlay: Smooth Wash */}
-           <motion.div
+          {/* Pulse Overlay: Smooth Wash */}
+          <motion.div
             style={{ 
               position: 'absolute', 
               left: 0, right: 0, height: '120%', // Taller beam for smoother feel
@@ -292,7 +292,7 @@ const StrategyWidget = () => {
 
 // 2. Build: "The Layer Stack"
 // Concept: Isometric layers (Foundation -> Structure -> Polish) merging into a final product.
-const ConstructionWidget = () => {
+const ConstructionWidget = ({ scale = 1 }) => {
   const cycle = 4;
   
   // Dimensions
@@ -323,15 +323,15 @@ const ConstructionWidget = () => {
   const z3 = 160;
 
   return (
-    <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f8f9fa', borderRadius: '24px', overflow: 'hidden', perspective: '1200px' }}>
+    <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
       
       {/* Background Grid */}
       <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(#e5e7eb 1px, transparent 1px), linear-gradient(90deg, #e5e7eb 1px, transparent 1px)', backgroundSize: '40px 40px', opacity: 0.4 }} />
 
       {/* Rotated Container - Centered Vertically */}
       <motion.div 
-        style={{ position: 'relative', width: cardW, height: cardH, transformStyle: 'preserve-3d' }}
-        animate={{ rotateX: 60, rotateZ: -45, y: 50, x: 10 }} // Pushed down (y: 50) to center the expanded state
+        style={{ position: 'relative', width: cardW, height: cardH, transformStyle: 'preserve-3d', transform: `scale(${scale})`, transformOrigin: 'center center' }}
+        animate={{ rotateX: 60, rotateZ: -45, y: 20, x: 0 }} // Adjusted y to 20, removed x offset for true centering
         transition={{ duration: 0 }}
       >
         
@@ -470,7 +470,7 @@ const ConstructionWidget = () => {
 
 // 3. Launch: "The Launch Protocol"
 // Concept: Sequential checklist completion -> System Launch -> Live Status
-const OptimizationWidget = () => {
+const OptimizationWidget = ({ scale = 1 }) => {
   const cycle = 6; // Total duration in seconds
 
   const glassStyle = {
@@ -498,7 +498,9 @@ const OptimizationWidget = () => {
           padding: '24px',
           display: 'flex', 
           flexDirection: 'column', 
-          gap: '16px'
+          gap: '16px',
+          transform: `scale(${scale})`,
+          transformOrigin: 'center center'
         }}
         initial={{ y: 0 }}
         animate={{ y: [0, -8, 0] }}
@@ -622,7 +624,7 @@ const OptimizationWidget = () => {
 // Concept: Continuous Iteration (Build -> Measure -> Improve -> Loop)
 // Style: 2D Glass Cards in a horizontal flow with a returning loop arrow.
 
-const EvolutionWidget = () => {
+const EvolutionWidget = ({ scale = 1 }) => {
   // Dimensions
   const W = 400;
   const H = 300;
@@ -680,7 +682,7 @@ const EvolutionWidget = () => {
       <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(#e5e7eb 1px, transparent 1px), linear-gradient(90deg, #e5e7eb 1px, transparent 1px)', backgroundSize: '40px 40px', opacity: 0.4 }} />
 
       {/* Main Container - Fixed Stage */}
-      <div style={{ position: 'relative', width: `${W}px`, height: `${H}px` }}>
+      <div style={{ position: 'relative', width: `${W}px`, height: `${H}px`, transform: `scale(${scale})`, transformOrigin: 'center center' }}>
         
         {/* SVG Layer for Arrows */}
         <svg width={W} height={H} style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'none', zIndex: 0 }}>
@@ -863,8 +865,18 @@ const AccordionItem = ({ q, a, index }) => {
 // --- PAGE COMPONENT ---
 
 const ProcessPage = () => {
+  const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
+
   useEffect(() => {
-    window.scrollTo(0, 0);
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const isMobile = windowWidth <= 900;
+
+  useEffect(() => {
+    // window.scrollTo(0, 0); // Managed by App.jsx
   }, []);
 
   const phases = [
@@ -975,19 +987,20 @@ const ProcessPage = () => {
   });
 
   return (
-    <div ref={containerRef} style={{ width: '100%', minHeight: '100vh', backgroundColor: '#ffffff', paddingTop: '100px', position: 'relative' }}>
+    <div ref={containerRef} style={{ width: '100%', minHeight: '100vh', backgroundColor: '#ffffff', paddingTop: 0, position: 'relative' }}>
       
       {/* Scroll Thread - Connecting Line */}
       <motion.div 
         style={{
           position: 'absolute',
-          top: '650px', // Push down below header content (approx 8rem top pad + content + 8rem bottom pad)
+          top: isMobile ? '400px' : '650px', // Adjusted for responsive header height
           bottom: '100px',
           left: '50%',
           width: '2px',
           background: 'rgba(0,0,0,0.05)',
           zIndex: 0,
-          transform: 'translateX(-50%)'
+          transform: 'translateX(-50%)',
+          display: isMobile ? 'none' : 'block' // Hide on mobile as layout stacks differently
         }}
       >
         <motion.div 
@@ -1002,12 +1015,26 @@ const ProcessPage = () => {
       </motion.div>
 
       {/* Header */}
-      <section style={{ padding: '8rem 2vw 8rem', maxWidth: '1800px', margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 1 }}>
+      <section style={{ 
+        padding: isMobile ? '10rem 4vw 4rem' : '16rem 4vw 12rem', 
+        maxWidth: '1800px', 
+        margin: '0 auto', 
+        textAlign: 'center', 
+        position: 'relative', 
+        zIndex: 1 
+      }}>
         <motion.h1 
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          style={{ fontFamily: 'Instrument Serif', fontSize: 'clamp(3rem, 6vw, 6rem)', lineHeight: 1, fontWeight: 400, color: '#1a1a1a', marginBottom: '3rem' }}
+          style={{ 
+            fontFamily: 'Instrument Serif', 
+            fontSize: isMobile ? 'clamp(2.5rem, 10vw, 4rem)' : 'clamp(3rem, 6vw, 6rem)', 
+            lineHeight: 1, 
+            fontWeight: 400, 
+            color: '#1a1a1a', 
+            marginBottom: 0 // Standardized
+          }}
         >
           Our Process
         </motion.h1>
@@ -1015,14 +1042,21 @@ const ProcessPage = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          style={{ fontFamily: 'Inter', fontSize: 'clamp(1.1rem, 1.5vw, 1.4rem)', lineHeight: 1.6, color: '#4a4a4a', maxWidth: '800px', margin: '0 auto' }}
+          style={{ 
+            fontFamily: 'Inter', 
+            fontSize: 'clamp(1.1rem, 1.5vw, 1.4rem)', 
+            lineHeight: 1.6, 
+            color: '#4a4a4a', 
+            maxWidth: '800px', 
+            margin: '1rem auto 2rem auto' // Standardized margin
+          }}
         >
           Most agencies hand you a design and wish you luck. We build the complete system: strategy, messaging, design, development, and automations, all connected and ready to convert.
         </motion.p>
       </section>
 
       {/* Phases */}
-      <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 2vw' }}>
+      <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 4vw' }}>
         {phases.map((phase, index) => {
           const isEven = index % 2 === 0;
           return (
@@ -1035,26 +1069,26 @@ const ProcessPage = () => {
               transition={{ duration: 0.6, delay: 0.1 }}
               style={{ 
                 display: 'flex', 
-                flexDirection: isEven ? 'row' : 'row-reverse',
+                flexDirection: isMobile ? 'column-reverse' : (isEven ? 'row' : 'row-reverse'), // Stack on mobile, content bottom
                 alignItems: 'center',
-                gap: '6rem',
-                marginBottom: '12rem',
+                gap: isMobile ? '4rem' : '6rem',
+                marginBottom: isMobile ? '6rem' : '12rem',
                 position: 'relative',
                 zIndex: 1
               }}
             >
               
               {/* Text Side */}
-              <div style={{ flex: 1, textAlign: 'left' }}>
+              <div style={{ flex: 1, textAlign: 'left', width: '100%' }}>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '1rem', marginBottom: '1rem' }}>
                   <span style={{ fontFamily: 'Inter', fontSize: '1rem', fontWeight: 600, color: '#0073E6' }}>PHASE {phase.id}</span>
                   <span style={{ fontFamily: 'Inter', fontSize: '0.9rem', color: '#888' }}>{phase.duration}</span>
                 </div>
-                <h2 style={{ fontFamily: 'Instrument Serif', fontSize: '3rem', color: '#1a1a1a', marginBottom: '1.5rem', lineHeight: 1.1 }}>{phase.title}</h2>
+                <h2 style={{ fontFamily: 'Instrument Serif', fontSize: isMobile ? '2.5rem' : '3rem', color: '#1a1a1a', marginBottom: '1.5rem', lineHeight: 1.1 }}>{phase.title}</h2>
                 <h3 style={{ fontFamily: 'Inter', fontSize: '1.2rem', fontWeight: 500, color: '#1a1a1a', marginBottom: '1.5rem', lineHeight: 1.5 }}>{phase.subtitle}</h3>
                 <p style={{ fontFamily: 'Inter', fontSize: '1rem', color: '#666', lineHeight: 1.6, marginBottom: '3rem', whiteSpace: 'pre-line' }}>{phase.description}</p>
                 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '2rem' }}>
                   <div>
                     <h4 style={{ fontFamily: 'Inter', fontSize: '0.9rem', fontWeight: 600, color: '#1a1a1a', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>What we do</h4>
                     <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
@@ -1079,16 +1113,30 @@ const ProcessPage = () => {
               </div>
 
               {/* Visual Side */}
-              <div style={{ flex: 1, height: '500px', position: 'relative' }}>
+              <div style={{ flex: 1, width: '100%', height: isMobile ? '350px' : '500px', position: 'relative' }}>
                 <div style={{ 
                   width: '100%', 
                   height: '100%', 
                   borderRadius: '24px', 
                   boxShadow: '0 30px 60px rgba(0,0,0,0.08)',
                   overflow: 'hidden',
-                  background: 'white'
+                  background: 'white', // The "frame" background
+                  // Removed transform scaling from wrapper to avoid "white border" gap.
+                  // Scaling is now handled by passing a prop to the widget itself.
                 }}>
-                  {phase.widget}
+                  {/* Widget Wrapper */}
+                  <div style={{ 
+                    width: '100%', 
+                    height: '100%', 
+                    display: 'flex', 
+                    justifyContent: 'center', 
+                    alignItems: 'center' 
+                  }}>
+                    {/* Clone the widget element to inject the scale prop */}
+                    {React.cloneElement(phase.widget, { 
+                      scale: windowWidth < 450 ? 0.55 : (windowWidth < 900 ? 0.75 : 1) // Reduced scale for better fit on mobile
+                    })}
+                  </div>
                 </div>
               </div>
 
@@ -1098,17 +1146,35 @@ const ProcessPage = () => {
       </div>
 
       {/* Is This Right For You + FAQ */}
-      <section style={{ padding: '8rem 2vw', backgroundColor: '#ffffff', color: '#1a1a1a', position: 'relative', zIndex: 1 }}>
+      <section style={{ 
+        padding: isMobile ? '4rem 4vw' : '8rem 4vw', 
+        backgroundColor: '#ffffff', 
+        color: '#1a1a1a', 
+        position: 'relative', 
+        zIndex: 1 
+      }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
           
           {/* Fit Check Section */}
-          <div style={{ marginBottom: '12rem' }}>
-            <h2 style={{ fontFamily: 'Instrument Serif', fontSize: '3rem', textAlign: 'center', marginBottom: '4rem', color: '#1a1a1a' }}>Is This Right For You?</h2>
+          <div style={{ marginBottom: isMobile ? '6rem' : '12rem' }}>
+            <h2 style={{ 
+              fontFamily: 'Instrument Serif', 
+              fontSize: isMobile ? '2.5rem' : '3rem', 
+              textAlign: 'center', 
+              marginBottom: '2rem', // Reduced from 4rem to 2rem
+              color: '#1a1a1a' 
+            }}>
+              Is This Right For You?
+            </h2>
             
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem' }}>
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', 
+              gap: isMobile ? '2rem' : '4rem' 
+            }}>
               {/* For You */}
               <div style={{ 
-                padding: '3rem', 
+                padding: isMobile ? '2rem' : '3rem', 
                 backgroundColor: '#ffffff', 
                 borderRadius: '16px', 
                 border: '1px solid #e5e7eb',
@@ -1126,7 +1192,7 @@ const ProcessPage = () => {
               
               {/* Not For You */}
               <div style={{ 
-                padding: '3rem', 
+                padding: isMobile ? '2rem' : '3rem', 
                 backgroundColor: '#f9fafb', // Light gray background for contrast
                 borderRadius: '16px', 
                 border: '1px solid #f3f4f6'
@@ -1145,7 +1211,14 @@ const ProcessPage = () => {
 
           {/* FAQ Section */}
           <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
-             <h2 style={{ fontFamily: 'Instrument Serif', fontSize: '3rem', fontWeight: 400, color: '#1a1a1a', marginBottom: '4rem', textAlign: 'center' }}>
+             <h2 style={{ 
+               fontFamily: 'Instrument Serif', 
+               fontSize: isMobile ? 'clamp(2.5rem, 4vw, 4rem)' : '3rem', 
+               fontWeight: 400, 
+               color: '#1a1a1a', 
+               marginBottom: '2rem', // Reduced to 2rem standard
+               textAlign: 'center' 
+             }}>
                Questions?
              </h2>
              <div>

@@ -4,6 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/Navbar';
 import Preloader from './components/Preloader';
+import ScrollToTop from './components/ScrollToTop';
 import Home from './pages/Home';
 import WorkCollection from './pages/WorkCollection';
 import ProjectDetail from './pages/ProjectDetail';
@@ -14,21 +15,47 @@ import ProcessPage from './pages/ProcessPage';
 import AboutPage from './pages/AboutPage';
 
 function App() {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  // Lazy initialization to prevent flashes and handle "first touch" logic correctly
+  // If hasVisited is set, showPreloader starts as false
+  const [showPreloader, setShowPreloader] = useState(() => !sessionStorage.getItem('hasVisited'));
+  
+  // If hasVisited is set, isLoaded starts as true (content ready)
+  const [isLoaded, setIsLoaded] = useState(() => !!sessionStorage.getItem('hasVisited'));
 
+  // Initialize mobile state based on current width to prevent layout shifts
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 900);
+  
+  // We rely on skeletons now for stable layout, so we don't need to delay Lenis.
+  // However, forcing browser to handle restoration is key.
+  
   useEffect(() => {
+    // If this is the first visit (preloader is showing), mark it as visited for next time
+    // This happens after the first render, but since we init state from storage, it's fine.
+    if (!sessionStorage.getItem('hasVisited')) {
+      sessionStorage.setItem('hasVisited', 'true');
+    }
+
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 900);
     };
-    checkMobile();
+    
     window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    
+    // Explicitly set auto restoration so browser handles the initial position
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'auto';
+    }
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+    };
   }, []);
 
   const content = (
     <div className="App">
-      <Preloader onComplete={() => setIsLoaded(true)} />
+      <ScrollToTop />
+      {/* Only render Preloader if it should be shown */}
+      {showPreloader && <Preloader onComplete={() => setIsLoaded(true)} />}
       
       {/* Fixed Navigation (Always on top) */}
       <Navbar />
@@ -47,7 +74,14 @@ function App() {
   );
 
   return !isMobile ? (
-    <ReactLenis root>
+    <ReactLenis root options={{
+      // Standard configuration. 
+      // We removed 'prevent' callback to avoid interference.
+      // autoResize is true by default but we can keep it explicitly if needed.
+      lerp: 0.1,
+      duration: 1.5,
+      smoothTouch: false,
+    }}>
       {content}
     </ReactLenis>
   ) : (
