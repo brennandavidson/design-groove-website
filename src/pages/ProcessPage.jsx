@@ -78,7 +78,7 @@ const StrategyWidget = ({ scale = 1 }) => {
 
       {/* Main Container */}
       <motion.div 
-        style={{ width: '400px', height: '300px', position: 'relative', transform: `scale(${scale})`, transformOrigin: 'center center' }}
+        style={{ width: '400px', height: '300px', position: 'relative', flexShrink: 0, transform: `scale(${scale})`, transformOrigin: 'center center' }}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-50px" }}
@@ -330,8 +330,8 @@ const ConstructionWidget = ({ scale = 1 }) => {
 
       {/* Rotated Container - Centered Vertically */}
       <motion.div 
-        style={{ position: 'relative', width: cardW, height: cardH, transformStyle: 'preserve-3d', transform: `scale(${scale})`, transformOrigin: 'center center' }}
-        animate={{ rotateX: 60, rotateZ: -45, y: 20, x: 0 }} // Adjusted y to 20, removed x offset for true centering
+        style={{ position: 'relative', width: cardW, height: cardH, flexShrink: 0, transformStyle: 'preserve-3d', transform: `scale(${scale})`, transformOrigin: 'center center' }}
+        animate={{ rotateX: 60, rotateZ: -45, y: 60, x: 0 }} // Adjusted y to 60 to center fully expanded state
         transition={{ duration: 0 }}
       >
         
@@ -499,7 +499,7 @@ const OptimizationWidget = ({ scale = 1 }) => {
           display: 'flex', 
           flexDirection: 'column', 
           gap: '16px',
-          transform: `scale(${scale})`,
+          scale: scale,
           transformOrigin: 'center center'
         }}
         initial={{ y: 0 }}
@@ -682,7 +682,7 @@ const EvolutionWidget = ({ scale = 1 }) => {
       <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(#e5e7eb 1px, transparent 1px), linear-gradient(90deg, #e5e7eb 1px, transparent 1px)', backgroundSize: '40px 40px', opacity: 0.4 }} />
 
       {/* Main Container - Fixed Stage */}
-      <div style={{ position: 'relative', width: `${W}px`, height: `${H}px`, transform: `scale(${scale})`, transformOrigin: 'center center' }}>
+      <div style={{ position: 'relative', width: `${W}px`, height: `${H}px`, flexShrink: 0, transform: `scale(${scale})`, transformOrigin: 'center center' }}>
         
         {/* SVG Layer for Arrows */}
         <svg width={W} height={H} style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'none', zIndex: 0 }}>
@@ -866,6 +866,7 @@ const AccordionItem = ({ q, a, index }) => {
 
 const ProcessPage = () => {
   const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
+  const [isButtonHovered, setIsButtonHovered] = React.useState(false);
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -878,6 +879,11 @@ const ProcessPage = () => {
   useEffect(() => {
     // window.scrollTo(0, 0); // Managed by App.jsx
   }, []);
+
+  const scrollToContact = () => {
+    // Navigate to /book instead of scrolling
+    window.location.href = '/book';
+  };
 
   const phases = [
     {
@@ -942,7 +948,7 @@ const ProcessPage = () => {
         "Training on how to manage simple updates",
         "Clear picture of what's working"
       ],
-      widget: <OptimizationWidget />
+      widget: <OptimizationWidget mobileScale={0.85} />
     },
     {
       id: "04",
@@ -961,7 +967,7 @@ const ProcessPage = () => {
         "Continuous iteration and improvement",
         "No more duct-taped fixes or random freelancers"
       ],
-      widget: <EvolutionWidget />
+      widget: <EvolutionWidget mobileScale={0.85} />
     }
   ];
 
@@ -1053,6 +1059,33 @@ const ProcessPage = () => {
         >
           Most agencies hand you a design and wish you luck. We build the complete system: strategy, messaging, design, development, and automations, all connected and ready to convert.
         </motion.p>
+
+        {/* Main CTA Button */}
+        <motion.button
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            onClick={scrollToContact}
+            onMouseEnter={() => setIsButtonHovered(true)}
+            onMouseLeave={() => setIsButtonHovered(false)}
+            style={{
+                backgroundColor: isButtonHovered ? '#333' : '#1a1a1a',
+                color: '#fff',
+                border: '1px solid #1a1a1a', // Added border
+                padding: '12px 24px', // Updated padding to match nav
+                borderRadius: '100px', // Updated radius to match nav
+                fontFamily: 'Inter',
+                fontSize: '0.9rem', // Updated font size
+                textTransform: 'uppercase', // Added transform
+                fontWeight: 500, // Added weight
+                letterSpacing: '0.05em', // Added letter spacing
+                cursor: 'pointer',
+                transition: 'background-color 0.3s ease',
+                display: 'inline-block'
+            }}
+        >
+            Get in Touch
+        </motion.button>
       </section>
 
       {/* Phases */}
@@ -1072,7 +1105,7 @@ const ProcessPage = () => {
                 flexDirection: isMobile ? 'column-reverse' : (isEven ? 'row' : 'row-reverse'), // Stack on mobile, content bottom
                 alignItems: 'center',
                 gap: isMobile ? '4rem' : '6rem',
-                marginBottom: isMobile ? '6rem' : '12rem',
+                marginBottom: index === phases.length - 1 ? 0 : (isMobile ? '6rem' : '12rem'),
                 position: 'relative',
                 zIndex: 1
               }}
@@ -1113,7 +1146,7 @@ const ProcessPage = () => {
               </div>
 
               {/* Visual Side */}
-              <div style={{ flex: 1, width: '100%', height: isMobile ? '350px' : '500px', position: 'relative' }}>
+              <div style={{ flex: isMobile ? 'none' : 1, width: '100%', height: isMobile ? '400px' : '500px', position: 'relative' }}>
                 <div style={{ 
                   width: '100%', 
                   height: '100%', 
@@ -1121,8 +1154,6 @@ const ProcessPage = () => {
                   boxShadow: '0 30px 60px rgba(0,0,0,0.08)',
                   overflow: 'hidden',
                   background: 'white', // The "frame" background
-                  // Removed transform scaling from wrapper to avoid "white border" gap.
-                  // Scaling is now handled by passing a prop to the widget itself.
                 }}>
                   {/* Widget Wrapper */}
                   <div style={{ 
@@ -1134,7 +1165,7 @@ const ProcessPage = () => {
                   }}>
                     {/* Clone the widget element to inject the scale prop */}
                     {React.cloneElement(phase.widget, { 
-                      scale: windowWidth < 450 ? 0.55 : (windowWidth < 900 ? 0.75 : 1) // Reduced scale for better fit on mobile
+                      scale: windowWidth < 500 ? (phase.widget.props.mobileScale || 0.65) : 1 // Adjusted scale for mobile
                     })}
                   </div>
                 </div>
