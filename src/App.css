@@ -228,3 +228,11 @@ main {
     padding: 0;
     overflow-x: clip; /* Modern alternative that doesn't break sticky */
   }
+
+/* FORCED OVERRIDES */
+.contact-footer {
+  padding-bottom: 1rem !important;
+}
+.contact-cta-wrapper {
+  margin-top: 4rem !important;
+}

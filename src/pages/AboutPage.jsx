@@ -17,6 +17,16 @@ const revealVariants = {
 };
 
 const AboutPage = () => {
+  const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const isMobile = windowWidth <= 900;
+
   useEffect(() => {
     // window.scrollTo(0, 0); // Managed by App.jsx
   }, []);
@@ -33,7 +43,7 @@ const AboutPage = () => {
       {/* 1. HERO / OPENING FRAME */}
       {/* Editorial Style: Massive Typographic Statement */}
       <section style={{ 
-        padding: '16rem 2vw 6rem', // Standardized bottom padding
+        padding: isMobile ? '10rem 4vw 4rem' : '16rem 4vw 6rem', // Updated side padding to 4vw to match nav
         maxWidth: '1800px', 
         margin: '0 auto', 
         display: 'flex',
@@ -64,10 +74,10 @@ const AboutPage = () => {
           </motion.h1>
           
           <div style={{ 
-            marginTop: '25vh', // Large gap like Services
+            marginTop: isMobile ? '4rem' : '25vh', // Adjusted margin for mobile
             display: 'grid', 
-            gridTemplateColumns: 'repeat(3, 1fr)', 
-            gap: '2rem', 
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', // Stack on mobile
+            gap: isMobile ? '4rem' : '2rem', // Increased gap for stacked layout
             width: '100%'
           }}>
             {[
@@ -135,13 +145,13 @@ const AboutPage = () => {
       </section>
 
       {/* 2. PROOF - MOVED UP */}
-      <section style={{ marginBottom: '6rem' }}>
+      <section style={{ marginBottom: isMobile ? '4rem' : '6rem' }}>
         <Credibility />
       </section>
 
       {/* 3. WHO'S BEHIND IT */}
       {/* Modern Card Layout */}
-      <section style={{ padding: '0 2vw 6rem', maxWidth: '1800px', margin: '0 auto' }}>
+      <section style={{ padding: isMobile ? '0 4vw 4rem' : '0 4vw 6rem', maxWidth: '1800px', margin: '0 auto' }}>
         <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
             
             <motion.div 
@@ -152,18 +162,18 @@ const AboutPage = () => {
                 style={{
                   backgroundColor: '#f8f8f8', // Subtle card background
                   borderRadius: '24px',
-                  padding: '5rem',
+                  padding: isMobile ? '3rem 1.5rem' : '5rem', // Reduced padding on mobile
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
                   textAlign: 'center',
-                  gap: '3rem'
+                  gap: isMobile ? '2rem' : '3rem'
                 }}
             >
                 {/* Circle Headshot */}
                 <div style={{ 
-                    width: '180px', 
-                    height: '180px',
+                    width: isMobile ? '140px' : '180px', // Smaller on mobile
+                    height: isMobile ? '140px' : '180px',
                     borderRadius: '50%', // Circle mask
                     overflow: 'hidden',
                     backgroundColor: '#e5e5e5',
@@ -195,7 +205,7 @@ const AboutPage = () => {
                     
                     <h2 style={{ 
                       fontFamily: 'Instrument Serif', 
-                      fontSize: '3.5rem', 
+                      fontSize: isMobile ? '2.5rem' : '3.5rem', // Smaller heading
                       lineHeight: 1, 
                       color: '#1a1a1a', 
                       marginBottom: '2rem' 

@@ -69,14 +69,18 @@ const Contact = () => {
   }, [isContainerInView]);
 
   return (
-    <footer className="section-spacing" style={{ 
-      minHeight: '80vh', 
+    <footer className="contact-footer" style={{ 
+      minHeight: '100vh', 
       display: 'flex', 
       flexDirection: 'column', 
       justifyContent: 'space-between',
       backgroundColor: '#ffffff',
       overflow: 'hidden',
-      position: 'relative'
+      position: 'relative',
+      paddingBottom: '2rem', // REDUCED BOTTOM PADDING
+      paddingTop: '6rem',
+      paddingLeft: '4vw',
+      paddingRight: '4vw'
     }}>
       
       {/* Removed Top Gradient Overlay - The mask on FooterSky handles the fade naturally against the white background */}
@@ -152,7 +156,7 @@ const Contact = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={isContainerInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ delay: 1.0, duration: 0.8 }} // Appears after text finishes
-          style={{ display: 'flex', justifyContent: 'center', marginTop: isMobile ? '2rem' : '4rem', position: 'relative', zIndex: 1 }}
+          style={{ display: 'flex', justifyContent: 'center', position: 'relative', zIndex: 1, marginTop: '2rem' }}
         >
           <a 
             href="/book"

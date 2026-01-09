@@ -1105,7 +1105,7 @@ const ProcessPage = () => {
                 flexDirection: isMobile ? 'column-reverse' : (isEven ? 'row' : 'row-reverse'), // Stack on mobile, content bottom
                 alignItems: 'center',
                 gap: isMobile ? '4rem' : '6rem',
-                marginBottom: index === phases.length - 1 ? 0 : (isMobile ? '6rem' : '12rem'),
+                marginBottom: index === phases.length - 1 ? 0 : (isMobile ? '4rem' : '12rem'),
                 position: 'relative',
                 zIndex: 1
               }}

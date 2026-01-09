@@ -30,17 +30,17 @@ const fallbackTestimonials = [
 
 // --- Components ---
 
-const TestimonialCard = ({ item, index }) => {
+const TestimonialCard = ({ item, index, isMobile }) => {
   // Shared base styles
   const baseStyles = {
-    width: '450px',
+    width: isMobile ? '300px' : '450px', // Reduced width for mobile
     maxWidth: '85vw',
-    height: '320px',
+    height: isMobile ? '280px' : '320px', // Slightly shorter on mobile
     background: 'linear-gradient(145deg, #ffffff, #f9f9f9)',
     borderRadius: '12px',
     border: '1px solid rgba(0,0,0,0.05)',
     boxShadow: '0 10px 30px rgba(0,0,0,0.02), 0 1px 3px rgba(0,0,0,0.02)',
-    padding: '2rem',
+    padding: isMobile ? '1.5rem' : '2rem', // Reduced padding
     display: 'flex',
     flexDirection: 'column',
     marginRight: '1rem',
@@ -107,7 +107,7 @@ const TestimonialCard = ({ item, index }) => {
   );
 };
 
-const MarqueeRow = ({ items, direction = 'left', speed = 30 }) => {
+const MarqueeRow = ({ items, direction = 'left', speed = 30, isMobile }) => {
   // Duplicate items to ensure smooth infinite scroll
   const marqueeItems = items.length > 0 ? [...items, ...items, ...items, ...items] : [];
 
@@ -134,7 +134,7 @@ const MarqueeRow = ({ items, direction = 'left', speed = 30 }) => {
         }}
       >
         {marqueeItems.map((item, i) => (
-          <TestimonialCard key={i} item={item} index={i} />
+          <TestimonialCard key={i} item={item} index={i} isMobile={isMobile} />
         ))}
       </motion.div>
     </div>
@@ -142,6 +142,15 @@ const MarqueeRow = ({ items, direction = 'left', speed = 30 }) => {
 };
 
 const Testimonials = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 900);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   // Initialize with empty array to allow fade-in effect on mount
   const [testimonials, setTestimonials] = useState([]);
 
@@ -208,8 +217,8 @@ const Testimonials = () => {
             flexDirection: 'column', 
           gap: '0.75rem' 
         }}>
-          <MarqueeRow items={testimonials.slice(0, midPoint)} direction="left" speed={50} />
-          <MarqueeRow items={testimonials.slice(midPoint)} direction="right" speed={55} />
+          <MarqueeRow items={testimonials.slice(0, midPoint)} direction="left" speed={50} isMobile={isMobile} />
+          <MarqueeRow items={testimonials.slice(midPoint)} direction="right" speed={55} isMobile={isMobile} />
         </div>
 
         </section>
@@ -257,8 +266,8 @@ const Testimonials = () => {
         gap: '0.75rem',
         minHeight: '700px' // Preserve layout space for loading state
       }}>
-        <MarqueeRow items={row1} direction="left" speed={50} />
-        <MarqueeRow items={row2} direction="right" speed={55} />
+        <MarqueeRow items={row1} direction="left" speed={50} isMobile={isMobile} />
+        <MarqueeRow items={row2} direction="right" speed={55} isMobile={isMobile} />
       </div>
 
     </section>

@@ -35,8 +35,8 @@ const Credibility = () => {
   // Duplicate the logos enough times to ensure smooth scrolling
   // We have 18 logos, which is a good amount. We probably just need 2 sets for the loop.
   const displayLogos = [...logoFiles, ...logoFiles];
-  const gapSize = isMobile ? '2rem' : '5rem';
-  const minWidth = isMobile ? '120px' : '160px';
+  const gapSize = isMobile ? '1.5rem' : '5rem';
+  const minWidth = isMobile ? '100px' : '160px';
 
   return (
     <section className="section-spacing" style={{ 

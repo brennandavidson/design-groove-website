@@ -1,0 +1,343 @@
+### New console messages
+- [WARNING] 'linear-gradient(135deg, #0073E6 0%, #4facfe 100%)' is not an animatable color. Use the eq...
+- [WARNING] 'linear-gradient(135deg, #0073E6 0%, #4facfe 100%)' is not an animatable color. Use the eq...
+
+### Page state
+- Page URL: http://localhost:5173/process
+- Page Title: Design Groove | Digital Agency
+- Page Snapshot:
+```yaml
+- generic [ref=e389]:
+  - navigation [ref=e390]:
+    - img "Design Groove" [ref=e394] [cursor=pointer]
+  - button [ref=e395] [cursor=pointer]:
+    - img [ref=e397]
+  - generic [ref=e401]:
+    - generic [ref=e402]:
+      - heading "Our Process" [level=1] [ref=e403]
+      - paragraph [ref=e404]: "Most agencies hand you a design and wish you luck. We build the complete system: strategy, messaging, design, development, and automations, all connected and ready to convert."
+    - generic [ref=e405]:
+      - generic [ref=e406]:
+        - generic [ref=e407]:
+          - generic [ref=e408]:
+            - generic [ref=e409]: PHASE 01
+            - generic [ref=e410]: 1-2 weeks
+          - heading "Strategy & Architecture" [level=2] [ref=e411]
+          - heading "We figure out what you're building and why before touching design." [level=3] [ref=e412]
+          - paragraph [ref=e413]: Every project starts here. We audit what you already have, clarify your positioning and messaging, and map the customer journey from first touch to purchase. If your offer structure needs work, we sort that out too. The goal is a clear blueprint that everything else builds on. No guessing. No "let's figure it out as we go."
+          - generic [ref=e414]:
+            - generic [ref=e415]:
+              - heading "What we do" [level=4] [ref=e416]
+              - list [ref=e417]:
+                - listitem [ref=e418]:
+                  - generic [ref=e419]: •
+                  - text: Audit your existing brand, offers, and tech
+                - listitem [ref=e420]:
+                  - generic [ref=e421]: •
+                  - text: Clarify positioning and messaging
+                - listitem [ref=e422]:
+                  - generic [ref=e423]: •
+                  - text: Map the customer journey
+                - listitem [ref=e424]:
+                  - generic [ref=e425]: •
+                  - text: Define offer structure (if needed)
+                - listitem [ref=e426]:
+                  - generic [ref=e427]: •
+                  - text: Create the blueprint for the entire system
+            - generic [ref=e428]:
+              - heading "What you get" [level=4] [ref=e429]
+              - list [ref=e430]:
+                - listitem [ref=e431]:
+                  - generic [ref=e432]: •
+                  - text: Documented strategy and site architecture
+                - listitem [ref=e433]:
+                  - generic [ref=e434]: •
+                  - text: Messaging foundation
+                - listitem [ref=e435]:
+                  - generic [ref=e436]: •
+                  - text: System blueprint the rest of the project builds on
+        - generic [ref=e442]:
+          - img
+          - generic [ref=e443]: AUDIT
+          - generic [ref=e445]: Brand
+          - generic [ref=e447]: Offers
+          - generic [ref=e448]: Tech
+          - generic [ref=e450]: Customers
+          - generic [ref=e452]: BLUEPRINT
+      - generic [ref=e456]:
+        - generic [ref=e457]:
+          - generic [ref=e458]: PHASE 02
+          - generic [ref=e459]: 4-6 weeks
+        - heading "The Build" [level=2] [ref=e460]
+        - heading "Design, development, copy, and automations built together by one team." [level=3] [ref=e461]
+        - paragraph [ref=e462]: "This is where the system comes to life. We design the site, write the copy, build it out, and connect all the backend pieces: email sequences, automations, payment integrations, CRM. Everything built by the same team means nothing falls through the cracks. You approve the design before we build. If you're not happy with how it looks, we keep iterating until you are."
+        - generic [ref=e463]:
+          - generic [ref=e464]:
+            - heading "What we do" [level=4] [ref=e465]
+            - list [ref=e466]:
+              - listitem [ref=e467]:
+                - generic [ref=e468]: •
+                - text: Brand identity or refinement of existing assets
+              - listitem [ref=e469]:
+                - generic [ref=e470]: •
+                - text: Website design (approved before development begins)
+              - listitem [ref=e471]:
+                - generic [ref=e472]: •
+                - text: Copywriting and messaging for all pages
+              - listitem [ref=e473]:
+                - generic [ref=e474]: •
+                - text: Website development
+              - listitem [ref=e475]:
+                - generic [ref=e476]: •
+                - text: Email sequences and automation setup
+              - listitem [ref=e477]:
+                - generic [ref=e478]: •
+                - text: CRM, payment, and tech stack integrations
+          - generic [ref=e479]:
+            - heading "What you get" [level=4] [ref=e480]
+            - list [ref=e481]:
+              - listitem [ref=e482]:
+                - generic [ref=e483]: •
+                - text: Complete website, designed and developed
+              - listitem [ref=e484]:
+                - generic [ref=e485]: •
+                - text: Sales pages and landing pages
+              - listitem [ref=e486]:
+                - generic [ref=e487]: •
+                - text: Email sequences connected and ready
+              - listitem [ref=e488]:
+                - generic [ref=e489]: •
+                - text: All systems integrated and tested
+      - generic [ref=e539]:
+        - generic [ref=e540]:
+          - generic [ref=e541]:
+            - generic [ref=e542]: PHASE 03
+            - generic [ref=e543]: 1-2 weeks
+          - heading "Launch & Optimize" [level=2] [ref=e544]
+          - heading "We go live, watch the data, and fix what needs fixing." [level=3] [ref=e545]
+          - paragraph [ref=e546]: Launch is the starting line. We handle final QA, get everything live, and set up analytics so you can see what's working. Then we monitor early performance and tune anything that needs attention. We also train you on making simple updates yourself, so you're not dependent on us for every small text change.
+          - generic [ref=e547]:
+            - generic [ref=e548]:
+              - heading "What we do" [level=4] [ref=e549]
+              - list [ref=e550]:
+                - listitem [ref=e551]:
+                  - generic [ref=e552]: •
+                  - text: Final QA and testing
+                - listitem [ref=e553]:
+                  - generic [ref=e554]: •
+                  - text: Launch execution
+                - listitem [ref=e555]:
+                  - generic [ref=e556]: •
+                  - text: Analytics and tracking setup
+                - listitem [ref=e557]:
+                  - generic [ref=e558]: •
+                  - text: Monitor early performance
+                - listitem [ref=e559]:
+                  - generic [ref=e560]: •
+                  - text: Identify and fix conversion leaks
+                - listitem [ref=e561]:
+                  - generic [ref=e562]: •
+                  - text: Training on day-to-day updates
+            - generic [ref=e563]:
+              - heading "What you get" [level=4] [ref=e564]
+              - list [ref=e565]:
+                - listitem [ref=e566]:
+                  - generic [ref=e567]: •
+                  - text: Live, optimized website
+                - listitem [ref=e568]:
+                  - generic [ref=e569]: •
+                  - text: Analytics configured and tracking
+                - listitem [ref=e570]:
+                  - generic [ref=e571]: •
+                  - text: Training on how to manage simple updates
+                - listitem [ref=e572]:
+                  - generic [ref=e573]: •
+                  - text: Clear picture of what's working
+        - generic [ref=e579]:
+          - generic [ref=e580]:
+            - generic [ref=e583]: SYSTEM CHECK
+            - generic [ref=e584]: v1.0
+          - generic [ref=e585]:
+            - generic [ref=e586]:
+              - generic [ref=e587]: Performance
+              - img [ref=e590]
+            - generic [ref=e592]:
+              - generic [ref=e593]: SEO & Meta
+              - img [ref=e597]
+            - generic [ref=e599]:
+              - generic [ref=e600]: Analytics
+              - generic [ref=e601]:
+                - generic:
+                  - img
+            - generic [ref=e603]:
+              - generic [ref=e604]: Integrations
+              - generic [ref=e605]:
+                - generic:
+                  - img
+          - generic [ref=e607]:
+            - generic [ref=e608]: OPTIMIZING...
+            - generic [ref=e609]: SYSTEM LIVE
+      - generic [ref=e611]:
+        - generic [ref=e612]:
+          - generic [ref=e614]: PHASE 04
+          - heading "Ongoing Partnership" [level=2] [ref=e615]
+          - heading "We become your embedded tech team." [level=3] [ref=e616]
+          - paragraph [ref=e617]: Most clients stay on after launch. New landing pages, email sequences, automations, tech decisions, troubleshooting. One point of contact for everything technical, without hiring in-house. Your business evolves. Your system should too.
+          - generic [ref=e618]:
+            - generic [ref=e619]:
+              - heading "What we do" [level=4] [ref=e620]
+              - list [ref=e621]:
+                - listitem [ref=e622]:
+                  - generic [ref=e623]: •
+                  - text: Ongoing support and troubleshooting
+                - listitem [ref=e624]:
+                  - generic [ref=e625]: •
+                  - text: New landing pages, email sequences, automations as needed
+                - listitem [ref=e626]:
+                  - generic [ref=e627]: •
+                  - text: Tech stack decisions and recommendations
+                - listitem [ref=e628]:
+                  - generic [ref=e629]: •
+                  - text: Conversion optimization based on real data
+            - generic [ref=e630]:
+              - heading "What you get" [level=4] [ref=e631]
+              - list [ref=e632]:
+                - listitem [ref=e633]:
+                  - generic [ref=e634]: •
+                  - text: Tech partner on call
+                - listitem [ref=e635]:
+                  - generic [ref=e636]: •
+                  - text: Continuous iteration and improvement
+                - listitem [ref=e637]:
+                  - generic [ref=e638]: •
+                  - text: No more duct-taped fixes or random freelancers
+        - generic [ref=e644]:
+          - img
+          - generic [ref=e645]: BUILD
+          - generic [ref=e646]: MEASURE
+          - generic [ref=e647]: IMPROVE
+    - generic [ref=e649]:
+      - generic [ref=e650]:
+        - heading "Is This Right For You?" [level=2] [ref=e651]
+        - generic [ref=e652]:
+          - generic [ref=e653]:
+            - heading "This is for you if:" [level=3] [ref=e654]
+            - list [ref=e655]:
+              - listitem [ref=e656]:
+                - generic [ref=e657]: ✓
+                - text: You're ready to invest in a complete system, not just a pretty design
+              - listitem [ref=e658]:
+                - generic [ref=e659]: ✓
+                - text: You have an existing audience or a clear plan to drive traffic
+              - listitem [ref=e660]:
+                - generic [ref=e661]: ✓
+                - text: You want a partner, not a one-time transaction
+              - listitem [ref=e662]:
+                - generic [ref=e663]: ✓
+                - text: You're done duct-taping your tech together
+          - generic [ref=e664]:
+            - heading "This might not be the right fit if:" [level=3] [ref=e665]
+            - list [ref=e666]:
+              - listitem [ref=e667]:
+                - generic [ref=e668]: ✕
+                - text: You're looking for the cheapest option
+              - listitem [ref=e669]:
+                - generic [ref=e670]: ✕
+                - text: You need something live in under two weeks
+              - listitem [ref=e671]:
+                - generic [ref=e672]: ✕
+                - text: You want to maintain complete technical control yourself
+      - generic [ref=e673]:
+        - heading "Questions?" [level=2] [ref=e674]
+        - generic [ref=e675]:
+          - generic [ref=e676]:
+            - button "01 How do I get started? +" [ref=e677] [cursor=pointer]:
+              - generic [ref=e678]:
+                - generic [ref=e679]: "01"
+                - generic [ref=e680]: How do I get started?
+              - generic [ref=e681]: +
+            - paragraph [ref=e683]:
+              - link "Book a call" [ref=e684] [cursor=pointer]:
+                - /url: /book
+              - text: or fill out our
+              - link "contact form" [ref=e685] [cursor=pointer]:
+                - /url: /contact
+              - text: . We’ll schedule a quick intro call to align on your goals, scope, and timeline. From there, we’ll craft a tailored proposal and set a clear start date that works for both of us.
+          - generic [ref=e686]:
+            - button "02 What if I only need part of the system? +" [ref=e687] [cursor=pointer]:
+              - generic [ref=e688]:
+                - generic [ref=e689]: "02"
+                - generic [ref=e690]: What if I only need part of the system?
+              - generic [ref=e691]: +
+            - paragraph [ref=e693]: Some clients need the full build. Others need us to fix what's broken or fill specific gaps. We figure out the right scope on a call.
+          - generic [ref=e694]:
+            - button "03 What do we need to provide to get started? +" [ref=e695] [cursor=pointer]:
+              - generic [ref=e696]:
+                - generic [ref=e697]: "03"
+                - generic [ref=e698]: What do we need to provide to get started?
+              - generic [ref=e699]: +
+            - paragraph [ref=e701]: Access to your existing assets (brand files, copy docs, current site) and clarity on what you're selling. If you don't have clarity on the offer yet, that's part of what we sort out in Phase 1.
+          - generic [ref=e702]:
+            - button "04 Do you work with what I already have? +" [ref=e703] [cursor=pointer]:
+              - generic [ref=e704]:
+                - generic [ref=e705]: "04"
+                - generic [ref=e706]: Do you work with what I already have?
+              - generic [ref=e707]: +
+            - paragraph [ref=e709]: Yes. If your brand, messaging, or tech is working, we build around it. The infrastructure wraps around what's already there.
+          - generic [ref=e710]:
+            - button "05 What services does Design Groove offer? +" [ref=e711] [cursor=pointer]:
+              - generic [ref=e712]:
+                - generic [ref=e713]: "05"
+                - generic [ref=e714]: What services does Design Groove offer?
+              - generic [ref=e715]: +
+            - paragraph [ref=e717]: "We build complete revenue systems: strategy, positioning, brand, website, funnel, automations, and ongoing tech support. Most clients need the full build. Some need specific pieces. Either way, everything we do is designed to work together."
+          - generic [ref=e718]:
+            - button "06 How long does a project take? +" [ref=e719] [cursor=pointer]:
+              - generic [ref=e720]:
+                - generic [ref=e721]: "06"
+                - generic [ref=e722]: How long does a project take?
+              - generic [ref=e723]: +
+            - paragraph [ref=e725]: Most full scope projects run 4 to 6 weeks.
+          - generic [ref=e726]:
+            - button "07 Will we have a dedicated project manager? +" [ref=e727] [cursor=pointer]:
+              - generic [ref=e728]:
+                - generic [ref=e729]: "07"
+                - generic [ref=e730]: Will we have a dedicated project manager?
+              - generic [ref=e731]: +
+            - paragraph [ref=e733]: You work directly with me. No account managers, no handoffs, no game of telephone. One point of contact from strategy through launch and beyond.
+          - generic [ref=e734]:
+            - button "08 Do you offer ongoing support? +" [ref=e735] [cursor=pointer]:
+              - generic [ref=e736]:
+                - generic [ref=e737]: "08"
+                - generic [ref=e738]: Do you offer ongoing support?
+              - generic [ref=e739]: +
+            - paragraph [ref=e741]: Most clients stay on retainer after launch for tech support, new builds, and iteration. We become your embedded tech team.
+    - contentinfo [ref=e743]:
+      - generic [ref=e744]:
+        - heading "R e a d y T o T a l k ?" [level=2] [ref=e745]:
+          - generic [ref=e746]:
+            - generic [ref=e747]: R
+            - generic [ref=e748]: e
+            - generic [ref=e749]: a
+            - generic [ref=e750]: d
+            - generic [ref=e751]: "y"
+          - generic [ref=e752]:
+            - generic [ref=e753]: T
+            - generic [ref=e754]: o
+            - generic [ref=e756]: T
+            - generic [ref=e757]: a
+            - generic [ref=e758]: l
+            - generic [ref=e759]: k
+            - generic [ref=e760]: "?"
+        - link "Get in Touch" [ref=e762] [cursor=pointer]:
+          - /url: /book
+      - generic [ref=e763]:
+        - paragraph [ref=e765]: © 2026 Design Groove
+        - generic [ref=e766]:
+          - link "Work" [ref=e767] [cursor=pointer]:
+            - /url: "#work"
+          - link "Our Process" [ref=e768] [cursor=pointer]:
+            - /url: "#our-process"
+          - link "Contact" [ref=e769] [cursor=pointer]:
+            - /url: mailto:hello@designgroove.com
+```
