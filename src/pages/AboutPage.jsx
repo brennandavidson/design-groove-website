@@ -42,25 +42,28 @@ const AboutPage = () => {
       
       {/* 1. HERO / OPENING FRAME */}
       {/* Editorial Style: Massive Typographic Statement */}
-      <section style={{ 
-        padding: isMobile ? '10rem 4vw 4rem' : '16rem 4vw 6rem', // Updated side padding to 4vw to match nav
-        maxWidth: '1800px', 
-        margin: '0 auto', 
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        textAlign: 'center' // Centered overall
+      <section style={{
+        padding: isMobile ? '10rem 4vw 4rem' : '16rem 4vw 6rem',
+        width: '100%'
       }}>
-        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}> 
-          <motion.h1 
+        <div style={{
+          maxWidth: '1800px',
+          margin: '0 auto',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          textAlign: 'center',
+          alignItems: 'center'
+        }}> 
+          <motion.h1
             initial="hidden"
             animate="visible"
             variants={revealVariants}
-            style={{ 
-              fontFamily: 'Instrument Serif', 
-              fontSize: 'clamp(3rem, 6vw, 6rem)', 
-              lineHeight: 1, 
-              color: '#1a1a1a', 
+            style={{
+              fontFamily: 'Instrument Serif',
+              fontSize: isMobile ? 'clamp(2.5rem, 10vw, 4rem)' : 'clamp(3rem, 6vw, 6rem)',
+              lineHeight: 1,
+              color: '#1a1a1a',
               marginBottom: '2rem',
               letterSpacing: '0',
               fontWeight: 400,
@@ -145,13 +148,11 @@ const AboutPage = () => {
       </section>
 
       {/* 2. PROOF - MOVED UP */}
-      <section style={{ marginBottom: isMobile ? '4rem' : '6rem' }}>
-        <Credibility />
-      </section>
+      <Credibility />
 
       {/* 3. WHO'S BEHIND IT */}
       {/* Modern Card Layout */}
-      <section style={{ padding: isMobile ? '0 4vw 4rem' : '0 4vw 6rem', maxWidth: '1800px', margin: '0 auto' }}>
+      <section style={{ padding: isMobile ? '0 4vw 4rem' : '0 4vw 6rem', width: '100%' }}>
         <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
             
             <motion.div 
@@ -213,13 +214,13 @@ const AboutPage = () => {
                         Brennan Davidson
                     </h2>
                     
-                    <div style={{ 
-                      display: 'flex', 
-                      flexDirection: 'column', 
-                      gap: '1.5rem', 
-                      fontFamily: 'Inter', 
-                      fontSize: '1.15rem', 
-                      lineHeight: 1.6, 
+                    <div style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '1.5rem',
+                      fontFamily: 'Inter',
+                      fontSize: isMobile ? '1rem' : '1.15rem',
+                      lineHeight: 1.6,
                       color: '#4a4a4a'
                     }}>
                         <p>
@@ -238,10 +239,9 @@ const AboutPage = () => {
         <Credibility />
       </section> */}
       
-      <div style={{ marginTop: '-4rem', marginBottom: '4rem' }}>
+      <div style={{ marginBottom: isMobile ? '-2rem' : '0' }}>
         <Testimonials />
       </div>
-
 
       <div id="contact">
         <Contact />

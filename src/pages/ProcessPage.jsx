@@ -1021,14 +1021,14 @@ const ProcessPage = () => {
       </motion.div>
 
       {/* Header */}
-      <section style={{ 
-        padding: isMobile ? '10rem 4vw 4rem' : '16rem 4vw 12rem', 
-        maxWidth: '1800px', 
-        margin: '0 auto', 
-        textAlign: 'center', 
-        position: 'relative', 
-        zIndex: 1 
+      <section style={{
+        padding: isMobile ? '10rem 4vw 4rem' : '16rem 4vw 12rem',
+        width: '100%',
+        textAlign: 'center',
+        position: 'relative',
+        zIndex: 1
       }}>
+        <div style={{ maxWidth: '1800px', margin: '0 auto' }}>
         <motion.h1 
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -1086,6 +1086,7 @@ const ProcessPage = () => {
         >
             Get in Touch
         </motion.button>
+        </div>
       </section>
 
       {/* Phases */}

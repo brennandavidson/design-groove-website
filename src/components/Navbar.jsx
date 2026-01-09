@@ -19,6 +19,7 @@ const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const isHomePage = location.pathname === '/';
+  const isBookPage = location.pathname === '/book';
 
   // NEW: Control visibility of the absolute hero navbar to prevent flash on refresh
   const [isHeroNavVisible, setIsHeroNavVisible] = useState(() => {
@@ -322,14 +323,14 @@ const Navbar = () => {
         /* 1.5 Standard Navigation - OTHER PAGES (Fixed/Sticky) */
         <nav
           style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
+            position: isBookPage ? 'relative' : 'fixed',
+            top: isBookPage ? 'auto' : 0,
+            left: isBookPage ? 'auto' : 0,
             width: '100%',
             zIndex: 1000, // On top of content
-            backgroundColor: viewportWidth <= 900 ? '#ffffff' : ((hasScrolled && !isAtBottom) ? '#ffffff' : 'transparent'), // White on mobile to match Home
+            backgroundColor: isBookPage ? '#ffffff' : (viewportWidth <= 900 ? '#ffffff' : ((hasScrolled && !isAtBottom) ? '#ffffff' : 'transparent')),
             // Use box-shadow for the line to avoid border layout/color issues and prevent black flash
-            boxShadow: (viewportWidth <= 900) ? (hasScrolled ? '0 1px 0 0 #e5e5e5' : 'none') : ((hasScrolled && !isAtBottom) ? '0 1px 0 0 #e5e5e5' : 'none'),
+            boxShadow: isBookPage ? 'none' : ((viewportWidth <= 900) ? (hasScrolled ? '0 1px 0 0 #e5e5e5' : 'none') : ((hasScrolled && !isAtBottom) ? '0 1px 0 0 #e5e5e5' : 'none')),
             transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
             height: viewportWidth <= 900 ? '60px' : '100px', // Match Home mobile height (60px)
             padding: 0 // Padding moved to inner container

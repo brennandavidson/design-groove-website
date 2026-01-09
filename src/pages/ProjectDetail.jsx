@@ -168,7 +168,7 @@ const ProjectDetail = () => {
     <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', width: '100%' }}>
       <style>{`
         .project-detail-container {
-          padding: 12rem 4vw 6rem;
+          padding: 12rem 4vw 12rem;
           width: 100%;
         }
         .project-detail-inner {
@@ -227,7 +227,7 @@ const ProjectDetail = () => {
 
         @media (max-width: 900px) {
           .project-detail-container {
-            padding: 8rem 4vw 2rem; /* Reduced bottom padding from 4rem to 2rem */
+            padding: 8rem 4vw 8rem;
           }
           .back-button {
             top: 1rem;
@@ -323,7 +323,7 @@ const ProjectDetail = () => {
           </motion.div>
         </div>
 
-        {/* Hero Image */}
+          {/* Hero Image */}
         <motion.div
            initial={{ opacity: 0, scale: 0.98 }}
            animate={{ opacity: 1, scale: 1 }}
@@ -348,9 +348,9 @@ const ProjectDetail = () => {
              <span style={{ fontFamily: 'Instrument Serif', fontSize: '1.1rem', fontStyle: 'italic' }}>Back to Projects</span>
           </Link>
 
-          {project.image && (
+          {(project.detailHeroImage || project.image) && (
             <img 
-              src={project.image} 
+              src={project.detailHeroImage || project.image} 
               alt={project.title} 
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
@@ -361,7 +361,7 @@ const ProjectDetail = () => {
         <div style={{ 
           display: 'flex', 
           flexDirection: 'column', 
-          gap: '8rem', // Increased gap for better pacing
+          gap: '6rem', // Standardized gap
           paddingTop: '6rem'
         }}>
           
@@ -409,19 +409,92 @@ const ProjectDetail = () => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
             <div style={{ maxWidth: '800px' }}>
               <h3 style={{ fontFamily: 'Instrument Serif', fontSize: '2rem', marginBottom: '1.5rem' }}>The Result</h3>
-              <p style={{ fontFamily: 'Inter', fontSize: '1.1rem', lineHeight: 1.6, opacity: 0.8 }}>
+              <p style={{ fontFamily: 'Inter', fontSize: '1.1rem', lineHeight: 1.6, opacity: 0.8, marginBottom: '2rem' }}>
                 {project.result || 'Details on the final outcome coming soon.'}
               </p>
+              {project.link && (
+                 <a 
+                   href={project.link} 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   style={{
+                     padding: '16px 32px',
+                     backgroundColor: '#1a1a1a',
+                     color: '#ffffff',
+                     borderRadius: '100px',
+                     textDecoration: 'none',
+                     fontFamily: 'Inter',
+                     fontSize: '0.9rem',
+                     textTransform: 'uppercase',
+                     letterSpacing: '0.05em',
+                     display: 'inline-block'
+                   }}
+                 >
+                   Visit Website
+                 </a>
+              )}
             </div>
             {/* REMOVED Result Image Container as per request */}
           </div>
+
+          {/* Testimonial Section */}
+          {project.testimonial && (
+            <div style={{
+              padding: '4rem 0',
+              borderTop: '1px solid #e5e5e5',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              textAlign: 'center'
+            }}>
+              <div style={{ maxWidth: '1000px' }}>
+                <span style={{ 
+                  fontFamily: 'Instrument Serif', 
+                  fontSize: '8rem', 
+                  lineHeight: 0.5, 
+                  color: '#0073E6',
+                  display: 'block',
+                  marginBottom: '2rem'
+                }}>“</span>
+                <p style={{
+                  fontFamily: 'Instrument Serif',
+                  fontSize: 'clamp(2rem, 4vw, 3.5rem)',
+                  lineHeight: 1.2,
+                  color: '#1a1a1a',
+                  marginBottom: '3rem'
+                }}>
+                  {project.testimonial.quote}
+                </p>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem' }}>
+                  {project.testimonial.avatar && (
+                    <img 
+                      src={urlFor(project.testimonial.avatar).width(100).height(100).url()} 
+                      alt={project.testimonial.author}
+                      style={{ width: '50px', height: '50px', borderRadius: '50%', objectFit: 'cover' }}
+                    />
+                  )}
+                  <div style={{ textAlign: 'left' }}>
+                    <div style={{ fontFamily: 'Inter', fontWeight: 600, fontSize: '1rem', color: '#1a1a1a' }}>
+                      {project.testimonial.author}
+                    </div>
+                    {project.testimonial.role && (
+                      <div style={{ fontFamily: 'Inter', fontSize: '0.9rem', color: '#666' }}>
+                        {project.testimonial.role}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Remaining Rich Content & Sidebar */}
           <div className="content-grid">
             {/* Main Case Study Content (Portable Text) */}
             <div>
               {/* If we have 'content', use PortableText. Fallback to description if not. */}
-              {project.content ? (
+              {/* Only show if content is available AND it's not the old generic block we replaced */}
+              {project.content && !project.testimonial ? (
                 <PortableText value={project.content} components={myPortableTextComponents} />
               ) : (
                 project.description && (
@@ -439,7 +512,7 @@ const ProjectDetail = () => {
                       fontSize: '1.1rem', 
                       lineHeight: 1.6, 
                       color: '#1a1a1a', 
-                      maxWidth: '800px',
+                      maxWidth: '800px', 
                       whiteSpace: 'pre-wrap' 
                     }}>
                       {project.description}
@@ -451,29 +524,7 @@ const ProjectDetail = () => {
 
             {/* Sidebar / Actions */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', alignItems: 'flex-start' }}>
-              {project.link && (
-                 <a 
-                   href={project.link} 
-                   target="_blank" 
-                   rel="noopener noreferrer"
-                   style={{
-                     padding: '16px 32px',
-                     backgroundColor: '#1a1a1a',
-                     color: '#ffffff',
-                     borderRadius: '100px',
-                     textDecoration: 'none',
-                     fontFamily: 'Inter',
-                     fontSize: '0.9rem',
-                     textTransform: 'uppercase',
-                     letterSpacing: '0.05em',
-                     display: 'inline-block',
-                     position: 'sticky',
-                     top: '120px' // Sticky Button
-                   }}
-                 >
-                   Visit Website
-                 </a>
-              )}
+              {/* Removed sticky button from sidebar as it's now under The Result */}
             </div>
           </div>
         </div>

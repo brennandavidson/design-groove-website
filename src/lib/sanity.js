@@ -18,7 +18,7 @@ export function urlFor(source) {
 // Fetch all projects (optionally excluding one ID)
 export async function getProjects(excludeId = null) {
   const query = excludeId 
-    ? `*[_type == "project" && _id != $excludeId] | order(year desc) {
+    ? `*[_type == "project" && _id != $excludeId] | order(order asc, year desc) {
         _id,
         title,
         slug,
@@ -27,11 +27,12 @@ export async function getProjects(excludeId = null) {
         showInWorkList,
         sliderHoverStatus,
         "image": image.asset->url,
+        "hoverVideo": hoverVideo.asset->url,
         "heroImage": heroImage.asset->url,
         "rawImage": image,
         "rawHeroImage": heroImage
       }`
-    : `*[_type == "project"] | order(year desc) {
+    : `*[_type == "project"] | order(order asc, year desc) {
         _id,
         title,
         slug,
@@ -40,6 +41,7 @@ export async function getProjects(excludeId = null) {
         showInWorkList,
         sliderHoverStatus,
         "image": image.asset->url,
+        "hoverVideo": hoverVideo.asset->url,
         "heroImage": heroImage.asset->url,
         "rawImage": image,
         "rawHeroImage": heroImage
@@ -65,8 +67,11 @@ export async function getProjectBySlug(slug) {
       solution,
       result,
       content,
+      testimonial,
       sliderHoverStatus,
-      "image": image.asset->url,
+        "image": image.asset->url,
+        "hoverVideo": hoverVideo.asset->url,
+        "detailHeroImage": detailHeroImage.asset->url,
       "heroImage": heroImage.asset->url,
       "challengeImage": challengeImage.asset->url,
       "solutionImage": solutionImage.asset->url

@@ -4,6 +4,12 @@ export default {
   type: 'document',
   fields: [
     {
+      name: 'order',
+      title: 'Order',
+      type: 'number',
+      description: 'Used to manually order projects. Lower numbers appear first. If left blank, sorted by year.',
+    },
+    {
       name: 'title',
       title: 'Title',
       type: 'string',
@@ -55,9 +61,27 @@ export default {
     },
     {
       name: 'image',
-      title: 'Project Image (Main List)',
+      title: 'Project Thumbnail (Main)',
       type: 'image',
-      description: 'The image displayed in the "Recent Projects" grid. Recommended: 1200x1000px (1.2:1).',
+      description: 'Used for the "Recent Projects" grid. Also acts as the default Hero image for the project detail page if no specific one is provided.',
+      options: {
+        hotspot: true,
+      },
+    },
+    {
+      name: 'hoverVideo',
+      title: 'Hover Video (Thumbnail)',
+      type: 'file',
+      options: {
+        accept: 'video/mp4,video/webm',
+      },
+      description: 'Optional. A short, muted video loop to play when hovering over the thumbnail. For performance, keep file size under 5MB.',
+    },
+    {
+      name: 'detailHeroImage',
+      title: 'Project Detail Hero Image',
+      type: 'image',
+      description: 'Optional. The large banner image at the top of the project detail page. If left blank, the Project Thumbnail will be used.',
       options: {
         hotspot: true,
       },
@@ -134,7 +158,7 @@ export default {
     // },
     {
       name: 'content',
-      title: 'Case Study Content (Optional Extra)',
+      title: 'Case Study Content (Deprecated - Move to Testimonial)',
       type: 'array',
       of: [
         { type: 'block' },
@@ -155,6 +179,36 @@ export default {
           ]
         }
       ],
+    },
+    {
+      name: 'testimonial',
+      title: 'Project Testimonial',
+      type: 'object',
+      description: 'Optional testimonial specific to this project.',
+      fields: [
+        {
+          name: 'quote',
+          title: 'Quote',
+          type: 'text',
+          rows: 4,
+        },
+        {
+          name: 'author',
+          title: 'Author',
+          type: 'string',
+        },
+        {
+          name: 'role',
+          title: 'Role / Title',
+          type: 'string',
+        },
+        {
+          name: 'avatar',
+          title: 'Author Photo',
+          type: 'image',
+          options: { hotspot: true },
+        }
+      ]
     },
   ],
 }

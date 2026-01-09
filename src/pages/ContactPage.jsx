@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import Contact from '../components/Contact';
 
 const ContactPage = () => {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
   useEffect(() => {
-    // window.scrollTo(0, 0); // Managed by App.jsx
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  const isMobile = windowWidth <= 900;
 
   const [formState, setFormState] = useState({
     name: '',
@@ -53,35 +58,40 @@ const ContactPage = () => {
   };
 
   return (
-    <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', width: '100%', paddingTop: '100px' }}>
-      
-      <section style={{ 
-        padding: '8rem 2vw', 
-        maxWidth: '1800px', 
-        margin: '0 auto',
-        display: 'grid',
-        gridTemplateColumns: 'repeat(12, 1fr)',
-        gap: '4rem'
+    <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', width: '100%' }}>
+
+      {/* Outer wrapper with side padding */}
+      <section style={{
+        padding: isMobile ? '10rem 4vw 4rem' : '16rem 4vw 6rem',
+        width: '100%'
       }}>
-        
+        {/* Inner container with max-width */}
+        <div style={{
+          maxWidth: '1800px',
+          margin: '0 auto',
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(12, 1fr)',
+          gap: isMobile ? '3rem' : '4rem'
+        }}>
+
         {/* Left Column: Heading & Info */}
-        <div style={{ gridColumn: 'span 5' }}>
-          <motion.h1 
+        <div style={{ gridColumn: isMobile ? '1' : 'span 5' }}>
+          <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            style={{ 
-              fontFamily: 'Instrument Serif', 
-              fontSize: 'clamp(3.5rem, 6vw, 5.5rem)', 
-              lineHeight: 1, 
-              color: '#1a1a1a', 
-              marginBottom: '3rem',
+            style={{
+              fontFamily: 'Instrument Serif',
+              fontSize: isMobile ? 'clamp(2.5rem, 10vw, 4rem)' : 'clamp(3rem, 6vw, 5.5rem)',
+              lineHeight: 1,
+              color: '#1a1a1a',
+              marginBottom: isMobile ? '2rem' : '3rem',
               letterSpacing: '-0.02em'
             }}
           >
             Let's start a conversation.
           </motion.h1>
-          
+
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -89,129 +99,129 @@ const ContactPage = () => {
             style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}
           >
             <div>
-                <h3 style={{ fontFamily: 'Inter', fontSize: '1rem', fontWeight: 600, marginBottom: '0.5rem' }}>Email</h3>
-                <a href="mailto:hello@designgroove.com" style={{ fontFamily: 'Inter', fontSize: '1.1rem', color: '#4a4a4a', textDecoration: 'none' }}>hello@designgroove.com</a>
+              <h3 style={{ fontFamily: 'Inter', fontSize: '1rem', fontWeight: 600, marginBottom: '0.5rem' }}>Email</h3>
+              <a href="mailto:hello@designgroove.com" style={{ fontFamily: 'Inter', fontSize: isMobile ? '1rem' : '1.1rem', color: '#4a4a4a', textDecoration: 'none' }}>hello@designgroove.com</a>
             </div>
-            
+
             <div>
-                <h3 style={{ fontFamily: 'Inter', fontSize: '1rem', fontWeight: 600, marginBottom: '0.5rem' }}>Socials</h3>
-                <div style={{ display: 'flex', gap: '1.5rem' }}>
-                    <a href="https://www.linkedin.com/in/brennan-davidson9" target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'Inter', fontSize: '1.1rem', color: '#4a4a4a', textDecoration: 'none' }}>LinkedIn</a>
-                </div>
+              <h3 style={{ fontFamily: 'Inter', fontSize: '1rem', fontWeight: 600, marginBottom: '0.5rem' }}>Socials</h3>
+              <div style={{ display: 'flex', gap: '1.5rem' }}>
+                <a href="https://www.linkedin.com/in/brennan-davidson9" target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'Inter', fontSize: isMobile ? '1rem' : '1.1rem', color: '#4a4a4a', textDecoration: 'none' }}>LinkedIn</a>
+              </div>
             </div>
           </motion.div>
         </div>
 
         {/* Right Column: General Contact Form */}
-        <div style={{ gridColumn: '7 / span 6' }}>
-            <motion.form 
-                onSubmit={handleSubmit}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.8 }}
-                style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}
-            >
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
-                    <div>
-                        <label style={labelStyle}>Name</label>
-                        <input 
-                            type="text" 
-                            name="name" 
-                            placeholder="Jane Doe" 
-                            value={formState.name} 
-                            onChange={handleChange} 
-                            style={inputStyle}
-                            onFocus={(e) => e.target.style.borderColor = '#1a1a1a'}
-                            onBlur={(e) => e.target.style.borderColor = '#e5e5e5'}
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label style={labelStyle}>Email</label>
-                        <input 
-                            type="email" 
-                            name="email" 
-                            placeholder="jane@company.com" 
-                            value={formState.email} 
-                            onChange={handleChange} 
-                            style={inputStyle}
-                            onFocus={(e) => e.target.style.borderColor = '#1a1a1a'}
-                            onBlur={(e) => e.target.style.borderColor = '#e5e5e5'}
-                            required
-                        />
-                    </div>
-                </div>
+        <div style={{ gridColumn: isMobile ? '1' : '7 / span 6' }}>
+          <motion.form
+            onSubmit={handleSubmit}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+            style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? '2rem' : '3rem' }}
+          >
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+              gap: '2rem'
+            }}>
+              <div>
+                <label style={labelStyle}>Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Jane Doe"
+                  value={formState.name}
+                  onChange={handleChange}
+                  style={inputStyle}
+                  onFocus={(e) => e.target.style.borderColor = '#1a1a1a'}
+                  onBlur={(e) => e.target.style.borderColor = '#e5e5e5'}
+                  required
+                />
+              </div>
+              <div>
+                <label style={labelStyle}>Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="jane@company.com"
+                  value={formState.email}
+                  onChange={handleChange}
+                  style={inputStyle}
+                  onFocus={(e) => e.target.style.borderColor = '#1a1a1a'}
+                  onBlur={(e) => e.target.style.borderColor = '#e5e5e5'}
+                  required
+                />
+              </div>
+            </div>
 
-                <div>
-                    <label style={labelStyle}>Company (Optional)</label>
-                    <input 
-                        type="text" 
-                        name="company" 
-                        placeholder="Company Ltd." 
-                        value={formState.company} 
-                        onChange={handleChange} 
-                        style={inputStyle}
-                        onFocus={(e) => e.target.style.borderColor = '#1a1a1a'}
-                        onBlur={(e) => e.target.style.borderColor = '#e5e5e5'}
-                    />
-                </div>
+            <div>
+              <label style={labelStyle}>Company (Optional)</label>
+              <input
+                type="text"
+                name="company"
+                placeholder="Company Ltd."
+                value={formState.company}
+                onChange={handleChange}
+                style={inputStyle}
+                onFocus={(e) => e.target.style.borderColor = '#1a1a1a'}
+                onBlur={(e) => e.target.style.borderColor = '#e5e5e5'}
+              />
+            </div>
 
-                <div>
-                    <label style={labelStyle}>Message</label>
-                    <textarea 
-                        name="message" 
-                        placeholder="Tell us about your project..." 
-                        rows="4" 
-                        value={formState.message} 
-                        onChange={handleChange} 
-                        style={{ ...inputStyle, resize: 'none' }}
-                        onFocus={(e) => e.target.style.borderColor = '#1a1a1a'}
-                        onBlur={(e) => e.target.style.borderColor = '#e5e5e5'}
-                        required
-                    />
-                </div>
+            <div>
+              <label style={labelStyle}>Message</label>
+              <textarea
+                name="message"
+                placeholder="Tell us about your project..."
+                rows={isMobile ? 5 : 4}
+                value={formState.message}
+                onChange={handleChange}
+                style={{ ...inputStyle, resize: 'none' }}
+                onFocus={(e) => e.target.style.borderColor = '#1a1a1a'}
+                onBlur={(e) => e.target.style.borderColor = '#e5e5e5'}
+                required
+              />
+            </div>
 
-                <div style={{ paddingTop: '1rem' }}>
-                    <button 
-                        type="submit"
-                        style={{
-                            padding: '16px 40px',
-                            backgroundColor: '#1a1a1a',
-                            color: '#ffffff',
-                            border: '1px solid #1a1a1a',
-                            borderRadius: '100px',
-                            fontFamily: 'Inter',
-                            fontSize: '1rem',
-                            fontWeight: 500,
-                            letterSpacing: '0.05em',
-                            textTransform: 'uppercase',
-                            cursor: 'pointer',
-                            transition: 'all 0.3s ease'
-                        }}
-                        onMouseEnter={(e) => {
-                            e.target.style.backgroundColor = '#ffffff';
-                            e.target.style.color = '#1a1a1a';
-                        }}
-                        onMouseLeave={(e) => {
-                            e.target.style.backgroundColor = '#1a1a1a';
-                            e.target.style.color = '#ffffff';
-                        }}
-                    >
-                        Send Message
-                    </button>
-                </div>
+            <div style={{ paddingTop: isMobile ? '0.5rem' : '1rem' }}>
+              <button
+                type="submit"
+                style={{
+                  padding: isMobile ? '14px 32px' : '16px 40px',
+                  backgroundColor: '#1a1a1a',
+                  color: '#ffffff',
+                  border: '1px solid #1a1a1a',
+                  borderRadius: '100px',
+                  fontFamily: 'Inter',
+                  fontSize: isMobile ? '0.9rem' : '1rem',
+                  fontWeight: 500,
+                  letterSpacing: '0.05em',
+                  textTransform: 'uppercase',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  width: isMobile ? '100%' : 'auto'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = '#ffffff';
+                  e.target.style.color = '#1a1a1a';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = '#1a1a1a';
+                  e.target.style.color = '#ffffff';
+                }}
+              >
+                Send Message
+              </button>
+            </div>
 
-            </motion.form>
+          </motion.form>
         </div>
 
+        </div>
       </section>
 
-      {/* Footer Contact Component - Keeping it as a global footer if desired, or we can remove it since this is the contact page. 
-          Usually "Contact" component is the big "Ready to Talk" footer. 
-          On the Contact Page, having a "Ready to Talk" footer below the contact form is redundant.
-          I will remove the Contact footer from this page to avoid duplication.
-      */}
-      
     </div>
   );
 };

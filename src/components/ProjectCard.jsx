@@ -5,7 +5,27 @@ import { Link } from 'react-router-dom';
 const ProjectCard = ({ project, index, setHoveredProject }) => {
   const [isHovered, setHovered] = useState(false);
   const cardRef = useRef(null);
+  const videoRef = useRef(null);
   const mouseRef = useRef({ x: 0, y: 0 });
+
+  // Handle video play/pause on hover
+  useEffect(() => {
+    if (videoRef.current) {
+      if (isHovered) {
+        // Play video when hovered
+        const playPromise = videoRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(error => {
+            console.log("Video play failed (likely due to user interaction policy):", error);
+          });
+        }
+      } else {
+        // Pause and reset when not hovered
+        videoRef.current.pause();
+        videoRef.current.currentTime = 0;
+      }
+    }
+  }, [isHovered]);
 
   // Track global mouse position to check hover status during scroll
   useEffect(() => {
@@ -85,17 +105,46 @@ const ProjectCard = ({ project, index, setHoveredProject }) => {
           marginBottom: '2rem'
         }}>
           {project.image ? (
-            <motion.img 
-              src={project.image} 
-              alt={project.title}
-              style={{ 
-                width: '100%', 
-                height: '100%', 
-                objectFit: 'cover',
-              }}
-              animate={{ scale: isHovered ? 1.03 : 1 }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            />
+            <>
+              {/* Optional Hover Video */}
+              {project.hoverVideo && (
+                <video
+                  ref={videoRef}
+                  src={project.hoverVideo}
+                  poster={project.image} // Use static image as poster
+                  muted
+                  loop
+                  playsInline
+                  // Preload none to save bandwidth until hover
+                  preload="none"
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    zIndex: 1, // On top of image
+                    opacity: isHovered ? 1 : 0,
+                    transition: 'opacity 0.6s ease-in-out' // Smoother transition
+                  }}
+                />
+              )}
+
+              <motion.img 
+                src={project.image} 
+                alt={project.title}
+                style={{ 
+                  width: '100%', 
+                  height: '100%', 
+                  objectFit: 'cover',
+                  position: 'relative', // Ensure it sits below video when video is visible
+                  zIndex: 0
+                }}
+                animate={{ scale: isHovered && !project.hoverVideo ? 1.03 : 1 }}
+                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              />
+            </>
           ) : (
             // Placeholder/Skeleton Style
             <div style={{ width: '100%', height: '100%', backgroundColor: '#e0e0e0' }} />
@@ -137,14 +186,13 @@ const ProjectCard = ({ project, index, setHoveredProject }) => {
             </div>
           </div>
           
-          {/* Category — Year (Back to Right Side for All Screens) */}
+            {/* Category — Year (Back to Right Side for All Screens) */}
           <div style={{ 
             fontFamily: 'Inter', 
             fontSize: '0.85rem', 
             textTransform: 'uppercase',
             letterSpacing: '0.05em',
-            opacity: 0.6,
-            color: '#1a1a1a',
+            color: '#1a1a1a', // No opacity changes
             alignSelf: 'flex-start', // Changed from baseline to flex-start
             marginTop: '0.6rem' // Visual adjustment to align with Title cap height
           }}>
