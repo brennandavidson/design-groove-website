@@ -75,13 +75,29 @@ const VerticalSlider = ({ orientation = 'vertical' }) => {
 
   const isVertical = orientation === 'vertical';
 
+  // Show placeholder skeleton while loading to prevent CLS
+  if (sliderItems.length === 0) {
+    return (
+      <div
+        className="infinite-slider-container"
+        style={{
+          height: '100%',
+          width: '100%',
+          overflow: 'hidden',
+          position: 'relative',
+          backgroundColor: '#f5f5f5'
+        }}
+      />
+    );
+  }
+
   return (
-    <div 
+    <div
       className="infinite-slider-container"
-      style={{ 
-        height: '100%', 
+      style={{
+        height: '100%',
         width: '100%',
-        overflow: 'hidden', 
+        overflow: 'hidden',
         position: 'relative',
         cursor: isHovered ? 'none' : 'default'
       }}
@@ -156,21 +172,23 @@ const VerticalSlider = ({ orientation = 'vertical' }) => {
              cursor: isVertical ? 'none' : 'default' // Disable pointer cursor on mobile
            }}
          >
-           <img 
-             src={item.imageUrl} 
+           <img
+             src={item.imageUrl}
              srcSet={srcSet}
              sizes={sizes}
-             alt={item.slug?.current || "Project Thumbnail"} 
+             alt={item.slug?.current || "Project Thumbnail"}
              loading={isFirst ? "eager" : "lazy"}
              fetchPriority={isFirst ? "high" : "auto"}
-             style={{ 
-               width: isVertical ? '100%' : 'auto', 
-               height: isVertical ? 'auto' : '100%', 
+             width={isVertical ? "600" : "800"}
+             height={isVertical ? "750" : "500"}
+             style={{
+               width: isVertical ? '100%' : 'auto',
+               height: isVertical ? 'auto' : '100%',
                objectFit: 'cover',
                display: 'block',
                backfaceVisibility: 'hidden',
                pointerEvents: 'none' // Prevent image drag/interaction
-             }} 
+             }}
           />
         </div>
        );

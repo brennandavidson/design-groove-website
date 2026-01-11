@@ -395,8 +395,8 @@ const ProjectDetail = () => {
           </Link>
 
           {(project.detailHeroImage || project.image) && (
-            <img 
-              src={project.rawDetailHeroImage || project.rawImage ? urlFor(project.rawDetailHeroImage || project.rawImage).width(1600).url() : (project.detailHeroImage || project.image)} 
+            <img
+              src={project.rawDetailHeroImage || project.rawImage ? urlFor(project.rawDetailHeroImage || project.rawImage).width(1600).url() : (project.detailHeroImage || project.image)}
               srcSet={project.rawDetailHeroImage || project.rawImage ? `
                 ${urlFor(project.rawDetailHeroImage || project.rawImage).width(600).url()} 600w,
                 ${urlFor(project.rawDetailHeroImage || project.rawImage).width(1000).url()} 1000w,
@@ -406,6 +406,9 @@ const ProjectDetail = () => {
               ` : undefined}
               sizes="100vw"
               alt={project.title}
+              width="1600"
+              height="900"
+              fetchPriority="high"
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
           )}

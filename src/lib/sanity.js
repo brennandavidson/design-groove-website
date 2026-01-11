@@ -4,7 +4,7 @@ import { createImageUrlBuilder } from '@sanity/image-url'
 export const client = createClient({
   projectId: '8jhw3vic',
   dataset: 'production',
-  useCdn: false, // Disable CDN to ensure fresh data and bypass cache
+  useCdn: true, // CDN doesn't reduce quality, just serves cached images faster
   apiVersion: '2024-01-01'
 })
 
@@ -12,8 +12,9 @@ export const client = createClient({
 const builder = createImageUrlBuilder(client)
 
 export function urlFor(source) {
-  // Return maximum quality image, preserve original format (no auto-format)
-  return builder.image(source).quality(100)
+  // Use WebP format at quality 100 (visually lossless, smaller file size)
+  // WebP at q=100 preserves full quality while being ~25-35% smaller than JPEG/PNG
+  return builder.image(source).format('webp').quality(100)
 }
 
 // Fetch all projects (optionally excluding one ID)
