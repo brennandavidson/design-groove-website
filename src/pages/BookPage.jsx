@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { InlineWidget } from "react-calendly";
+import { Helmet } from 'react-helmet-async';
 
 const BookPage = () => {
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [windowWidth, setWindowWidth] = useState(0);
 
   useEffect(() => {
+    setWindowWidth(window.innerWidth);
     const handleResize = () => setWindowWidth(window.innerWidth);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -52,6 +54,10 @@ const BookPage = () => {
       flexDirection: 'column',
       alignItems: 'center'
     }}>
+      <Helmet>
+        <title>Book a Call | Design Groove</title>
+        <meta name="description" content="Schedule a discovery call with Design Groove to discuss your project goals." />
+      </Helmet>
 
       {/* Calendly Inline Widget */}
       <div style={{

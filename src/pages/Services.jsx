@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect, createRef } from 'react';
 import { motion, useInView, useScroll, useTransform, useMotionValueEvent, AnimatePresence, useSpring } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Contact from '../components/Contact';
 
@@ -473,7 +474,7 @@ const StickyImageLayer = ({ service, triggerRef, index, isFirst }) => {
 
 const ServicesPage = () => {
   const [isButtonHovered, setIsButtonHovered] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [windowWidth, setWindowWidth] = useState(0);
 
   // Create refs for each text section to track their scroll progress
   const sectionRefs = useRef(serviceData.map(() => createRef()));
@@ -494,6 +495,10 @@ const ServicesPage = () => {
 
   return (
     <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', width: '100%' }}>
+      <Helmet>
+        <title>Services | Design Groove</title>
+        <meta name="description" content="Strategy, Brand, Development, and Optimization. We provide the complete system your business needs to scale." />
+      </Helmet>
       
       {/* Header Section - Enhanced Padding and Structure */}
       {/* Increased top padding to 20rem to match Statement.jsx and push sticky content down */}

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import Hero from '../components/Hero';
 import Credibility from '../components/Credibility';
 import Work from '../components/Work';
@@ -65,6 +66,10 @@ const Home = ({ isLoaded }) => {
 
   return (
     <>
+      <Helmet>
+        <title>Design Groove | Digital Agency</title>
+        <meta name="description" content="We build revenue systems for businesses that are done winging it. Strategy, design, development, and automation under one roof." />
+      </Helmet>
       {/* Sticky Header & Hero Container */}
       <div className="home-hero-wrapper">
         <div 

@@ -9,6 +9,14 @@ const WorkCollection = () => {
   const [hoveredProject, setHoveredProject] = useState(null);
   const [projects, setProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [windowWidth, setWindowWidth] = useState(0);
+
+  useEffect(() => {
+    setWindowWidth(window.innerWidth);
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     // Scroll to top on mount - REMOVED for App-level handling
@@ -37,6 +45,10 @@ const WorkCollection = () => {
       <section className="section-spacing work-collection-padding" style={{ 
         minHeight: '100vh' 
       }}>
+        <Helmet>
+          <title>Our Work | Design Groove</title>
+          <meta name="description" content="Check out our recent projects. We help businesses grow through strategic design and development." />
+        </Helmet>
         {/* Global Cursor for this section */}
         <ProjectCursor isHovered={hoveredProject !== null} />
 
@@ -51,7 +63,7 @@ const WorkCollection = () => {
           {/* Replaced AnimatedHeading with standard H1 to match Services page style exactly */}
           <h1 style={{ 
             fontFamily: 'Instrument Serif', 
-            fontSize: window.innerWidth <= 900 ? 'clamp(2.5rem, 10vw, 4rem)' : 'clamp(3rem, 6vw, 6rem)', 
+            fontSize: windowWidth <= 900 ? 'clamp(2.5rem, 10vw, 4rem)' : 'clamp(3rem, 6vw, 6rem)', 
             lineHeight: 1, 
             fontWeight: 400, 
             color: '#1a1a1a', 

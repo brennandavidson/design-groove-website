@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Contact from '../components/Contact';
 
@@ -865,10 +866,11 @@ const AccordionItem = ({ q, a, index }) => {
 // --- PAGE COMPONENT ---
 
 const ProcessPage = () => {
-  const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
+  const [windowWidth, setWindowWidth] = React.useState(0);
   const [isButtonHovered, setIsButtonHovered] = React.useState(false);
 
   useEffect(() => {
+    setWindowWidth(window.innerWidth);
     const handleResize = () => setWindowWidth(window.innerWidth);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -994,6 +996,10 @@ const ProcessPage = () => {
 
   return (
     <div ref={containerRef} style={{ width: '100%', minHeight: '100vh', backgroundColor: '#ffffff', paddingTop: 0, position: 'relative' }}>
+      <Helmet>
+        <title>Our Process | Design Groove</title>
+        <meta name="description" content="From audit to launch and beyond. See how we build revenue systems step-by-step." />
+      </Helmet>
       
       {/* Scroll Thread - Connecting Line */}
       <motion.div 
