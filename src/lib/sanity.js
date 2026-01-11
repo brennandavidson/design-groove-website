@@ -17,39 +17,72 @@ export function urlFor(source) {
   return builder.image(source).format('webp').quality(100)
 }
 
+// Simple in-memory cache to prevent duplicate API calls
+const cache = new Map()
+const pendingRequests = new Map()
+
+async function cachedFetch(key, fetchFn) {
+  // Return cached data immediately if available
+  if (cache.has(key)) {
+    return cache.get(key)
+  }
+
+  // If a request for this key is already in flight, wait for it
+  if (pendingRequests.has(key)) {
+    return pendingRequests.get(key)
+  }
+
+  // Start new request and store the promise
+  const promise = fetchFn().then(data => {
+    cache.set(key, data)
+    pendingRequests.delete(key)
+    return data
+  }).catch(err => {
+    pendingRequests.delete(key)
+    throw err
+  })
+
+  pendingRequests.set(key, promise)
+  return promise
+}
+
 // Fetch all projects (optionally excluding one ID)
 export async function getProjects(excludeId = null) {
-  const query = excludeId 
-    ? `*[_type == "project" && _id != $excludeId && showInWorkList != false] | order(order asc, year desc) {
-        _id,
-        title,
-        slug,
-        category,
-        year,
-        showInWorkList,
-        sliderHoverStatus,
-        "image": image.asset->url,
-        "hoverVideo": hoverVideo.asset->url,
-        "heroImage": heroImage.asset->url,
-        "rawImage": image,
-        "rawHeroImage": heroImage
-      }`
-    : `*[_type == "project" && showInWorkList != false] | order(order asc, year desc) {
-        _id,
-        title,
-        slug,
-        category,
-        year,
-        showInWorkList,
-        sliderHoverStatus,
-        "image": image.asset->url,
-        "hoverVideo": hoverVideo.asset->url,
-        "heroImage": heroImage.asset->url,
-        "rawImage": image,
-        "rawHeroImage": heroImage
-      }`;
-      
-  return client.fetch(query, excludeId ? { excludeId } : {});
+  const cacheKey = `projects-${excludeId || 'all'}`
+
+  return cachedFetch(cacheKey, async () => {
+    const query = excludeId
+      ? `*[_type == "project" && _id != $excludeId && showInWorkList != false] | order(order asc, year desc) {
+          _id,
+          title,
+          slug,
+          category,
+          year,
+          showInWorkList,
+          sliderHoverStatus,
+          "image": image.asset->url,
+          "hoverVideo": hoverVideo.asset->url,
+          "heroImage": heroImage.asset->url,
+          "rawImage": image,
+          "rawHeroImage": heroImage
+        }`
+      : `*[_type == "project" && showInWorkList != false] | order(order asc, year desc) {
+          _id,
+          title,
+          slug,
+          category,
+          year,
+          showInWorkList,
+          sliderHoverStatus,
+          "image": image.asset->url,
+          "hoverVideo": hoverVideo.asset->url,
+          "heroImage": heroImage.asset->url,
+          "rawImage": image,
+          "rawHeroImage": heroImage
+        }`;
+
+    return client.fetch(query, excludeId ? { excludeId } : {})
+  })
 }
 
 // Fetch single project by slug + related projects
@@ -105,13 +138,15 @@ export async function getProjectBySlug(slug) {
 
 // Fetch all testimonials
 export async function getTestimonials() {
-  return client.fetch(`
-    *[_type == "testimonial"] {
-      _id,
-      quote,
-      author,
-      role,
-      marqueeRow
-    }
-  `)
+  return cachedFetch('testimonials', async () => {
+    return client.fetch(`
+      *[_type == "testimonial"] {
+        _id,
+        quote,
+        author,
+        role,
+        marqueeRow
+      }
+    `)
+  })
 }
