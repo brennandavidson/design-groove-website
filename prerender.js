@@ -40,17 +40,18 @@ let lcpPreloads = []
     routes = [...routes, ...projectRoutes]
     console.log(`Added ${projectRoutes.length} project routes.`)
 
-    // Preload first 2 project card images (these are eager loaded and likely LCP on mobile)
-    for (let i = 0; i < Math.min(2, projects.length); i++) {
+    // Preload first 3 VerticalSlider images (these are the actual LCP on mobile)
+    // VerticalSlider uses heroImage (or image as fallback)
+    for (let i = 0; i < Math.min(3, projects.length); i++) {
       const project = projects[i]
-      // ProjectCard uses image, not heroImage
-      const imageRef = project.imageId
+      // VerticalSlider prioritizes heroImage, falls back to image
+      const imageRef = project.heroImageId || project.imageId
       if (imageRef) {
         const match = imageRef.match(/image-([a-zA-Z0-9]+)-(\d+x\d+)/)
         if (match) {
           const [, id, dimensions] = match
-          // Mobile size for ProjectCard: ~400px wide (95vw on 400px viewport)
-          const url = `https://cdn.sanity.io/images/8jhw3vic/production/${id}-${dimensions}.webp?w=400&fm=webp&q=100`
+          // Mobile horizontal slider: ~35vh height, images loaded at ~400-600px width
+          const url = `https://cdn.sanity.io/images/8jhw3vic/production/${id}-${dimensions}.webp?w=600&fm=webp&q=100`
           lcpPreloads.push(url)
           console.log(`LCP preload ${i + 1}:`, url)
         }

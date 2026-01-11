@@ -118,8 +118,8 @@ const VerticalSlider = ({ orientation = 'vertical' }) => {
       `}</style>
       <div className={`slider-track-${orientation}`} style={{ pointerEvents: isVertical ? 'auto' : 'none' }}>
         {displayItems.map((item, index) => {
-           // Optimization logic
-           const isFirst = index === 0;
+           // Optimization: eager load first 3 images for LCP (covers both desktop vertical and mobile horizontal)
+           const isEarlyImage = index < 3;
            const srcSet = item.imageSource ? `
              ${urlFor(item.imageSource).width(400).url()} 400w,
              ${urlFor(item.imageSource).width(600).url()} 600w,
@@ -134,7 +134,7 @@ const VerticalSlider = ({ orientation = 'vertical' }) => {
              : '(max-width: 600px) 50vw, 35vw';
 
            return (
-           <div 
+           <div
            key={index}
            onMouseEnter={() => setHoverText(getCursorText(item.status))}
            onClick={() => {
@@ -143,11 +143,11 @@ const VerticalSlider = ({ orientation = 'vertical' }) => {
                navigate(`/work/${item.slug.current}`);
              }
            }}
-           style={{ 
-             width: isVertical ? '100%' : 'auto', 
-             height: isVertical ? 'auto' : '100%', 
+           style={{
+             width: isVertical ? '100%' : 'auto',
+             height: isVertical ? 'auto' : '100%',
              aspectRatio: 'auto', // Allow natural aspect ratio
-             flexShrink: 0, 
+             flexShrink: 0,
              padding: '0',
              display: 'flex',
              position: 'relative',
@@ -163,8 +163,8 @@ const VerticalSlider = ({ orientation = 'vertical' }) => {
              srcSet={srcSet}
              sizes={sizes}
              alt={item.slug?.current || "Project Thumbnail"}
-             loading={isFirst ? "eager" : "lazy"}
-             fetchPriority={isFirst ? "high" : "auto"}
+             loading={isEarlyImage ? "eager" : "lazy"}
+             fetchPriority={isEarlyImage ? "high" : "auto"}
              width={isVertical ? "600" : "800"}
              height={isVertical ? "750" : "500"}
              style={{
