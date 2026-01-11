@@ -1,10 +1,14 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
 import { InlineWidget } from "react-calendly";
 
 const BookPage = () => {
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [windowWidth, setWindowWidth] = useState(1200); // SSR-safe default
 
   useEffect(() => {
+    // Set initial width on mount
+    setWindowWidth(window.innerWidth);
     const handleResize = () => setWindowWidth(window.innerWidth);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);

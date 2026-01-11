@@ -1,10 +1,14 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
 const ContactPage = () => {
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [windowWidth, setWindowWidth] = useState(1200); // Default for SSR
 
   useEffect(() => {
+    // Set initial width on mount
+    setWindowWidth(window.innerWidth);
     const handleResize = () => setWindowWidth(window.innerWidth);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);

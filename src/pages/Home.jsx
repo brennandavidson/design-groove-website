@@ -1,5 +1,7 @@
+'use client';
+
 import React, { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { usePathname } from 'next/navigation';
 import Hero from '../components/Hero';
 import Credibility from '../components/Credibility';
 import Work from '../components/Work';
@@ -9,7 +11,7 @@ import Testimonials from '../components/Testimonials';
 import Statement from '../components/Statement';
 
 const Home = ({ isLoaded }) => {
-  const location = useLocation();
+  const pathname = usePathname();
 
   // Optimization: Only render/show the fixed hero if it's actually in view (or close to it)
   // This prevents the "Flash of Hero" when refreshing at the bottom of the page
@@ -51,8 +53,9 @@ const Home = ({ isLoaded }) => {
   }, []);
 
   useEffect(() => {
-    if (location.hash) {
-      const targetId = location.hash.substring(1);
+    // Handle hash navigation in Next.js
+    if (typeof window !== 'undefined' && window.location.hash) {
+      const targetId = window.location.hash.substring(1);
       const element = document.getElementById(targetId);
       if (element) {
         // Small delay to ensure layout is ready (especially with Lenis)
@@ -61,7 +64,7 @@ const Home = ({ isLoaded }) => {
         }, 100);
       }
     }
-  }, [location]);
+  }, [pathname]);
 
   return (
     <>

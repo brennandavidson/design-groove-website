@@ -1,11 +1,13 @@
+'use client';
+
 import React from 'react';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import TypewriterText from './TypewriterText';
 import VerticalSlider from './VerticalSlider';
 
 const Hero = ({ startAnimation }) => {
-  const navigate = useNavigate();
+  const router = useRouter();
   return (
     <section className="hero-grid">
       {/* Left Content Area */}
@@ -52,7 +54,7 @@ const Hero = ({ startAnimation }) => {
           
           <div className="mobile-only" style={{ marginTop: '2rem' }}>
             <button 
-              onClick={() => navigate('/book')}
+              onClick={() => router.push('/book')}
               style={{
                 padding: '12px 24px',
                 backgroundColor: '#1a1a1a',

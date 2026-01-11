@@ -1,42 +1,34 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'framer-motion';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { usePathname, useRouter } from 'next/navigation';
 
 const Navbar = () => {
   const { scrollY } = useScroll();
   const [showHamburger, setShowHamburger] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  
-  // Lazy initialize dimensions to prevent layout shifts
-  const [viewportHeight, setViewportHeight] = useState(() => typeof window !== 'undefined' ? window.innerHeight : 0);
-  const [viewportWidth, setViewportWidth] = useState(() => typeof window !== 'undefined' ? window.innerWidth : 0);
-  
-  // Lazy initialize scroll state to prevent flashing on refresh
-  const [hasScrolled, setHasScrolled] = useState(() => typeof window !== 'undefined' ? window.scrollY > 10 : false);
-  const [isAtBottom, setIsAtBottom] = useState(false);
-  const [isAtTop, setIsAtTop] = useState(() => typeof window !== 'undefined' ? window.scrollY < 50 : true);
-  
-  const location = useLocation();
-  const navigate = useNavigate();
-  const isHomePage = location.pathname === '/';
-  const isBookPage = location.pathname === '/book';
 
-  // NEW: Control visibility of the absolute hero navbar to prevent flash on refresh
-  const [isHeroNavVisible, setIsHeroNavVisible] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const hasVisited = sessionStorage.getItem('hasVisited');
-      // If visited (refresh), default hidden. If first visit, default visible.
-      if (hasVisited) return false;
-      return true;
-    }
-    return true;
-  });
+  // SSR-safe defaults - will be updated in useEffect
+  const [viewportHeight, setViewportHeight] = useState(0);
+  const [viewportWidth, setViewportWidth] = useState(0);
+  const [hasScrolled, setHasScrolled] = useState(false);
+  const [isAtBottom, setIsAtBottom] = useState(false);
+  const [isAtTop, setIsAtTop] = useState(true);
+
+  const pathname = usePathname();
+  const router = useRouter();
+  const isHomePage = pathname === '/';
+  const isBookPage = pathname === '/book';
+
+  // Control visibility of the absolute hero navbar
+  const [isHeroNavVisible, setIsHeroNavVisible] = useState(true); // SSR-safe default
 
   useEffect(() => {
     // Scroll handler to toggle visibility based on position
     const handleScroll = () => {
       // Only relevant on home page
-      if (location.pathname === '/') {
+      if (pathname === '/') {
         // Show if we are in the first viewport (Hero)
         setIsHeroNavVisible(window.scrollY < window.innerHeight);
       }
@@ -51,7 +43,7 @@ const Navbar = () => {
       clearTimeout(timer);
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [location.pathname]);
+  }, [pathname]);
 
   useEffect(() => {
     setViewportHeight(window.innerHeight);
@@ -102,7 +94,7 @@ const Navbar = () => {
       const currentScroll = window.scrollY || scrollY.get(); // Fallback to window if scrollY not ready
       setShowHamburger(currentScroll > threshold);
     }
-  }, [isHomePage, viewportHeight, viewportWidth, scrollY, location.pathname]); // Added viewportWidth
+  }, [isHomePage, viewportHeight, viewportWidth, scrollY, pathname]); // Added viewportWidth
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const isMobile = viewportWidth <= 900;
@@ -137,27 +129,27 @@ const Navbar = () => {
     setIsMenuOpen(false);
     
     if (item === 'Work') {
-      navigate('/work');
+      router.push('/work');
       return;
     }
 
     if (item === 'Services') {
-      navigate('/services');
+      router.push('/services');
       return;
     }
 
     if (item === 'Contact') {
-      navigate('/contact');
+      router.push('/contact');
       return;
     }
 
     if (item === 'Our Process') {
-      navigate('/process');
+      router.push('/process');
       return;
     }
 
     if (item === 'About') {
-      navigate('/about');
+      router.push('/about');
       return;
     }
 
@@ -170,7 +162,7 @@ const Navbar = () => {
       }
     } else {
       // Navigate to home with hash
-      navigate(`/#${targetId}`);
+      router.push(`/#${targetId}`);
       // Note: We might need a helper in Home to handle scroll on mount if hash is present
       // But standard browser behavior often works with hashes if handled correctly
       // Alternatively, use state
@@ -259,7 +251,7 @@ const Navbar = () => {
               href="/book"
               onClick={(e) => {
                 e.preventDefault();
-                navigate('/book');
+                router.push('/book');
               }}
               style={{ 
                 padding: '12px 24px',
@@ -353,7 +345,7 @@ const Navbar = () => {
               alignItems: 'center'
             }}>
             {/* Logo */}
-            <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={() => navigate('/')}>
+            <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={() => router.push('/')}>
               <img 
                 src="/assets/dg-logo-dark.svg" 
                 alt="Design Groove" 
@@ -403,7 +395,7 @@ const Navbar = () => {
                 href="/book"
                 onClick={(e) => {
                   e.preventDefault();
-                  navigate('/book');
+                  router.push('/book');
                 }}
                 style={{ 
                   padding: '12px 24px',
@@ -649,7 +641,7 @@ const Navbar = () => {
                 onClick={(e) => {
                   e.preventDefault();
                   setIsMenuOpen(false);
-                  navigate('/book');
+                  router.push('/book');
                 }}
                 initial="hidden"
                 animate="visible"

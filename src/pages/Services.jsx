@@ -1,6 +1,8 @@
+'use client';
+
 import React, { useRef, useState, useEffect, createRef } from 'react';
 import { motion, useInView, useScroll, useTransform, useMotionValueEvent, AnimatePresence, useSpring } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import Contact from '../components/Contact';
 
 // --- DATA ---
@@ -65,7 +67,7 @@ const faqData = [
     q: "How do I get started?", 
     a: (
       <>
-        <Link to="/book" style={{ color: '#1a1a1a', textDecoration: 'underline', fontWeight: 500 }}>Book a call</Link> or fill out our <Link to="/contact" style={{ color: '#1a1a1a', textDecoration: 'underline', fontWeight: 500 }}>contact form</Link>. We’ll schedule a quick intro call to align on your goals, scope, and timeline. From there, we’ll craft a tailored proposal and set a clear start date that works for both of us.
+        <Link href="/book" style={{ color: '#1a1a1a', textDecoration: 'underline', fontWeight: 500 }}>Book a call</Link> or fill out our <Link href="/contact" style={{ color: '#1a1a1a', textDecoration: 'underline', fontWeight: 500 }}>contact form</Link>. We'll schedule a quick intro call to align on your goals, scope, and timeline. From there, we'll craft a tailored proposal and set a clear start date that works for both of us.
       </>
     )
   },
@@ -473,7 +475,7 @@ const StickyImageLayer = ({ service, triggerRef, index, isFirst }) => {
 
 const ServicesPage = () => {
   const [isButtonHovered, setIsButtonHovered] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [windowWidth, setWindowWidth] = useState(1200); // Default for SSR
 
   // Create refs for each text section to track their scroll progress
   const sectionRefs = useRef(serviceData.map(() => createRef()));

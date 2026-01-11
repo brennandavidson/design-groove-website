@@ -1,5 +1,8 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { getProjectBySlug, urlFor } from '../lib/sanity';
 import Contact from '../components/Contact';
 import { motion } from 'framer-motion';
@@ -96,8 +99,9 @@ const myPortableTextComponents = {
 };
 
 const ProjectDetail = () => {
-  const { slug } = useParams();
-  const navigate = useNavigate();
+  const params = useParams();
+  const slug = params?.slug;
+  const router = useRouter();
   const [project, setProject] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [hoveredProject, setHoveredProject] = useState(null);
@@ -111,7 +115,7 @@ const ProjectDetail = () => {
       if (data) {
         // Redirect if status is concept or coming-soon
         if (data.sliderHoverStatus === 'concept' || data.sliderHoverStatus === 'coming-soon') {
-          navigate('/work', { replace: true });
+          router.replace('/work');
         } else {
           setProject(data);
         }
@@ -121,7 +125,7 @@ const ProjectDetail = () => {
       console.error("Project Fetch Error:", err);
       setIsLoading(false);
     });
-  }, [slug, navigate]);
+  }, [slug, router]);
 
   if (isLoading) {
     return (
@@ -151,12 +155,12 @@ const ProjectDetail = () => {
         paddingTop: '100px'
       }}>
         <h2 style={{ fontFamily: 'Instrument Serif', fontSize: '3rem' }}>Project Not Found</h2>
-        <Link to="/work" style={{ 
-          marginTop: '2rem', 
-          fontFamily: 'Inter', 
-          textTransform: 'uppercase', 
-          color: '#1a1a1a', 
-          textDecoration: 'underline' 
+        <Link href="/work" style={{
+          marginTop: '2rem',
+          fontFamily: 'Inter',
+          textTransform: 'uppercase',
+          color: '#1a1a1a',
+          textDecoration: 'underline'
         }}>
           Back to Work
         </Link>
@@ -549,7 +553,7 @@ const ProjectDetail = () => {
             }}>
               You Might Also Like
             </h2>
-            <Link to="/work" style={{
+            <Link href="/work" style={{
                fontFamily: 'Inter',
                fontSize: '1rem',
                textTransform: 'uppercase',

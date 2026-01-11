@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import AnimatedHeading from './AnimatedHeading';
@@ -31,16 +33,21 @@ const fallbackTestimonials = [
 // --- Components ---
 
 const TestimonialCard = ({ item, index, isMobile }) => {
+  // Determine if this is a long quote (more than 150 chars)
+  const isLongQuote = item.quote && item.quote.length > 150;
+
   // Shared base styles
   const baseStyles = {
-    width: isMobile ? '300px' : '450px', // Reduced width for mobile
+    width: isMobile ? '300px' : '450px',
     maxWidth: '85vw',
-    height: isMobile ? '280px' : '320px', // Slightly shorter on mobile
+    // Use minHeight instead of fixed height to allow growth for longer quotes
+    minHeight: isMobile ? (isLongQuote ? '320px' : '260px') : '320px',
+    height: 'auto',
     background: 'linear-gradient(145deg, #ffffff, #f9f9f9)',
     borderRadius: '12px',
     border: '1px solid rgba(0,0,0,0.05)',
     boxShadow: '0 10px 30px rgba(0,0,0,0.02), 0 1px 3px rgba(0,0,0,0.02)',
-    padding: isMobile ? '1.5rem' : '2rem', // Reduced padding
+    padding: isMobile ? '1.25rem' : '2rem',
     display: 'flex',
     flexDirection: 'column',
     marginRight: '1rem',
@@ -50,35 +57,37 @@ const TestimonialCard = ({ item, index, isMobile }) => {
   };
 
   return (
-    <motion.div 
+    <motion.div
       style={baseStyles}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index ? index * 0.05 : 0 }} // Staggered fade in
+      transition={{ duration: 0.5, delay: index ? index * 0.05 : 0 }}
     >
       {/* Quote Icon Background */}
       <div style={{
         position: 'absolute', top: '1rem', right: '2rem',
-        fontSize: '10rem', color: 'rgba(0,115,230,0.03)',
+        fontSize: isMobile ? '6rem' : '10rem',
+        color: 'rgba(0,115,230,0.03)',
         fontFamily: 'Instrument Serif', lineHeight: 0, pointerEvents: 'none',
         zIndex: 0
       }}>
-        “
+        "
       </div>
 
       {/* Content Area - Grows to fill space */}
-      <div style={{ 
-        position: 'relative', 
-        zIndex: 1, 
-        flexGrow: 1, 
-        display: 'flex', 
-        alignItems: 'flex-start' // Align text to top
+      <div style={{
+        position: 'relative',
+        zIndex: 1,
+        flexGrow: 1,
+        display: 'flex',
+        alignItems: 'flex-start'
       }}>
           <p style={{
-              fontSize: '1.15rem', // Adjusted for new height
+              // Smaller font on mobile for longer quotes
+              fontSize: isMobile ? (isLongQuote ? '0.95rem' : '1.05rem') : '1.15rem',
               fontFamily: 'Instrument Serif',
               color: '#1a1a1a',
-              lineHeight: 1.3,
+              lineHeight: isMobile ? 1.4 : 1.3,
               fontStyle: 'italic',
               margin: 0
           }}>
@@ -87,22 +96,19 @@ const TestimonialCard = ({ item, index, isMobile }) => {
       </div>
 
       {/* Author Info - Pinned to bottom */}
-      <div style={{ 
-        marginTop: '2rem', // Ensure separation
-        paddingTop: '1.5rem',
-        borderTop: '1px solid rgba(0,0,0,0.05)', // Subtle separator to visually anchor the bottom
+      <div style={{
+        marginTop: isMobile ? '1rem' : '2rem',
+        paddingTop: isMobile ? '1rem' : '1.5rem',
+        borderTop: '1px solid rgba(0,0,0,0.05)',
         width: '100%'
       }}>
-          <h4 style={{ fontSize: '1rem', fontWeight: 600, color: '#1a1a1a', margin: 0, fontFamily: 'Inter' }}>
+          <h4 style={{ fontSize: isMobile ? '0.9rem' : '1rem', fontWeight: 600, color: '#1a1a1a', margin: 0, fontFamily: 'Inter' }}>
               {item.author}
           </h4>
-          <p style={{ fontSize: '0.85rem', color: '#666', margin: '0.25rem 0 0', fontFamily: 'Inter' }}>
+          <p style={{ fontSize: isMobile ? '0.8rem' : '0.85rem', color: '#666', margin: '0.25rem 0 0', fontFamily: 'Inter' }}>
               {item.role}
           </p>
       </div>
-      <style>{`
-        /* ... styles ... */
-      `}</style>
     </motion.div>
   );
 };

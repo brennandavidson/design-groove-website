@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import AnimatedHeading from '../components/AnimatedHeading';
 import ProjectCursor from '../components/ProjectCursor';
@@ -9,6 +11,14 @@ const WorkCollection = () => {
   const [hoveredProject, setHoveredProject] = useState(null);
   const [projects, setProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 900);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     // Scroll to top on mount - REMOVED for App-level handling
@@ -51,7 +61,7 @@ const WorkCollection = () => {
           {/* Replaced AnimatedHeading with standard H1 to match Services page style exactly */}
           <h1 style={{ 
             fontFamily: 'Instrument Serif', 
-            fontSize: window.innerWidth <= 900 ? 'clamp(2.5rem, 10vw, 4rem)' : 'clamp(3rem, 6vw, 6rem)', 
+            fontSize: isMobile ? 'clamp(2.5rem, 10vw, 4rem)' : 'clamp(3rem, 6vw, 6rem)', 
             lineHeight: 1, 
             fontWeight: 400, 
             color: '#1a1a1a', 

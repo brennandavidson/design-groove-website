@@ -1,26 +1,30 @@
-import { useEffect } from 'react';
-import { useLocation, useNavigationType } from 'react-router-dom';
+'use client';
+
+import { useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 import { useLenis } from 'lenis/react';
 
 const ScrollToTop = () => {
-  const { pathname } = useLocation();
-  const navType = useNavigationType();
+  const pathname = usePathname();
   const lenis = useLenis();
+  const prevPathname = useRef(pathname);
 
   useEffect(() => {
-    // 'POP' means a refresh or back/forward navigation.
-    // In these cases, we want to let the browser restore the scroll position (handled by scrollRestoration='auto').
-    if (navType === 'POP') {
+    // Skip on initial mount (same pathname)
+    if (prevPathname.current === pathname) {
+      prevPathname.current = pathname;
       return;
     }
-    
-    // 'PUSH' or 'REPLACE' means a new navigation event (like clicking a link).
+
+    prevPathname.current = pathname;
+
+    // New navigation event (like clicking a link).
     const handleScroll = () => {
       // Prioritize Lenis if active
       if (lenis) {
         lenis.scrollTo(0, { immediate: true });
       }
-      
+
       // Fallback/Ensure window scroll is also set (essential for root: true)
       window.scrollTo(0, 0);
     };
@@ -34,7 +38,7 @@ const ScrollToTop = () => {
     });
 
     return () => cancelAnimationFrame(rafId);
-  }, [pathname, navType, lenis]);
+  }, [pathname, lenis]);
 
   return null;
 };

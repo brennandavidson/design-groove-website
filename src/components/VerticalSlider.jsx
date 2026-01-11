@@ -1,13 +1,15 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import ProjectCursor from './ProjectCursor';
 import { getProjects, urlFor } from '../lib/sanity';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 
 const VerticalSlider = ({ orientation = 'vertical' }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [hoverText, setHoverText] = useState("View Case Study");
   const [sliderItems, setSliderItems] = useState([]);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   useEffect(() => {
     getProjects().then((data) => {
@@ -120,7 +122,7 @@ const VerticalSlider = ({ orientation = 'vertical' }) => {
            onClick={() => {
              // Only allow navigation on vertical (desktop) orientation
              if (isVertical && item.status !== 'concept' && item.status !== 'coming-soon' && item.slug) {
-               navigate(`/work/${item.slug.current}`);
+               router.push(`/work/${item.slug.current}`);
              }
            }}
            style={{ 

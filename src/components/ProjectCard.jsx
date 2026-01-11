@@ -1,6 +1,8 @@
+'use client';
+
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 const ProjectCard = ({ project, index, setHoveredProject }) => {
   const [isHovered, setHovered] = useState(false);
@@ -82,7 +84,7 @@ const ProjectCard = ({ project, index, setHoveredProject }) => {
 
   return (
     <Link
-      to={project.slug ? `/work/${project.slug.current}` : '#'}
+      href={project.slug ? `/work/${project.slug.current}` : '#'}
       className="project-card-link"
       style={{ textDecoration: 'none', display: 'block', width: '100%' }}
     >

@@ -1,6 +1,8 @@
+'use client';
+
 import React, { useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import Credibility from '../components/Credibility';
 import Testimonials from '../components/Testimonials';
 import Contact from '../components/Contact';
@@ -17,9 +19,11 @@ const revealVariants = {
 };
 
 const AboutPage = () => {
-  const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
+  const [windowWidth, setWindowWidth] = React.useState(1200); // Default for SSR
 
   useEffect(() => {
+    // Set initial width on mount
+    setWindowWidth(window.innerWidth);
     const handleResize = () => setWindowWidth(window.innerWidth);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);

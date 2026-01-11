@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
 import FooterSky from './FooterSky';

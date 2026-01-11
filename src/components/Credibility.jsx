@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 
 const logoFiles = [
@@ -22,12 +24,11 @@ const logoFiles = [
 ];
 
 const Credibility = () => {
-  // Lazy initialize to prevent layout shift on hydration
-  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' ? window.innerWidth < 900 : false);
+  const [isMobile, setIsMobile] = useState(false); // SSR-safe default
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 900);
-    // No need to call checkMobile() immediately as we did it in initializer
+    checkMobile(); // Set initial value on mount
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
