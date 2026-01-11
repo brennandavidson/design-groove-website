@@ -73,4 +73,26 @@ let routes = [
     fs.writeFileSync(toAbsolute(filePath), htmlFile)
     console.log('pre-rendered:', filePath)
   }
+
+  // Generate 404.html
+  console.log('Generating 404.html...')
+  const context = {}
+  // Render a non-existent route to trigger the NotFound component in App.jsx
+  const { html, helmet } = render('/404', context) 
+  
+  const appHtml = html
+  const helmetHtml = `
+    ${helmet.title ? helmet.title.toString() : ''}
+    ${helmet.meta ? helmet.meta.toString() : ''}
+    ${helmet.link ? helmet.link.toString() : ''}
+    ${helmet.script ? helmet.script.toString() : ''}
+  `
+
+  const htmlFile = template
+    .replace(`<!--app-head-->`, helmetHtml)
+    .replace(`<!--app-html-->`, appHtml)
+
+  fs.writeFileSync(toAbsolute('dist/404.html'), htmlFile)
+  console.log('pre-rendered: dist/404.html')
+
 })()
