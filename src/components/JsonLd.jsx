@@ -109,7 +109,7 @@ export function ProjectJsonLd({ project }) {
       name: 'Design Groove',
       url: 'https://designgroove.io',
     },
-    url: `https://designgroove.io/work/${project.slug}`,
+    url: `https://designgroove.io/work/${project.slug.current || project.slug}`,
   };
 
   return (
