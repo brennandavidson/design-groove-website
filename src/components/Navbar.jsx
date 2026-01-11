@@ -32,11 +32,16 @@ const Navbar = () => {
 
   useEffect(() => {
     // Scroll handler to toggle visibility based on position
+    let ticking = false;
     const handleScroll = () => {
-      // Only relevant on home page
       if (pathname === '/') {
-        // Show if we are in the first viewport (Hero)
-        setIsHeroNavVisible(window.scrollY < window.innerHeight);
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            setIsHeroNavVisible(window.scrollY < window.innerHeight);
+            ticking = false;
+          });
+          ticking = true;
+        }
       }
     };
 
