@@ -80,7 +80,7 @@ function App() {
     if (isScrollRestoring) {
       const timer = setTimeout(() => {
         setIsScrollRestoring(false);
-      }, 200); // Increased to 200ms to be safe
+      }, 400); // Increased to 400ms to be absolutely safe against lag
       return () => {
         clearTimeout(timer);
         window.removeEventListener('resize', checkMobile);
