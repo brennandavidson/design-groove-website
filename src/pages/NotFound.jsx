@@ -11,7 +11,7 @@ const NotFound = () => {
     <div style={{
       height: '100vh',
       width: '100%',
-      backgroundColor: '#050505',
+      backgroundColor: '#0047b3', // Fallback blue
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
@@ -22,8 +22,8 @@ const NotFound = () => {
     }}>
       <SEO title="Page Not Found" />
 
-      {/* Background Sky */}
-      <FooterSky />
+      {/* Background Sky - No Mask for full visibility */}
+      <FooterSky mask={false} />
 
       {/* Content */}
       <div style={{ 
@@ -31,21 +31,19 @@ const NotFound = () => {
         zIndex: 10,
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginTop: '-10vh' // Slight adjustment to sit nicely above clouds
       }}>
         {/* 404 Big Text */}
         <h1 style={{ 
           fontFamily: 'Instrument Serif', 
           fontStyle: 'normal', 
-          fontSize: 'clamp(8rem, 25vw, 20rem)', // Responsive sizing
+          fontSize: 'clamp(8rem, 30vw, 22rem)', 
           lineHeight: 0.8,
           margin: '0 0 20px 0',
-          background: 'linear-gradient(135deg, #0073E6 0%, #4facfe 100%)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          backgroundClip: 'text',
-          color: 'transparent', // Fallback
-          paddingBottom: '20px' // Prevent clipping
+          color: '#1a1a1a', // Black text as requested
+          paddingBottom: '20px',
+          textAlign: 'center'
         }}>
           404
         </h1>
@@ -56,7 +54,7 @@ const NotFound = () => {
           fontSize: '1rem',
           letterSpacing: '0.1em',
           textTransform: 'uppercase',
-          color: '#ffffff',
+          color: '#1a1a1a', // Black text
           fontWeight: 600,
           marginBottom: '40px'
         }}>
@@ -74,18 +72,18 @@ const NotFound = () => {
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             style={{
-              backgroundColor: isHovered ? '#cccccc' : '#ffffff',
-              color: '#000000',
-              border: '1px solid #ffffff',
+              backgroundColor: isHovered ? 'transparent' : '#1a1a1a',
+              color: isHovered ? '#1a1a1a' : '#ffffff',
+              border: '1px solid #1a1a1a',
               padding: '16px 36px',
               borderRadius: '100px',
               fontFamily: 'Inter',
               fontSize: '0.95rem',
               textTransform: 'uppercase',
-              fontWeight: 600,
+              fontWeight: 500,
               letterSpacing: '0.05em',
               cursor: 'pointer',
-              transition: 'background-color 0.3s ease',
+              transition: 'all 0.3s ease',
               display: 'flex',
               alignItems: 'center',
               gap: '8px'

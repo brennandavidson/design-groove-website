@@ -90,7 +90,7 @@ const DriftingCloud = ({ x, y, scale, duration, delay }) => (
   </motion.div>
 );
 
-const FooterSky = () => {
+const FooterSky = ({ mask = true }) => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -115,8 +115,8 @@ const FooterSky = () => {
       background: 'linear-gradient(to top, #66a3ff 0%, #0047b3 100%)',
       // Mask to fade out smoothly at the top (blend with white section above)
       // Extended to 50% for a very gradual, soft fade from white to blue
-      maskImage: 'linear-gradient(to bottom, transparent 0%, black 50%, black 100%)',
-      WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 50%, black 100%)'
+      maskImage: mask ? 'linear-gradient(to bottom, transparent 0%, black 50%, black 100%)' : 'none',
+      WebkitMaskImage: mask ? 'linear-gradient(to bottom, transparent 0%, black 50%, black 100%)' : 'none'
     }}>
       
       {/* Clouds Container - "U" Arc Composition */}
