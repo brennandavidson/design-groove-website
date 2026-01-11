@@ -3,67 +3,6 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 
-const PixelBlock = ({ filled, delay }) => (
-  <motion.div
-    initial={{ opacity: 0, scale: 0 }}
-    animate={{ 
-      opacity: filled ? 1 : 0.05, 
-      scale: filled ? 1 : 0.8,
-      backgroundColor: filled ? '#1a1a1a' : 'transparent' 
-    }}
-    transition={{ 
-      duration: 0.5, 
-      delay: delay * 0.02,
-      ease: "backOut"
-    }}
-    style={{
-      width: '100%',
-      aspectRatio: '1/1',
-      borderRadius: '2px' // Slight rounding for style, or 0 for pure square
-    }}
-  />
-);
-
-const Number4 = ({ delayOffset = 0 }) => {
-  // 5x7 Grid
-  const grid = [
-    1, 0, 0, 0, 1,
-    1, 0, 0, 0, 1,
-    1, 0, 0, 0, 1,
-    1, 1, 1, 1, 1,
-    0, 0, 0, 0, 1,
-    0, 0, 0, 0, 1,
-    0, 0, 0, 0, 1,
-  ];
-  return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '6px', width: 'clamp(60px, 15vw, 100px)' }}>
-      {grid.map((filled, i) => (
-        <PixelBlock key={i} filled={filled} delay={delayOffset + i} />
-      ))}
-    </div>
-  );
-};
-
-const Number0 = ({ delayOffset = 0 }) => {
-  // 5x7 Grid
-  const grid = [
-    0, 1, 1, 1, 0,
-    1, 0, 0, 0, 1,
-    1, 0, 0, 0, 1,
-    1, 0, 0, 0, 1,
-    1, 0, 0, 0, 1,
-    1, 0, 0, 0, 1,
-    0, 1, 1, 1, 0,
-  ];
-  return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '6px', width: 'clamp(60px, 15vw, 100px)' }}>
-      {grid.map((filled, i) => (
-        <PixelBlock key={i} filled={filled} delay={delayOffset + i} />
-      ))}
-    </div>
-  );
-};
-
 const NotFound = () => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -81,12 +20,22 @@ const NotFound = () => {
     }}>
       <SEO title="Page Not Found" />
 
-      {/* 404 Pixel Art Container */}
-      <div style={{ display: 'flex', gap: 'clamp(20px, 4vw, 40px)', marginBottom: '60px' }}>
-        <Number4 delayOffset={0} />
-        <Number0 delayOffset={15} />
-        <Number4 delayOffset={30} />
-      </div>
+      {/* 404 Big Text */}
+      <h1 style={{ 
+        fontFamily: 'Instrument Serif', 
+        fontStyle: 'italic', 
+        fontSize: 'clamp(8rem, 25vw, 20rem)', // Responsive sizing
+        lineHeight: 0.8,
+        margin: '0 0 20px 0',
+        background: 'linear-gradient(135deg, #0073E6 0%, #4facfe 100%)',
+        WebkitBackgroundClip: 'text',
+        WebkitTextFillColor: 'transparent',
+        backgroundClip: 'text',
+        color: 'transparent', // Fallback
+        paddingBottom: '20px' // Prevent clipping of italic descenders
+      }}>
+        404
+      </h1>
 
       {/* Bottom Text: Status */}
       <div style={{ 
@@ -96,7 +45,7 @@ const NotFound = () => {
         textTransform: 'uppercase',
         color: '#1a1a1a',
         fontWeight: 600,
-        marginBottom: '30px'
+        marginBottom: '40px'
       }}>
         Page Not Found
       </div>
@@ -115,10 +64,10 @@ const NotFound = () => {
             backgroundColor: isHovered ? '#333' : '#1a1a1a',
             color: '#fff',
             border: '1px solid #1a1a1a',
-            padding: '14px 32px',
+            padding: '16px 36px',
             borderRadius: '100px',
             fontFamily: 'Inter',
-            fontSize: '0.9rem',
+            fontSize: '0.95rem',
             textTransform: 'uppercase',
             fontWeight: 500,
             letterSpacing: '0.05em',
