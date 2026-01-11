@@ -1,10 +1,22 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Link, useNavigate } from 'react-router-dom';
 import SEO from '../components/SEO';
+import PixelShockwave from '../components/PixelShockwave';
 
 const NotFound = () => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isOn, setIsOn] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isOn) {
+      const timer = setTimeout(() => {
+        navigate('/');
+      }, 1500); // Wait for animation
+      return () => clearTimeout(timer);
+    }
+  }, [isOn, navigate]);
 
   return (
     <div style={{
@@ -37,14 +49,19 @@ const NotFound = () => {
           404
         </h1>
 
-        {/* The Switch Track (Off State) */}
-        <div style={{ position: 'relative' }}>
-          <div
+        {/* The Switch Track */}
+        <div 
+          style={{ position: 'relative', cursor: 'pointer' }}
+          onClick={() => setIsOn(true)}
+        >
+          <PixelShockwave isActive={isOn} />
+
+          <motion.div
             style={{
               width: '100px',
               height: '56px',
               borderRadius: '999px',
-              backgroundColor: '#e5e5e5', // Grey (Off)
+              backgroundColor: '#e5e5e5', // Start grey
               display: 'flex',
               alignItems: 'center',
               padding: '4px',
@@ -53,9 +70,18 @@ const NotFound = () => {
               boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.2)',
               border: '1px solid rgba(0,0,0,0.1)'
             }}
+            animate={{
+              background: isOn 
+                ? 'linear-gradient(135deg, #0073E6 0%, #4facfe 100%)' 
+                : '#e5e5e5', 
+              boxShadow: isOn 
+                ? 'inset 0 2px 4px rgba(0,0,0,0.2), 0 0 20px rgba(0,115,230,0.4)' 
+                : 'inset 0 2px 4px rgba(0,0,0,0.2)'
+            }}
+            transition={{ duration: 0.3 }}
           >
-            {/* The Knob (Left/Off Position) */}
-            <div
+            {/* The Knob */}
+            <motion.div
               style={{
                 width: '48px',
                 height: '48px',
@@ -65,21 +91,58 @@ const NotFound = () => {
                 zIndex: 3,
                 border: '1px solid rgba(0,0,0,0.05)'
               }}
+              animate={{
+                x: isOn ? 42 : 0, 
+              }}
+              transition={{
+                type: "spring",
+                stiffness: 600,
+                damping: 30
+              }}
             />
-          </div>
+          </motion.div>
         </div>
 
         {/* Bottom Text: Status */}
-        <div style={{ 
-          fontFamily: 'Inter',
-          fontSize: '0.9rem',
-          letterSpacing: '0.1em',
-          textTransform: 'uppercase',
-          color: '#1a1a1a',
-          fontWeight: 600,
-          marginTop: '-10px'
-        }}>
-          Page Not Found
+        <div style={{ position: 'relative', height: '20px', display: 'flex', justifyContent: 'center', width: '200px', zIndex: 5 }}>
+          <AnimatePresence mode="wait">
+            {!isOn ? (
+              <motion.div
+                key="offline"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                style={{ 
+                  fontFamily: 'Inter',
+                  fontSize: '0.9rem',
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                  color: '#1a1a1a',
+                  fontWeight: 600,
+                  marginTop: '-10px'
+                }}
+              >
+                Page Not Found
+              </motion.div>
+            ) : (
+              <motion.div
+                key="online"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                style={{
+                  fontFamily: 'Inter',
+                  fontSize: '0.9rem',
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                  color: '#1a1a1a',
+                  fontWeight: 600,
+                  marginTop: '-10px'
+                }}
+              >
+                Redirecting...
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* Back Button */}
