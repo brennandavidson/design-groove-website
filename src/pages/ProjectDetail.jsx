@@ -234,10 +234,23 @@ const ProjectDetail = () => {
            align-items: baseline; 
            padding-bottom: 2rem;
         }
+        
+        .project-content-wrapper {
+          display: flex;
+          flex-direction: column;
+          gap: 6rem;
+          padding-top: 6rem;
+        }
+        
+        .section-content-group {
+          display: flex;
+          flex-direction: column;
+          gap: 3rem;
+        }
 
         @media (max-width: 900px) {
           .project-detail-container {
-            padding: 8rem 4vw 8rem;
+            padding: 6rem 4vw 6rem; /* Reduced from 8rem 4vw 8rem */
           }
           .back-button {
             top: 1rem;
@@ -248,6 +261,13 @@ const ProjectDetail = () => {
             grid-template-columns: 1fr;
             padding-top: 1rem;
             gap: 2rem;
+          }
+          .project-content-wrapper {
+            gap: 3rem; /* Reduced from 6rem */
+            padding-top: 3rem; /* Reduced from 6rem */
+          }
+          .section-content-group {
+            gap: 2rem; /* Reduced from 3rem */
           }
           .related-projects-section {
             padding: 0 4vw 6rem;
@@ -370,15 +390,10 @@ const ProjectDetail = () => {
         </motion.div>
 
         {/* Content & Sidebar Layout */}
-        <div style={{ 
-          display: 'flex', 
-          flexDirection: 'column', 
-          gap: '6rem', // Standardized gap
-          paddingTop: '6rem'
-        }}>
+        <div className="project-content-wrapper">
           
           {/* Section 1: The Challenge */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
+          <div className="section-content-group">
             <div style={{ maxWidth: '800px' }}>
               <h3 style={{ fontFamily: 'Instrument Serif', fontSize: '2rem', marginBottom: '1.5rem' }}>The Challenge</h3>
               <p style={{ fontFamily: 'Inter', fontSize: '1.1rem', lineHeight: 1.6, opacity: 0.8 }}>
@@ -398,7 +413,7 @@ const ProjectDetail = () => {
           </div>
 
           {/* Section 2: What We Did */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem', alignItems: 'flex-start' }}>
+          <div className="section-content-group" style={{ alignItems: 'flex-start' }}>
             <div style={{ maxWidth: '800px', textAlign: 'left' }}> 
               <h3 style={{ fontFamily: 'Instrument Serif', fontSize: '2rem', marginBottom: '1.5rem' }}>What We Did</h3>
               <p style={{ fontFamily: 'Inter', fontSize: '1.1rem', lineHeight: 1.6, opacity: 0.8 }}>
@@ -418,7 +433,7 @@ const ProjectDetail = () => {
           </div>
 
           {/* Section 3: The Result */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
+          <div className="section-content-group">
             <div style={{ maxWidth: '800px' }}>
               <h3 style={{ fontFamily: 'Instrument Serif', fontSize: '2rem', marginBottom: '1.5rem' }}>The Result</h3>
               <p style={{ fontFamily: 'Inter', fontSize: '1.1rem', lineHeight: 1.6, opacity: 0.8, marginBottom: '2rem' }}>

@@ -223,8 +223,8 @@ const Testimonials = () => {
             flexDirection: 'column', 
           gap: '0.75rem' 
         }}>
-          <MarqueeRow items={testimonials.slice(0, midPoint)} direction="left" speed={50} isMobile={isMobile} />
-          <MarqueeRow items={testimonials.slice(midPoint)} direction="right" speed={55} isMobile={isMobile} />
+          <MarqueeRow items={testimonials.slice(0, midPoint)} direction="left" speed={100} isMobile={isMobile} />
+          <MarqueeRow items={testimonials.slice(midPoint)} direction="right" speed={110} isMobile={isMobile} />
         </div>
 
         </section>
@@ -272,8 +272,8 @@ const Testimonials = () => {
         gap: '0.75rem',
         minHeight: '700px' // Preserve layout space for loading state
       }}>
-        <MarqueeRow items={row1} direction="left" speed={50} isMobile={isMobile} />
-        <MarqueeRow items={row2} direction="right" speed={55} isMobile={isMobile} />
+        <MarqueeRow items={row1} direction="left" speed={100} isMobile={isMobile} />
+        <MarqueeRow items={row2} direction="right" speed={110} isMobile={isMobile} />
       </div>
 
     </section>
