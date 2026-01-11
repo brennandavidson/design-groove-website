@@ -2,6 +2,7 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import FooterSky from './FooterSky';
 
 const BlurChar = ({ char, index }) => {
@@ -197,10 +198,11 @@ const Contact = () => {
           <p style={{ fontSize: '1.2rem', color: '#000000', fontFamily: 'Inter', margin: 0 }}>© 2026 Design Groove</p>
         </div>
         <div className="footer-col-right">
-          {['Work', 'Our Process'].map(link => (
-            <a key={link} href={`#${link.toLowerCase().replace(' ', '-')}`} style={{ textTransform: 'uppercase', fontSize: '1rem', fontFamily: 'Inter', fontWeight: 500, color: '#1a1a1a', textDecoration: 'none' }}>{link}</a>
-          ))}
-          <a href="mailto:hello@designgroove.com" style={{ textTransform: 'uppercase', fontSize: '1rem', fontFamily: 'Inter', fontWeight: 500, color: '#1a1a1a', textDecoration: 'none' }}>Contact</a>
+          <Link to="/work" style={{ textTransform: 'uppercase', fontSize: '1rem', fontFamily: 'Inter', fontWeight: 500, color: '#1a1a1a', textDecoration: 'none' }}>Work</Link>
+          <Link to="/services" style={{ textTransform: 'uppercase', fontSize: '1rem', fontFamily: 'Inter', fontWeight: 500, color: '#1a1a1a', textDecoration: 'none' }}>Services</Link>
+          <Link to="/process" style={{ textTransform: 'uppercase', fontSize: '1rem', fontFamily: 'Inter', fontWeight: 500, color: '#1a1a1a', textDecoration: 'none' }}>Our Process</Link>
+          <Link to="/about" style={{ textTransform: 'uppercase', fontSize: '1rem', fontFamily: 'Inter', fontWeight: 500, color: '#1a1a1a', textDecoration: 'none' }}>About</Link>
+          <Link to="/contact" style={{ textTransform: 'uppercase', fontSize: '1rem', fontFamily: 'Inter', fontWeight: 500, color: '#1a1a1a', textDecoration: 'none' }}>Contact</Link>
         </div>
       </div>
     </footer>
