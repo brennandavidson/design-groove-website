@@ -125,7 +125,7 @@ const ProjectCard = ({ project, index, setHoveredProject }) => {
                   muted
                   loop
                   playsInline
-                  preload="auto"
+                  preload="none"
                   onCanPlayThrough={handleVideoCanPlay}
                   style={{
                     position: 'absolute',
@@ -144,16 +144,15 @@ const ProjectCard = ({ project, index, setHoveredProject }) => {
               )}
 
               <img
-                src={project.rawImage ? urlFor(project.rawImage).width(1200).url() : project.image}
+                src={project.rawImage ? urlFor(project.rawImage).width(800).url() : project.image}
                 srcSet={project.rawImage ? `
+                  ${urlFor(project.rawImage).width(400).url()} 400w,
                   ${urlFor(project.rawImage).width(600).url()} 600w,
-                  ${urlFor(project.rawImage).width(900).url()} 900w,
+                  ${urlFor(project.rawImage).width(800).url()} 800w,
                   ${urlFor(project.rawImage).width(1200).url()} 1200w,
-                  ${urlFor(project.rawImage).width(1800).url()} 1800w,
-                  ${urlFor(project.rawImage).width(2400).url()} 2400w,
-                  ${urlFor(project.rawImage).width(3200).url()} 3200w
+                  ${urlFor(project.rawImage).width(1600).url()} 1600w
                 ` : undefined}
-                sizes="(max-width: 900px) 95vw, 50vw"
+                sizes="(max-width: 600px) 95vw, (max-width: 900px) 95vw, 45vw"
                 alt={project.title}
                 loading={index < 2 ? "eager" : "lazy"} // Eager load first 2
                 width="800" // Explicit width/height to prevent CLS
