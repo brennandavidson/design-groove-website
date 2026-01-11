@@ -996,9 +996,10 @@ const ProcessPage = () => {
 
   return (
     <div ref={containerRef} style={{ width: '100%', minHeight: '100vh', backgroundColor: '#ffffff', paddingTop: 0, position: 'relative' }}>
-      <SEO 
-        title="Our Process"
-        description="From audit to launch and beyond. See how we build revenue systems step-by-step."
+      <SEO
+        title="Our Process - How We Build Revenue Systems"
+        description="Discover how Design Groove builds complete revenue systems: from strategic audit and blueprint, through design and development, to launch and ongoing partnership. A proven 4-phase process for service businesses ready to scale."
+        keywords="web design process, website development process, agency process, how we work, project timeline, website build phases, design agency workflow, strategy to launch"
         breadcrumb={[
           { name: 'Home', url: 'https://designgroove.io' },
           { name: 'Process', url: 'https://designgroove.io/process' }

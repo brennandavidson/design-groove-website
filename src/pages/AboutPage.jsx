@@ -41,9 +41,10 @@ const AboutPage = () => {
 
   return (
     <div ref={containerRef} style={{ backgroundColor: '#ffffff', minHeight: '100vh', width: '100%' }}>
-      <SEO 
-        title="About"
-        description="Meet the team behind Design Groove. Strategy, design, development, and automation under one roof."
+      <SEO
+        title="About Us - Meet the Team Behind Design Groove"
+        description="Meet Brennan Davidson and the Design Groove team. We're a premium web design and digital marketing agency specializing in complete revenue systems for service businesses. Strategy, brand, development, and automation from a single dedicated partner."
+        keywords="about Design Groove, web design agency team, Brennan Davidson, digital marketing agency, service business specialists, website development team, brand agency"
         breadcrumb={[
           { name: 'Home', url: 'https://designgroove.io' },
           { name: 'About', url: 'https://designgroove.io/about' }

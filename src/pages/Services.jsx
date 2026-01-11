@@ -522,9 +522,10 @@ const ServicesPage = () => {
 
   return (
     <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', width: '100%' }}>
-      <SEO 
-        title="Services"
-        description="Strategy, Brand, Development, and Optimization. We provide the complete system your business needs to scale."
+      <SEO
+        title="Services - Strategy, Brand, Web Development & Automation"
+        description="Full-service web design and digital marketing: strategy and positioning, brand identity, website design and development, email automation, CRM setup, and ongoing optimization. Everything your service business needs to convert and scale."
+        keywords="web design services, digital marketing services, brand identity design, website development, email automation, CRM setup, conversion optimization, business automation, marketing strategy, sales funnel development"
         breadcrumb={[
           { name: 'Home', url: 'https://designgroove.io' },
           { name: 'Services', url: 'https://designgroove.io/services' }

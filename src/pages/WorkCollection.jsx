@@ -46,9 +46,10 @@ const WorkCollection = () => {
       <section className="section-spacing work-collection-padding" style={{ 
         minHeight: '100vh' 
       }}>
-        <SEO 
-          title="Our Work"
-          description="Check out our recent projects. We help businesses grow through strategic design and development."
+        <SEO
+          title="Portfolio - Web Design & Brand Projects"
+          description="Explore Design Groove's portfolio of high-converting websites and brand projects. See how we've helped service businesses scale with strategic web design, development, and complete revenue systems."
+          keywords="web design portfolio, website design examples, brand design projects, service business websites, conversion-focused design, agency portfolio, case studies, website examples"
           breadcrumb={[
             { name: 'Home', url: 'https://designgroove.io' },
             { name: 'Our Work', url: 'https://designgroove.io/work' }

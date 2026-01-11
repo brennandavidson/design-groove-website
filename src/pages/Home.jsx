@@ -66,9 +66,10 @@ const Home = ({ isLoaded }) => {
 
   return (
     <>
-      <SEO 
-        title="Home"
-        description="We build revenue systems for businesses that are done winging it. Strategy, design, development, and automation under one roof."
+      <SEO
+        title="Web Design & Digital Marketing Agency"
+        description="Design Groove is a premium web design and digital marketing agency. We build high-converting websites, brands, and revenue systems for service businesses ready to scale. Strategy, design, development, and automation under one roof."
+        keywords="web design agency, digital marketing agency, website development, brand design, conversion optimization, service business marketing, lead generation, business automation, revenue systems, high-converting websites"
       />
       {/* Sticky Header & Hero Container */}
       <div className="home-hero-wrapper">

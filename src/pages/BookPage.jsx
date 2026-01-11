@@ -54,9 +54,10 @@ const BookPage = () => {
       flexDirection: 'column',
       alignItems: 'center'
     }}>
-      <SEO 
-        title="Book a Call"
-        description="Schedule a discovery call with Design Groove to discuss your project goals."
+      <SEO
+        title="Book a Free Discovery Call"
+        description="Schedule a free discovery call with Design Groove. Let's discuss your goals, scope, and timeline for your website, brand, or complete revenue system project. No pressure, just a conversation about what you need."
+        keywords="book a call, free consultation, discovery call, web design consultation, project discussion, schedule meeting, website inquiry"
         breadcrumb={[
           { name: 'Home', url: 'https://designgroove.io' },
           { name: 'Book a Call', url: 'https://designgroove.io/book' }

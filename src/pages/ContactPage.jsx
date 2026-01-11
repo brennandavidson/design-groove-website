@@ -81,9 +81,10 @@ const ContactPage = () => {
 
   return (
     <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', width: '100%' }}>
-      <SEO 
-        title="Contact"
-        description="Ready to start? Get in touch with us to discuss your project."
+      <SEO
+        title="Contact Us - Start Your Project"
+        description="Ready to build a high-converting website and revenue system for your business? Contact Design Groove to discuss your project. Get a custom proposal for web design, brand development, and digital marketing."
+        keywords="contact Design Groove, web design inquiry, website project quote, digital marketing consultation, get in touch, start a project, hire web designer"
         breadcrumb={[
           { name: 'Home', url: 'https://designgroove.io' },
           { name: 'Contact', url: 'https://designgroove.io/contact' }
