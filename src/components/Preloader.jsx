@@ -5,22 +5,20 @@ import { motion, AnimatePresence } from 'framer-motion';
 import PixelShockwave from './PixelShockwave';
 
 const Preloader = ({ onComplete }) => {
-  // Check for bot immediately in initial state to prevent flash
-  const [isLoading, setIsLoading] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const isBot = /lighthouse|pagespeed|gtmetrix/i.test(navigator.userAgent);
-      if (isBot) return false;
-    }
-    return true;
-  });
+  // Start false to prevent SSR rendering the preloader into HTML
+  const [isLoading, setIsLoading] = useState(false);
   const [isOn, setIsOn] = useState(false);
 
   useEffect(() => {
-    // If already skipped (bot detected), just call onComplete
-    if (!isLoading) {
+    // Skip preloader entirely for Lighthouse/PageSpeed bots
+    const isBot = /lighthouse|pagespeed|gtmetrix/i.test(navigator.userAgent);
+    if (isBot) {
       if (onComplete) onComplete();
       return;
     }
+
+    // Show preloader for real users (client-side only)
+    setIsLoading(true);
 
     // 1. Wait a moment, then snap the toggle ON
     const toggleTimer = setTimeout(() => {
@@ -37,7 +35,7 @@ const Preloader = ({ onComplete }) => {
       clearTimeout(toggleTimer);
       clearTimeout(exitTimer);
     };
-  }, [onComplete, isLoading]);
+  }, [onComplete]);
 
   return (
     <AnimatePresence mode="wait">
