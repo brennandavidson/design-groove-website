@@ -121,6 +121,7 @@ const VerticalSlider = ({ orientation = 'vertical' }) => {
            // Optimization logic
            const isFirst = index === 0;
            const srcSet = item.imageSource ? `
+             ${urlFor(item.imageSource).width(300).url()} 300w,
              ${urlFor(item.imageSource).width(600).url()} 600w,
              ${urlFor(item.imageSource).width(1000).url()} 1000w,
              ${urlFor(item.imageSource).width(1600).url()} 1600w
@@ -128,7 +129,7 @@ const VerticalSlider = ({ orientation = 'vertical' }) => {
            
            const sizes = isVertical 
              ? '(max-width: 900px) 100vw, 40vw' // Desktop: ~30-40vw
-             : '100vw'; // Mobile: 100vw (horizontal slider)
+             : '(max-width: 600px) 50vw, 80vw'; // Mobile horizontal: height constrained, so width is usually < 100vw
 
            return (
            <div 
@@ -159,7 +160,7 @@ const VerticalSlider = ({ orientation = 'vertical' }) => {
              src={item.imageUrl} 
              srcSet={srcSet}
              sizes={sizes}
-             alt="Work" 
+             alt={item.slug?.current || "Project Thumbnail"} 
              loading={isFirst ? "eager" : "lazy"}
              fetchPriority={isFirst ? "high" : "auto"}
              style={{ 
