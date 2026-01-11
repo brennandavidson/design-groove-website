@@ -9,6 +9,10 @@ const toAbsolute = (p) => path.resolve(__dirname, p)
 const template = fs.readFileSync(toAbsolute('dist/index.html'), 'utf-8')
 const { render } = await import('./dist/server/entry-server.js')
 
+// Find and read the CSS file for inlining
+const cssFileName = fs.readdirSync(toAbsolute('dist/assets')).find(f => f.endsWith('.css'))
+const cssContent = cssFileName ? fs.readFileSync(toAbsolute(`dist/assets/${cssFileName}`), 'utf-8') : ''
+
 // Base routes
 let routes = [
   '/',
@@ -57,11 +61,13 @@ let routes = [
       ${helmet.meta ? helmet.meta.toString() : ''}
       ${helmet.link ? helmet.link.toString() : ''}
       ${helmet.script ? helmet.script.toString() : ''}
+      ${cssContent ? `<style>${cssContent}</style>` : ''}
     `
 
     const htmlFile = template
       .replace(`<!--app-head-->`, helmetHtml)
       .replace(`<!--app-html-->`, appHtml)
+      .replace(/<link rel="stylesheet"[^>]*href="\/assets\/[^"]+\.css"[^>]*>/, '') // Remove external CSS link
 
     const filePath = `dist${url === '/' ? '/index.html' : `${url}/index.html`}`
     const dirPath = path.dirname(filePath)
@@ -87,11 +93,13 @@ let routes = [
     ${helmet.link ? helmet.link.toString() : ''}
     ${helmet.script ? helmet.script.toString() : ''}
     <script>window.__IS_404__ = true;</script>
+    ${cssContent ? `<style>${cssContent}</style>` : ''}
   `
 
   const htmlFile = template
     .replace(`<!--app-head-->`, helmetHtml)
     .replace(`<!--app-html-->`, appHtml)
+    .replace(/<link rel="stylesheet"[^>]*href="\/assets\/[^"]+\.css"[^>]*>/, '') // Remove external CSS link
 
   fs.writeFileSync(toAbsolute('dist/404.html'), htmlFile)
   console.log('pre-rendered: dist/404.html')
