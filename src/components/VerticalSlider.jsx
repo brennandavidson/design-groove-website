@@ -18,17 +18,21 @@ const VerticalSlider = ({ orientation = 'vertical' }) => {
           // Prioritize raw objects for optimization
           const source = p.rawHeroImage || p.rawImage;
           let imageUrl;
+          let imageSource = source; // Store source for srcset generation
+
           if (source) {
-            // Fetch width-constrained but aspect-ratio preserved image
+            // Default fallback
             imageUrl = urlFor(source).width(1000).url();
           } else {
             // Fallback to string URL if raw object missing
             imageUrl = p.heroImage || p.image;
+            imageSource = null;
           }
           
           return {
             imageUrl,
-            status: p.sliderHoverStatus || 'case-study', // Default to case-study if undefined
+            imageSource, // Pass source
+            status: p.sliderHoverStatus || 'case-study', 
             slug: p.slug
           };
         });
@@ -113,7 +117,20 @@ const VerticalSlider = ({ orientation = 'vertical' }) => {
         }
       `}</style>
       <div className={`slider-track-${orientation}`} style={{ pointerEvents: isVertical ? 'auto' : 'none' }}>
-        {displayItems.map((item, index) => (
+        {displayItems.map((item, index) => {
+           // Optimization logic
+           const isFirst = index === 0;
+           const srcSet = item.imageSource ? `
+             ${urlFor(item.imageSource).width(600).url()} 600w,
+             ${urlFor(item.imageSource).width(1000).url()} 1000w,
+             ${urlFor(item.imageSource).width(1600).url()} 1600w
+           ` : undefined;
+           
+           const sizes = isVertical 
+             ? '(max-width: 900px) 100vw, 40vw' // Desktop: ~30-40vw
+             : '100vw'; // Mobile: 100vw (horizontal slider)
+
+           return (
            <div 
            key={index}
            onMouseEnter={() => setHoverText(getCursorText(item.status))}
@@ -140,18 +157,23 @@ const VerticalSlider = ({ orientation = 'vertical' }) => {
          >
            <img 
              src={item.imageUrl} 
+             srcSet={srcSet}
+             sizes={sizes}
              alt="Work" 
-            style={{ 
-              width: isVertical ? '100%' : 'auto', 
-              height: isVertical ? 'auto' : '100%', 
-              objectFit: 'cover',
-              display: 'block',
-              backfaceVisibility: 'hidden',
-              pointerEvents: 'none' // Prevent image drag/interaction
-            }} 
+             loading={isFirst ? "eager" : "lazy"}
+             fetchPriority={isFirst ? "high" : "auto"}
+             style={{ 
+               width: isVertical ? '100%' : 'auto', 
+               height: isVertical ? 'auto' : '100%', 
+               objectFit: 'cover',
+               display: 'block',
+               backfaceVisibility: 'hidden',
+               pointerEvents: 'none' // Prevent image drag/interaction
+             }} 
           />
         </div>
-       ))}
+       );
+       })}
       </div>
     </div>
   );
