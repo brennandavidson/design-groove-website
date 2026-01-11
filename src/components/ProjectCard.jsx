@@ -144,14 +144,15 @@ const ProjectCard = ({ project, index, setHoveredProject }) => {
               )}
 
               <img
-                src={project.rawImage ? urlFor(project.rawImage).width(800).url() : project.image}
+                src={project.rawImage ? urlFor(project.rawImage).width(1200).url() : project.image}
                 srcSet={project.rawImage ? `
-                  ${urlFor(project.rawImage).width(400).url()} 400w,
                   ${urlFor(project.rawImage).width(600).url()} 600w,
                   ${urlFor(project.rawImage).width(900).url()} 900w,
-                  ${urlFor(project.rawImage).width(1200).url()} 1200w
+                  ${urlFor(project.rawImage).width(1200).url()} 1200w,
+                  ${urlFor(project.rawImage).width(1800).url()} 1800w,
+                  ${urlFor(project.rawImage).width(2400).url()} 2400w
                 ` : undefined}
-                sizes="(max-width: 900px) 92vw, 48vw"
+                sizes="(max-width: 900px) 95vw, 50vw"
                 alt={project.title}
                 loading={index < 2 ? "eager" : "lazy"} // Eager load first 2
                 width="800" // Explicit width/height to prevent CLS

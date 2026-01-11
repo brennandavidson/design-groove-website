@@ -18,13 +18,14 @@ const myPortableTextComponents = {
       return (
         <div style={{ margin: '4rem 0' }}>
           <img
-            src={urlFor(value).width(1200).url()}
+            src={urlFor(value).width(1600).url()}
             srcSet={`
-              ${urlFor(value).width(600).url()} 600w,
-              ${urlFor(value).width(900).url()} 900w,
-              ${urlFor(value).width(1200).url()} 1200w
+              ${urlFor(value).width(800).url()} 800w,
+              ${urlFor(value).width(1200).url()} 1200w,
+              ${urlFor(value).width(1600).url()} 1600w,
+              ${urlFor(value).width(2400).url()} 2400w
             `}
-            sizes="(max-width: 900px) 100vw, 800px"
+            sizes="(max-width: 900px) 100vw, 1200px"
             alt={value.alt || 'Case study image'}
             loading="lazy"
             style={{ 
