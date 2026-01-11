@@ -18,6 +18,9 @@ export default defineConfig({
   resolve: {
     dedupe: ['react', 'react-dom', 'three'],
   },
+  build: {
+    chunkSizeWarningLimit: 1000,
+  },
   ssr: {
     noExternal: ['react-helmet-async'],
   },
