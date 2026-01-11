@@ -27,10 +27,11 @@ const Preloader = ({ onComplete }) => {
       setIsOn(true);
     }, 400);
 
+    // Exit after toggle + 1.2s for full animation to complete
     const exitTimer = setTimeout(() => {
       setIsLoading(false);
       if (onComplete) onComplete();
-    }, 1200);
+    }, 1600);
 
     return () => {
       clearTimeout(toggleTimer);
