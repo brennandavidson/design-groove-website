@@ -276,7 +276,7 @@ const Navbar = () => {
                 transition: 'all 0.3s ease'
               }}
             >
-              Get in Touch
+              Book a Call
             </a>
 
             {/* Inline Hamburger for Compact Desktop (900-1800px) */}
@@ -420,7 +420,7 @@ const Navbar = () => {
                   transition: 'all 0.3s ease'
                 }}
               >
-                Get in Touch
+                Book a Call
               </a>
 
                {/* Inline Hamburger for Compact Desktop (900-1220px) */}
@@ -685,7 +685,7 @@ const Navbar = () => {
                   display: 'inline-block'
                 }}
             >
-              Get in Touch
+              Book a Call
             </motion.a>
           </motion.div>
         )}

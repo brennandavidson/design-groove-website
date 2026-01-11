@@ -187,7 +187,7 @@ const Contact = () => {
               e.target.style.color = '#ffffff';
             }}
           >
-            Get in Touch
+            Book a Call
           </a>
         </motion.div>
       </div>
