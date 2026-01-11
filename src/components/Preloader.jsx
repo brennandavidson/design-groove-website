@@ -20,13 +20,13 @@ const Preloader = ({ onComplete }) => {
     // 1. Wait a moment, then snap the toggle ON
     const toggleTimer = setTimeout(() => {
       setIsOn(true);
-    }, 300); // Reduced from 800ms
+    }, 400);
 
     // 2. Wait for the toggle animation + delight pause, then slide up
     const exitTimer = setTimeout(() => {
       setIsLoading(false);
       if (onComplete) onComplete();
-    }, 800); // Reduced from 2200ms
+    }, 1200); // 1.2s total for real users
 
     return () => {
       clearTimeout(toggleTimer);
