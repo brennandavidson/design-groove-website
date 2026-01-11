@@ -42,8 +42,8 @@ const Home = ({ isLoaded }) => {
     // When refreshing at the bottom, the browser initially reports window.scrollY as 0
     // before restoring the scroll position a split second later.
     // If we check immediately, we see 0, show the Hero (Flash), and then the browser jumps down.
-    // By waiting 50ms, we allow the restoration to complete, so we read the CORRECT scroll position.
-    const timer = setTimeout(handleScroll, 50);
+    // By waiting 200ms, we allow the restoration to complete, so we read the CORRECT scroll position.
+    const timer = setTimeout(handleScroll, 200);
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
