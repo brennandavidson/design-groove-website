@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
+import SEO from '../components/SEO';
 
 const NotFound = () => {
   const [isHovered, setIsHovered] = useState(false);
@@ -18,10 +18,7 @@ const NotFound = () => {
       position: 'relative',
       zIndex: 100 // Ensure it sits on top
     }}>
-      <Helmet>
-        <title>Page Not Found | Design Groove</title>
-        <meta name="robots" content="noindex" />
-      </Helmet>
+      <SEO title="Page Not Found" />
 
       {/* Toggle Container */}
       <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '30px' }}>

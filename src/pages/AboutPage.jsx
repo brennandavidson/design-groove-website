@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Helmet } from 'react-helmet-async';
+import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
 import Credibility from '../components/Credibility';
 import Testimonials from '../components/Testimonials';
@@ -41,10 +41,14 @@ const AboutPage = () => {
 
   return (
     <div ref={containerRef} style={{ backgroundColor: '#ffffff', minHeight: '100vh', width: '100%' }}>
-      <Helmet>
-        <title>About | Design Groove</title>
-        <meta name="description" content="Meet the team behind Design Groove. Strategy, design, development, and automation under one roof." />
-      </Helmet>
+      <SEO 
+        title="About"
+        description="Meet the team behind Design Groove. Strategy, design, development, and automation under one roof."
+        breadcrumb={[
+          { name: 'Home', url: 'https://designgroove.io' },
+          { name: 'About', url: 'https://designgroove.io/about' }
+        ]}
+      />
       
       {/* 1. HERO / OPENING FRAME */}
       {/* Editorial Style: Massive Typographic Statement */}

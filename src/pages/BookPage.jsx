@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { InlineWidget } from "react-calendly";
-import { Helmet } from 'react-helmet-async';
+import SEO from '../components/SEO';
 
 const BookPage = () => {
   const [windowWidth, setWindowWidth] = useState(0);
@@ -54,10 +54,14 @@ const BookPage = () => {
       flexDirection: 'column',
       alignItems: 'center'
     }}>
-      <Helmet>
-        <title>Book a Call | Design Groove</title>
-        <meta name="description" content="Schedule a discovery call with Design Groove to discuss your project goals." />
-      </Helmet>
+      <SEO 
+        title="Book a Call"
+        description="Schedule a discovery call with Design Groove to discuss your project goals."
+        breadcrumb={[
+          { name: 'Home', url: 'https://designgroove.io' },
+          { name: 'Book a Call', url: 'https://designgroove.io/book' }
+        ]}
+      />
 
       {/* Calendly Inline Widget */}
       <div style={{

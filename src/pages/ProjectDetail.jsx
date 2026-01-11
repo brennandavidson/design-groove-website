@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { PortableText } from '@portabletext/react';
 import ProjectCard from '../components/ProjectCard';
 import ProjectCursor from '../components/ProjectCursor';
-import { Helmet } from 'react-helmet-async';
+import SEO from '../components/SEO';
 
 // Custom component for rendering Sanity images in Portable Text
 const myPortableTextComponents = {
@@ -151,9 +151,7 @@ const ProjectDetail = () => {
         justifyContent: 'center',
         paddingTop: '100px'
       }}>
-        <Helmet>
-          <title>Project Not Found | Design Groove</title>
-        </Helmet>
+        <SEO title="Project Not Found" />
         <h2 style={{ fontFamily: 'Instrument Serif', fontSize: '3rem' }}>Project Not Found</h2>
         <Link to="/work" style={{
           marginTop: '2rem',
@@ -170,10 +168,17 @@ const ProjectDetail = () => {
 
   return (
     <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', width: '100%' }}>
-      <Helmet>
-        <title>{project.title} | Design Groove</title>
-        <meta name="description" content={`Case study for ${project.title}. ${project.challenge || ''}`} />
-      </Helmet>
+      <SEO 
+        title={project.title}
+        description={`Case study for ${project.title}. ${project.challenge || ''}`}
+        image={project.image ? urlFor(project.image).width(1200).height(630).url() : undefined}
+        project={project}
+        breadcrumb={[
+          { name: 'Home', url: 'https://designgroove.io' },
+          { name: 'Our Work', url: 'https://designgroove.io/work' },
+          { name: project.title, url: `https://designgroove.io/work/${project.slug.current}` }
+        ]}
+      />
       <style>{`
         .project-detail-container {
           padding: 12rem 4vw 12rem;

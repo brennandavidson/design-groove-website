@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Helmet } from 'react-helmet-async';
+import SEO from '../components/SEO';
 
 const ContactPage = () => {
   const [windowWidth, setWindowWidth] = useState(0);
@@ -81,10 +81,14 @@ const ContactPage = () => {
 
   return (
     <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', width: '100%' }}>
-      <Helmet>
-        <title>Contact | Design Groove</title>
-        <meta name="description" content="Ready to start? Get in touch with us to discuss your project." />
-      </Helmet>
+      <SEO 
+        title="Contact"
+        description="Ready to start? Get in touch with us to discuss your project."
+        breadcrumb={[
+          { name: 'Home', url: 'https://designgroove.io' },
+          { name: 'Contact', url: 'https://designgroove.io/contact' }
+        ]}
+      />
 
       {/* Outer wrapper with side padding */}
       <section style={{

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet-async';
+import SEO from '../components/SEO';
 import AnimatedHeading from '../components/AnimatedHeading';
 import ProjectCursor from '../components/ProjectCursor';
 import ProjectCard from '../components/ProjectCard';
@@ -46,10 +46,14 @@ const WorkCollection = () => {
       <section className="section-spacing work-collection-padding" style={{ 
         minHeight: '100vh' 
       }}>
-        <Helmet>
-          <title>Our Work | Design Groove</title>
-          <meta name="description" content="Check out our recent projects. We help businesses grow through strategic design and development." />
-        </Helmet>
+        <SEO 
+          title="Our Work"
+          description="Check out our recent projects. We help businesses grow through strategic design and development."
+          breadcrumb={[
+            { name: 'Home', url: 'https://designgroove.io' },
+            { name: 'Our Work', url: 'https://designgroove.io/work' }
+          ]}
+        />
         {/* Global Cursor for this section */}
         <ProjectCursor isHovered={hoveredProject !== null} />
 
