@@ -1,8 +1,7 @@
-'use client';
-
 import React, { useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import Link from 'next/link';
+import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 import Contact from '../components/Contact';
 
 // --- NEW WIDGET DEFINITIONS ---
@@ -811,7 +810,7 @@ const faqData = [
     q: "How do I get started?", 
     a: (
       <>
-        <Link href="/book" style={{ color: '#1a1a1a', textDecoration: 'underline', fontWeight: 500 }}>Book a call</Link> or fill out our <Link href="/contact" style={{ color: '#1a1a1a', textDecoration: 'underline', fontWeight: 500 }}>contact form</Link>. We'll schedule a quick intro call to align on your goals, scope, and timeline. From there, we'll craft a tailored proposal and set a clear start date that works for both of us.
+        <Link to="/book" style={{ color: '#1a1a1a', textDecoration: 'underline', fontWeight: 500 }}>Book a call</Link> or fill out our <Link to="/contact" style={{ color: '#1a1a1a', textDecoration: 'underline', fontWeight: 500 }}>contact form</Link>. We’ll schedule a quick intro call to align on your goals, scope, and timeline. From there, we’ll craft a tailored proposal and set a clear start date that works for both of us.
       </>
     )
   },
@@ -867,11 +866,10 @@ const AccordionItem = ({ q, a, index }) => {
 // --- PAGE COMPONENT ---
 
 const ProcessPage = () => {
-  const [windowWidth, setWindowWidth] = React.useState(1200); // Default for SSR
+  const [windowWidth, setWindowWidth] = React.useState(0);
   const [isButtonHovered, setIsButtonHovered] = React.useState(false);
 
   useEffect(() => {
-    // Set initial width on mount
     setWindowWidth(window.innerWidth);
     const handleResize = () => setWindowWidth(window.innerWidth);
     window.addEventListener('resize', handleResize);
@@ -998,6 +996,10 @@ const ProcessPage = () => {
 
   return (
     <div ref={containerRef} style={{ width: '100%', minHeight: '100vh', backgroundColor: '#ffffff', paddingTop: 0, position: 'relative' }}>
+      <Helmet>
+        <title>Our Process | Design Groove</title>
+        <meta name="description" content="From audit to launch and beyond. See how we build revenue systems step-by-step." />
+      </Helmet>
       
       {/* Scroll Thread - Connecting Line */}
       <motion.div 

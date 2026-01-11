@@ -1,8 +1,7 @@
-'use client';
-
 import React, { useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import Link from 'next/link';
+import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 import Credibility from '../components/Credibility';
 import Testimonials from '../components/Testimonials';
 import Contact from '../components/Contact';
@@ -19,10 +18,9 @@ const revealVariants = {
 };
 
 const AboutPage = () => {
-  const [windowWidth, setWindowWidth] = React.useState(1200); // Default for SSR
+  const [windowWidth, setWindowWidth] = React.useState(0);
 
   useEffect(() => {
-    // Set initial width on mount
     setWindowWidth(window.innerWidth);
     const handleResize = () => setWindowWidth(window.innerWidth);
     window.addEventListener('resize', handleResize);
@@ -43,6 +41,10 @@ const AboutPage = () => {
 
   return (
     <div ref={containerRef} style={{ backgroundColor: '#ffffff', minHeight: '100vh', width: '100%' }}>
+      <Helmet>
+        <title>About | Design Groove</title>
+        <meta name="description" content="Meet the team behind Design Groove. Strategy, design, development, and automation under one roof." />
+      </Helmet>
       
       {/* 1. HERO / OPENING FRAME */}
       {/* Editorial Style: Massive Typographic Statement */}

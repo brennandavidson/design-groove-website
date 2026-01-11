@@ -1,13 +1,11 @@
-'use client';
-
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 
 const ContactPage = () => {
-  const [windowWidth, setWindowWidth] = useState(1200); // Default for SSR
+  const [windowWidth, setWindowWidth] = useState(0);
 
   useEffect(() => {
-    // Set initial width on mount
     setWindowWidth(window.innerWidth);
     const handleResize = () => setWindowWidth(window.innerWidth);
     window.addEventListener('resize', handleResize);
@@ -83,6 +81,10 @@ const ContactPage = () => {
 
   return (
     <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', width: '100%' }}>
+      <Helmet>
+        <title>Contact | Design Groove</title>
+        <meta name="description" content="Ready to start? Get in touch with us to discuss your project." />
+      </Helmet>
 
       {/* Outer wrapper with side padding */}
       <section style={{

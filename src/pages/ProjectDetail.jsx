@@ -9,6 +9,7 @@ import { motion } from 'framer-motion';
 import { PortableText } from '@portabletext/react';
 import ProjectCard from '../components/ProjectCard';
 import ProjectCursor from '../components/ProjectCursor';
+import { Helmet } from 'react-helmet-async';
 
 // Custom component for rendering Sanity images in Portable Text
 const myPortableTextComponents = {
@@ -149,11 +150,14 @@ const ProjectDetail = () => {
         width: '100%', 
         backgroundColor: '#ffffff', 
         display: 'flex', 
-        flexDirection: 'column',
+        flexDirection: 'column', 
         alignItems: 'center', 
         justifyContent: 'center',
         paddingTop: '100px'
       }}>
+        <Helmet>
+          <title>Project Not Found | Design Groove</title>
+        </Helmet>
         <h2 style={{ fontFamily: 'Instrument Serif', fontSize: '3rem' }}>Project Not Found</h2>
         <Link href="/work" style={{
           marginTop: '2rem',
@@ -170,6 +174,10 @@ const ProjectDetail = () => {
 
   return (
     <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', width: '100%' }}>
+      <Helmet>
+        <title>{project.title} | Design Groove</title>
+        <meta name="description" content={`Case study for ${project.title}. ${project.challenge || ''}`} />
+      </Helmet>
       <style>{`
         .project-detail-container {
           padding: 12rem 4vw 12rem;

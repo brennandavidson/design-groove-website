@@ -1,7 +1,6 @@
-'use client';
-
 import React, { useEffect } from 'react';
-import { usePathname } from 'next/navigation';
+import { useLocation } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import Hero from '../components/Hero';
 import Credibility from '../components/Credibility';
 import Work from '../components/Work';
@@ -11,7 +10,7 @@ import Testimonials from '../components/Testimonials';
 import Statement from '../components/Statement';
 
 const Home = ({ isLoaded }) => {
-  const pathname = usePathname();
+  const location = useLocation();
 
   // Optimization: Only render/show the fixed hero if it's actually in view (or close to it)
   // This prevents the "Flash of Hero" when refreshing at the bottom of the page
@@ -53,9 +52,8 @@ const Home = ({ isLoaded }) => {
   }, []);
 
   useEffect(() => {
-    // Handle hash navigation in Next.js
-    if (typeof window !== 'undefined' && window.location.hash) {
-      const targetId = window.location.hash.substring(1);
+    if (location.hash) {
+      const targetId = location.hash.substring(1);
       const element = document.getElementById(targetId);
       if (element) {
         // Small delay to ensure layout is ready (especially with Lenis)
@@ -64,10 +62,14 @@ const Home = ({ isLoaded }) => {
         }, 100);
       }
     }
-  }, [pathname]);
+  }, [location]);
 
   return (
     <>
+      <Helmet>
+        <title>Design Groove | Digital Agency</title>
+        <meta name="description" content="We build revenue systems for businesses that are done winging it. Strategy, design, development, and automation under one roof." />
+      </Helmet>
       {/* Sticky Header & Hero Container */}
       <div className="home-hero-wrapper">
         <div 

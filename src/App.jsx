@@ -17,13 +17,28 @@ import AboutPage from './pages/AboutPage';
 function App() {
   // Lazy initialization to prevent flashes and handle "first touch" logic correctly
   // If hasVisited is set, showPreloader starts as false
-  const [showPreloader, setShowPreloader] = useState(() => !sessionStorage.getItem('hasVisited'));
+  const [showPreloader, setShowPreloader] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return !sessionStorage.getItem('hasVisited');
+    }
+    return false;
+  });
   
   // If hasVisited is set, isLoaded starts as true (content ready)
-  const [isLoaded, setIsLoaded] = useState(() => !!sessionStorage.getItem('hasVisited'));
+  const [isLoaded, setIsLoaded] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return !!sessionStorage.getItem('hasVisited');
+    }
+    return true;
+  });
 
   // Initialize mobile state based on current width to prevent layout shifts
-  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 900);
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth < 900;
+    }
+    return false;
+  });
   
   // We rely on skeletons now for stable layout, so we don't need to delay Lenis.
   // However, forcing browser to handle restoration is key.
