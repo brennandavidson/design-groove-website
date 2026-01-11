@@ -18,7 +18,7 @@ export function urlFor(source) {
 // Fetch all projects (optionally excluding one ID)
 export async function getProjects(excludeId = null) {
   const query = excludeId 
-    ? `*[_type == "project" && _id != $excludeId] | order(order asc, year desc) {
+    ? `*[_type == "project" && _id != $excludeId && showInWorkList != false] | order(order asc, year desc) {
         _id,
         title,
         slug,
@@ -32,7 +32,7 @@ export async function getProjects(excludeId = null) {
         "rawImage": image,
         "rawHeroImage": heroImage
       }`
-    : `*[_type == "project"] | order(order asc, year desc) {
+    : `*[_type == "project" && showInWorkList != false] | order(order asc, year desc) {
         _id,
         title,
         slug,
