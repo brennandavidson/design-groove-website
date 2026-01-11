@@ -23,16 +23,25 @@ const ProjectCursor = ({ isHovered, text = "View Case Study" }) => {
 
   // Determine content based on text prop
   let content;
-  if (text.toLowerCase() === 'concept work' || text.toLowerCase() === 'case study coming soon') {
+  const lowerText = text.toLowerCase();
+
+  if (lowerText === 'concept work') {
     content = (
       <span style={{ fontStyle: 'italic' }}>
-        {text}
+        Concept Work
+      </span>
+    );
+  } else if (lowerText === 'case study coming soon') {
+    content = (
+      <span style={{ fontStyle: 'italic' }}>
+        Coming Soon
       </span>
     );
   } else {
+    // Default: "View Case Study" or any other status
     content = (
       <>
-        <span style={{ fontStyle: 'italic' }}>View</span> Project &rarr;
+        <span style={{ fontStyle: 'italic' }}>View</span> Case Study &rarr;
       </>
     );
   }
