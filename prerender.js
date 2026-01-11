@@ -24,11 +24,11 @@ let routes = [
   '/book',
 ]
 
-// Store LCP image URL for homepage preload
-let lcpImageUrl = null
+// Store LCP image URLs for homepage preload
+let lcpPreloads = []
 
 ;(async () => {
-  // Fetch dynamic routes and LCP image
+  // Fetch dynamic routes and LCP images
   try {
     console.log('Fetching project slugs...')
     const projects = await client.fetch(`*[_type == "project" && showInWorkList != false] | order(order asc, year desc) {
@@ -40,17 +40,19 @@ let lcpImageUrl = null
     routes = [...routes, ...projectRoutes]
     console.log(`Added ${projectRoutes.length} project routes.`)
 
-    // Get first project's hero image for LCP preload
-    if (projects.length > 0) {
-      const firstProject = projects[0]
-      const imageRef = firstProject.heroImageId || firstProject.imageId
+    // Preload first 2 project card images (these are eager loaded and likely LCP on mobile)
+    for (let i = 0; i < Math.min(2, projects.length); i++) {
+      const project = projects[i]
+      // ProjectCard uses image, not heroImage
+      const imageRef = project.imageId
       if (imageRef) {
-        // Convert Sanity image ref to URL (format: image-{id}-{dimensions}.{format})
-        const [, id, dimensions] = imageRef.match(/image-([a-zA-Z0-9]+)-(\d+x\d+)/) || []
-        if (id && dimensions) {
-          // Preload a mobile-optimized size (400px width for mobile LCP)
-          lcpImageUrl = `https://cdn.sanity.io/images/8jhw3vic/production/${id}-${dimensions}.webp?w=400&fm=webp&q=100`
-          console.log('LCP image URL for preload:', lcpImageUrl)
+        const match = imageRef.match(/image-([a-zA-Z0-9]+)-(\d+x\d+)/)
+        if (match) {
+          const [, id, dimensions] = match
+          // Mobile size for ProjectCard: ~400px wide (95vw on 400px viewport)
+          const url = `https://cdn.sanity.io/images/8jhw3vic/production/${id}-${dimensions}.webp?w=400&fm=webp&q=100`
+          lcpPreloads.push(url)
+          console.log(`LCP preload ${i + 1}:`, url)
         }
       }
     }
@@ -79,9 +81,9 @@ let lcpImageUrl = null
 
     const appHtml = html
 
-    // Add LCP preload for homepage only
-    const lcpPreload = (url === '/' && lcpImageUrl)
-      ? `<link rel="preload" as="image" href="${lcpImageUrl}" fetchpriority="high" />`
+    // Add LCP preloads for homepage only
+    const lcpPreload = (url === '/' && lcpPreloads.length > 0)
+      ? lcpPreloads.map(imgUrl => `<link rel="preload" as="image" href="${imgUrl}" fetchpriority="high" />`).join('\n      ')
       : ''
 
     const helmetHtml = `

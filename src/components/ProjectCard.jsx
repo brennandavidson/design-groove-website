@@ -160,9 +160,10 @@ const ProjectCard = ({ project, index, setHoveredProject }) => {
                 ` : undefined}
                 sizes="(max-width: 600px) 95vw, (max-width: 900px) 95vw, 45vw"
                 alt={project.title}
-                loading={index < 2 ? "eager" : "lazy"} // Eager load first 2
-                width="800" // Explicit width/height to prevent CLS
-                height="666" // Aspect ratio 1.2
+                loading={index < 2 ? "eager" : "lazy"}
+                fetchPriority={index < 2 ? "high" : "auto"}
+                width="800"
+                height="666"
                 style={{
                   width: '100%',
                   height: '100%',
