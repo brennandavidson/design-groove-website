@@ -1,8 +1,6 @@
-'use client';
-
 import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'framer-motion';
-import { usePathname, useRouter } from 'next/navigation';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const { scrollY } = useScroll();
@@ -16,8 +14,8 @@ const Navbar = () => {
   const [isAtBottom, setIsAtBottom] = useState(false);
   const [isAtTop, setIsAtTop] = useState(true);
 
-  const pathname = usePathname();
-  const router = useRouter();
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
   const isHomePage = pathname === '/';
   const isBookPage = pathname === '/book';
 
@@ -129,27 +127,27 @@ const Navbar = () => {
     setIsMenuOpen(false);
     
     if (item === 'Work') {
-      router.push('/work');
+      navigate('/work');
       return;
     }
 
     if (item === 'Services') {
-      router.push('/services');
+      navigate('/services');
       return;
     }
 
     if (item === 'Contact') {
-      router.push('/contact');
+      navigate('/contact');
       return;
     }
 
     if (item === 'Our Process') {
-      router.push('/process');
+      navigate('/process');
       return;
     }
 
     if (item === 'About') {
-      router.push('/about');
+      navigate('/about');
       return;
     }
 
@@ -162,7 +160,7 @@ const Navbar = () => {
       }
     } else {
       // Navigate to home with hash
-      router.push(`/#${targetId}`);
+      navigate(`/#${targetId}`);
       // Note: We might need a helper in Home to handle scroll on mount if hash is present
       // But standard browser behavior often works with hashes if handled correctly
       // Alternatively, use state
@@ -345,7 +343,7 @@ const Navbar = () => {
               alignItems: 'center'
             }}>
             {/* Logo */}
-            <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={() => router.push('/')}>
+            <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={() => navigate('/')}>
               <img 
                 src="/assets/dg-logo-dark.svg" 
                 alt="Design Groove" 
@@ -641,7 +639,7 @@ const Navbar = () => {
                 onClick={(e) => {
                   e.preventDefault();
                   setIsMenuOpen(false);
-                  router.push('/book');
+                  navigate('/book');
                 }}
                 initial="hidden"
                 animate="visible"

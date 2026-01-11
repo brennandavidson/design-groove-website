@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import AnimatedHeading from '../components/AnimatedHeading';
 import ProjectCursor from '../components/ProjectCursor';
 import ProjectCard from '../components/ProjectCard';

@@ -1,11 +1,9 @@
-'use client';
-
 import { useEffect, useRef } from 'react';
-import { usePathname } from 'next/navigation';
+import { useLocation } from 'react-router-dom';
 import { useLenis } from 'lenis/react';
 
 const ScrollToTop = () => {
-  const pathname = usePathname();
+  const { pathname } = useLocation();
   const lenis = useLenis();
   const prevPathname = useRef(pathname);
 

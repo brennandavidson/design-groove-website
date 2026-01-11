@@ -1,8 +1,5 @@
-'use client';
-
 import React, { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import Link from 'next/link';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { getProjectBySlug, urlFor } from '../lib/sanity';
 import Contact from '../components/Contact';
 import { motion } from 'framer-motion';
@@ -100,9 +97,8 @@ const myPortableTextComponents = {
 };
 
 const ProjectDetail = () => {
-  const params = useParams();
-  const slug = params?.slug;
-  const router = useRouter();
+  const { slug } = useParams();
+  const navigate = useNavigate();
   const [project, setProject] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [hoveredProject, setHoveredProject] = useState(null);
@@ -116,7 +112,7 @@ const ProjectDetail = () => {
       if (data) {
         // Redirect if status is concept or coming-soon
         if (data.sliderHoverStatus === 'concept' || data.sliderHoverStatus === 'coming-soon') {
-          router.replace('/work');
+          navigate('/work', { replace: true });
         } else {
           setProject(data);
         }
@@ -126,7 +122,7 @@ const ProjectDetail = () => {
       console.error("Project Fetch Error:", err);
       setIsLoading(false);
     });
-  }, [slug, router]);
+  }, [slug, navigate]);
 
   if (isLoading) {
     return (
@@ -159,7 +155,7 @@ const ProjectDetail = () => {
           <title>Project Not Found | Design Groove</title>
         </Helmet>
         <h2 style={{ fontFamily: 'Instrument Serif', fontSize: '3rem' }}>Project Not Found</h2>
-        <Link href="/work" style={{
+        <Link to="/work" style={{
           marginTop: '2rem',
           fontFamily: 'Inter',
           textTransform: 'uppercase',
@@ -561,7 +557,7 @@ const ProjectDetail = () => {
             }}>
               You Might Also Like
             </h2>
-            <Link href="/work" style={{
+            <Link to="/work" style={{
                fontFamily: 'Inter',
                fontSize: '1rem',
                textTransform: 'uppercase',

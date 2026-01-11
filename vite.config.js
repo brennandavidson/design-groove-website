@@ -18,4 +18,7 @@ export default defineConfig({
   resolve: {
     dedupe: ['react', 'react-dom', 'three'],
   },
+  ssr: {
+    noExternal: ['react-helmet-async'],
+  },
 })
