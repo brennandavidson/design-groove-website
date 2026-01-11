@@ -1,10 +1,11 @@
-/* Local Font Definitions */
+/* Local Font Definitions - WOFF2 format (65% smaller than TTF) */
 @font-face {
   font-family: 'Instrument Serif';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('/fonts/InstrumentSerif-Regular.ttf') format('truetype');
+  src: url('/fonts/InstrumentSerif-Regular.woff2') format('woff2'),
+       url('/fonts/InstrumentSerif-Regular.ttf') format('truetype');
 }
 
 @font-face {
@@ -12,7 +13,8 @@
   font-style: italic;
   font-weight: 400;
   font-display: swap;
-  src: url('/fonts/InstrumentSerif-Italic.ttf') format('truetype');
+  src: url('/fonts/InstrumentSerif-Italic.woff2') format('woff2'),
+       url('/fonts/InstrumentSerif-Italic.ttf') format('truetype');
 }
 
 @font-face {
@@ -20,7 +22,8 @@
   font-style: normal;
   font-weight: 300;
   font-display: swap;
-  src: url('/fonts/Inter-Light.ttf') format('truetype');
+  src: url('/fonts/Inter-Light.woff2') format('woff2'),
+       url('/fonts/Inter-Light.ttf') format('truetype');
 }
 
 @font-face {
@@ -28,7 +31,8 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('/fonts/Inter-Regular.ttf') format('truetype');
+  src: url('/fonts/Inter-Regular.woff2') format('woff2'),
+       url('/fonts/Inter-Regular.ttf') format('truetype');
 }
 
 @font-face {
@@ -36,7 +40,8 @@
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url('/fonts/Inter-Medium.ttf') format('truetype');
+  src: url('/fonts/Inter-Medium.woff2') format('woff2'),
+       url('/fonts/Inter-Medium.ttf') format('truetype');
 }
 
 @font-face {
@@ -44,7 +49,8 @@
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url('/fonts/Inter-SemiBold.ttf') format('truetype');
+  src: url('/fonts/Inter-SemiBold.woff2') format('woff2'),
+       url('/fonts/Inter-SemiBold.ttf') format('truetype');
 }
 
 .App {
