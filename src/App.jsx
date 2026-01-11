@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ReactLenis } from 'lenis/react';
 import { Routes, Route } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import './App.css';
 import Navbar from './components/Navbar';
 import Preloader from './components/Preloader';
@@ -69,6 +70,12 @@ function App() {
 
   const content = (
     <div className="App">
+      <Helmet>
+        <meta property="og:image" content="https://designgroove.io/og-image.jpg" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content="https://designgroove.io/og-image.jpg" />
+      </Helmet>
       <ScrollToTop />
       {/* Only render Preloader if it should be shown */}
       {showPreloader && <Preloader onComplete={() => setIsLoaded(true)} />}

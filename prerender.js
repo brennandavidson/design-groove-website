@@ -1,6 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { client } from './src/lib/sanity.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const toAbsolute = (p) => path.resolve(__dirname, p)
@@ -8,13 +9,8 @@ const toAbsolute = (p) => path.resolve(__dirname, p)
 const template = fs.readFileSync(toAbsolute('dist/index.html'), 'utf-8')
 const { render } = await import('./dist/server/entry-server.js')
 
-const routesToPrerender = fs.readdirSync(toAbsolute('src/pages')).map((file) => {
-  const name = file.replace(/\\.jsx$/, '').toLowerCase()
-  return name === 'home' ? '/' : `/${name}`
-})
-
-// Add dynamic routes or specific manual routes
-const routes = [
+// Base routes
+let routes = [
   '/',
   '/work',
   '/services',
@@ -25,6 +21,32 @@ const routes = [
 ]
 
 ;(async () => {
+  // Fetch dynamic routes
+  try {
+    console.log('Fetching project slugs...')
+    const projects = await client.fetch('*[_type == "project"]{ "slug": slug.current }')
+    const projectRoutes = projects.map(p => `/work/${p.slug}`)
+    routes = [...routes, ...projectRoutes]
+    console.log(`Added ${projectRoutes.length} project routes.`)
+  } catch (error) {
+    console.error('Failed to fetch project routes:', error)
+  }
+
+  // Generate Sitemap
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  ${routes.map(route => `
+  <url>
+    <loc>https://designgroove.io${route}</loc>
+    <changefreq>${route === '/' ? 'daily' : 'weekly'}</changefreq>
+    <priority>${route === '/' ? '1.0' : '0.8'}</priority>
+  </url>`).join('')}
+</urlset>`
+
+  fs.writeFileSync(toAbsolute('dist/sitemap.xml'), sitemap)
+  console.log('Generated sitemap.xml')
+
+  // Prerender pages
   for (const url of routes) {
     const context = {}
     const { html, helmet } = render(url, context)
