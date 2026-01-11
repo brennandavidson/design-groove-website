@@ -199,9 +199,7 @@ const Contact = () => {
         </div>
         <div className="footer-col-right">
           <Link to="/work" style={{ textTransform: 'uppercase', fontSize: '1rem', fontFamily: 'Inter', fontWeight: 500, color: '#1a1a1a', textDecoration: 'none' }}>Work</Link>
-          <Link to="/services" style={{ textTransform: 'uppercase', fontSize: '1rem', fontFamily: 'Inter', fontWeight: 500, color: '#1a1a1a', textDecoration: 'none' }}>Services</Link>
           <Link to="/process" style={{ textTransform: 'uppercase', fontSize: '1rem', fontFamily: 'Inter', fontWeight: 500, color: '#1a1a1a', textDecoration: 'none' }}>Our Process</Link>
-          <Link to="/about" style={{ textTransform: 'uppercase', fontSize: '1rem', fontFamily: 'Inter', fontWeight: 500, color: '#1a1a1a', textDecoration: 'none' }}>About</Link>
           <Link to="/contact" style={{ textTransform: 'uppercase', fontSize: '1rem', fontFamily: 'Inter', fontWeight: 500, color: '#1a1a1a', textDecoration: 'none' }}>Contact</Link>
         </div>
       </div>
