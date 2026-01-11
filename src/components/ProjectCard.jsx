@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { urlFor } from '../lib/sanity';
 
 const ProjectCard = ({ project, index, setHoveredProject }) => {
   const [isHovered, setHovered] = useState(false);
@@ -143,8 +144,17 @@ const ProjectCard = ({ project, index, setHoveredProject }) => {
               )}
 
               <img
-                src={project.image}
+                src={project.rawImage ? urlFor(project.rawImage).width(800).url() : project.image}
+                srcSet={project.rawImage ? `
+                  ${urlFor(project.rawImage).width(600).url()} 600w,
+                  ${urlFor(project.rawImage).width(900).url()} 900w,
+                  ${urlFor(project.rawImage).width(1200).url()} 1200w
+                ` : undefined}
+                sizes="(max-width: 900px) 100vw, 50vw"
                 alt={project.title}
+                loading={index < 2 ? "eager" : "lazy"} // Eager load first 2
+                width="800" // Explicit width/height to prevent CLS
+                height="666" // Aspect ratio 1.2
                 style={{
                   width: '100%',
                   height: '100%',

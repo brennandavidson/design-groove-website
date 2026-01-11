@@ -92,6 +92,13 @@ const OverviewItem = ({ item, index, scrollToSection }) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.4 + (index * 0.1), duration: 0.6 }}
       onClick={scrollToSection}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          scrollToSection();
+        }
+      }}
+      role="button"
+      tabIndex={0}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       style={{ 
@@ -263,8 +270,14 @@ const MobileScrollLayout = ({ serviceData }) => {
               transition={{ duration: 1, ease: "easeInOut" }} // Smoother transition
             >
               <img
-                src={service.image}
+                src={getUnsplashUrl(service.image, 800)}
+                srcSet={`
+                  ${getUnsplashUrl(service.image, 400)} 400w,
+                  ${getUnsplashUrl(service.image, 800)} 800w
+                `}
+                sizes="100vw"
                 alt={service.title}
+                loading={index === 0 ? "eager" : "lazy"}
                 style={{ 
                   width: '100%', 
                   height: '100%', 
@@ -344,7 +357,7 @@ const MobileScrollLayout = ({ serviceData }) => {
                           <span key={i} style={{ 
                               fontFamily: 'Inter', 
                               fontSize: '0.85rem', 
-                              color: '#888', // Lighter grey per request
+                              color: '#595959', // Darker grey for contrast (AA compliant)
                               lineHeight: 1.4
                           }}>
                             {item}
@@ -414,7 +427,7 @@ const ServiceSection = React.forwardRef(({ service, index, isMobile }, ref) => {
           {/* Left Column */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             {leftCol.map((item, i) => (
-              <span key={i} style={{ fontFamily: 'Inter', fontSize: '0.95rem', color: '#888', lineHeight: 1.4 }}>
+              <span key={i} style={{ fontFamily: 'Inter', fontSize: '0.95rem', color: '#595959', lineHeight: 1.4 }}>
                 {item}
               </span>
             ))}
@@ -422,7 +435,7 @@ const ServiceSection = React.forwardRef(({ service, index, isMobile }, ref) => {
           {/* Right Column */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             {rightCol.map((item, i) => (
-              <span key={i} style={{ fontFamily: 'Inter', fontSize: '0.95rem', color: '#888', lineHeight: 1.4 }}>
+              <span key={i} style={{ fontFamily: 'Inter', fontSize: '0.95rem', color: '#595959', lineHeight: 1.4 }}>
                 {item}
               </span>
             ))}
@@ -433,6 +446,13 @@ const ServiceSection = React.forwardRef(({ service, index, isMobile }, ref) => {
     </div>
   );
 });
+
+// Helper to optimize Unsplash URLs
+const getUnsplashUrl = (url, width) => {
+  if (!url) return '';
+  const baseUrl = url.split('?')[0];
+  return `${baseUrl}?q=80&w=${width}&auto=format&fit=crop`;
+};
 
 // Component to handle the sticky image reveal based on scroll
 const StickyImageLayer = ({ service, triggerRef, index, isFirst }) => {
@@ -464,8 +484,15 @@ const StickyImageLayer = ({ service, triggerRef, index, isFirst }) => {
       }}
     >
       <img 
-        src={service.image} 
+        src={getUnsplashUrl(service.image, 1600)}
+        srcSet={`
+          ${getUnsplashUrl(service.image, 800)} 800w,
+          ${getUnsplashUrl(service.image, 1200)} 1200w,
+          ${getUnsplashUrl(service.image, 2000)} 2000w
+        `}
+        sizes="(max-width: 900px) 100vw, 50vw"
         alt={service.title}
+        loading={isFirst ? "eager" : "lazy"}
         style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
       />
     </motion.div>

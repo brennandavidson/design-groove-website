@@ -288,6 +288,7 @@ const Navbar = () => {
             {viewportWidth > 900 && viewportWidth < 1800 && (
               <button
                 onClick={toggleMenu}
+                aria-label="Toggle menu"
                 style={{
                   background: 'transparent',
                   border: 'none',
@@ -432,6 +433,7 @@ const Navbar = () => {
                {viewportWidth > 900 && viewportWidth < 1220 && (
                 <button
                   onClick={toggleMenu}
+                  aria-label="Toggle menu"
                   style={{
                     background: 'transparent',
                     border: 'none',
@@ -502,6 +504,7 @@ const Navbar = () => {
         }}
         transition={{ duration: 0.3 }}
         onClick={toggleMenu}
+        aria-label="Toggle menu"
         style={{
           position: 'fixed',
           top: viewportWidth <= 900 ? '10px' : '2rem', // Center in 60px nav (10 top + 40 height + 10 bottom = 60)

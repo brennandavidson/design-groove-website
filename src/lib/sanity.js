@@ -12,7 +12,7 @@ export const client = createClient({
 const builder = createImageUrlBuilder(client)
 
 export function urlFor(source) {
-  return builder.image(source)
+  return builder.image(source).auto('format').fit('max')
 }
 
 // Fetch all projects (optionally excluding one ID)
@@ -69,12 +69,16 @@ export async function getProjectBySlug(slug) {
       content,
       testimonial,
       sliderHoverStatus,
-        "image": image.asset->url,
-        "hoverVideo": hoverVideo.asset->url,
-        "detailHeroImage": detailHeroImage.asset->url,
+      "image": image.asset->url,
+      "hoverVideo": hoverVideo.asset->url,
+      "detailHeroImage": detailHeroImage.asset->url,
       "heroImage": heroImage.asset->url,
       "challengeImage": challengeImage.asset->url,
-      "solutionImage": solutionImage.asset->url
+      "solutionImage": solutionImage.asset->url,
+      "rawDetailHeroImage": detailHeroImage,
+      "rawChallengeImage": challengeImage,
+      "rawSolutionImage": solutionImage,
+      "rawImage": image
     }
   `, { slug });
 

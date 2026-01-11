@@ -18,8 +18,15 @@ const myPortableTextComponents = {
       return (
         <div style={{ margin: '4rem 0' }}>
           <img
-            src={urlFor(value).width(1600).url()}
+            src={urlFor(value).width(1200).url()}
+            srcSet={`
+              ${urlFor(value).width(600).url()} 600w,
+              ${urlFor(value).width(900).url()} 900w,
+              ${urlFor(value).width(1200).url()} 1200w
+            `}
+            sizes="(max-width: 900px) 100vw, 800px"
             alt={value.alt || 'Case study image'}
+            loading="lazy"
             style={{ 
               width: '100%', 
               height: 'auto', 
@@ -387,8 +394,16 @@ const ProjectDetail = () => {
 
           {(project.detailHeroImage || project.image) && (
             <img 
-              src={project.detailHeroImage || project.image} 
-              alt={project.title} 
+              src={project.rawDetailHeroImage || project.rawImage ? urlFor(project.rawDetailHeroImage || project.rawImage).width(1600).url() : (project.detailHeroImage || project.image)} 
+              srcSet={project.rawDetailHeroImage || project.rawImage ? `
+                ${urlFor(project.rawDetailHeroImage || project.rawImage).width(600).url()} 600w,
+                ${urlFor(project.rawDetailHeroImage || project.rawImage).width(1000).url()} 1000w,
+                ${urlFor(project.rawDetailHeroImage || project.rawImage).width(1600).url()} 1600w,
+                ${urlFor(project.rawDetailHeroImage || project.rawImage).width(2000).url()} 2000w
+              ` : undefined}
+              sizes="100vw"
+              alt={project.title}
+              priority="true" // React equivalent of fetchPriority="high" for hero
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
           )}
@@ -407,10 +422,16 @@ const ProjectDetail = () => {
             </div>
             {/* Always render container as placeholder, conditionally render image */}
             <div style={{ width: '100%', aspectRatio: '16/9', backgroundColor: '#f0f0f0', borderRadius: '4px', overflow: 'hidden' }}>
-              {project.challengeImage && (
+              {(project.challengeImage || project.rawChallengeImage) && (
                 <img 
-                  src={project.challengeImage} 
+                  src={project.rawChallengeImage ? urlFor(project.rawChallengeImage).width(800).url() : project.challengeImage}
+                  srcSet={project.rawChallengeImage ? `
+                    ${urlFor(project.rawChallengeImage).width(400).url()} 400w,
+                    ${urlFor(project.rawChallengeImage).width(800).url()} 800w
+                  ` : undefined}
+                  sizes="(max-width: 900px) 100vw, 30vw"
                   alt="Challenge context" 
+                  loading="lazy"
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 />
               )}
@@ -427,10 +448,16 @@ const ProjectDetail = () => {
             </div>
             {/* Always render container as placeholder, conditionally render image */}
             <div style={{ width: '100%', aspectRatio: '16/9', backgroundColor: '#f0f0f0', borderRadius: '4px', overflow: 'hidden' }}>
-              {project.solutionImage && (
+              {(project.solutionImage || project.rawSolutionImage) && (
                 <img 
-                  src={project.solutionImage} 
+                  src={project.rawSolutionImage ? urlFor(project.rawSolutionImage).width(800).url() : project.solutionImage}
+                  srcSet={project.rawSolutionImage ? `
+                    ${urlFor(project.rawSolutionImage).width(400).url()} 400w,
+                    ${urlFor(project.rawSolutionImage).width(800).url()} 800w
+                  ` : undefined}
+                  sizes="(max-width: 900px) 100vw, 30vw"
                   alt="Solution details" 
+                  loading="lazy"
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 />
               )}
