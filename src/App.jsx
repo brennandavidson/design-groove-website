@@ -45,6 +45,18 @@ function App() {
   // We rely on skeletons now for stable layout, so we don't need to delay Lenis.
   // However, forcing browser to handle restoration is key.
   
+  // MASK LOGIC: Even with auto restoration, the browser might paint frame 1 at scrollTop 0.
+  // This mask covers the screen for a split second on refresh to hide that jump.
+  const [isScrollRestoring, setIsScrollRestoring] = useState(() => {
+    if (typeof window !== 'undefined') {
+      // If we've visited, we might be restoring scroll.
+      // If preloader is showing (first visit), mask is redundant but harmless.
+      // If preloader is skipped (refresh), mask is CRITICAL.
+      return !!sessionStorage.getItem('hasVisited');
+    }
+    return false;
+  });
+
   useEffect(() => {
     // If this is the first visit (preloader is showing), mark it as visited for next time
     // This happens after the first render, but since we init state from storage, it's fine.
@@ -62,11 +74,23 @@ function App() {
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'auto';
     }
+
+    // Clear the scroll restoration mask after a short delay
+    // 150ms gives the browser enough frames to jump to the restored position
+    if (isScrollRestoring) {
+      const timer = setTimeout(() => {
+        setIsScrollRestoring(false);
+      }, 200); // Increased to 200ms to be safe
+      return () => {
+        clearTimeout(timer);
+        window.removeEventListener('resize', checkMobile);
+      };
+    }
     
     return () => {
       window.removeEventListener('resize', checkMobile);
     };
-  }, []);
+  }, [isScrollRestoring]);
 
   const content = (
     <div className="App">
@@ -79,6 +103,20 @@ function App() {
       <ScrollToTop />
       {/* Only render Preloader if it should be shown */}
       {showPreloader && <Preloader onComplete={() => setIsLoaded(true)} />}
+      
+      {/* Scroll Restoration Mask - Pure White Overlay */}
+      {/* Only active if Preloader is NOT active (Refresh scenario) */}
+      {!showPreloader && isScrollRestoring && (
+        <div 
+          style={{
+            position: 'fixed',
+            inset: 0,
+            backgroundColor: '#ffffff',
+            zIndex: 99999, // Highest priority
+            pointerEvents: 'none' // Allow scrolling underneath immediately
+          }}
+        />
+      )}
       
       {/* Fixed Navigation (Always on top) */}
       <Navbar />
