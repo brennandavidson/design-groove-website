@@ -12,7 +12,15 @@ export const client = createClient({
 const builder = createImageUrlBuilder(client)
 
 export function urlFor(source) {
+  // Use 'max' fit to prevent upscaling, but allow high-res requests
+  // auto('format') converts to WebP/AVIF
   return builder.image(source).auto('format').fit('max')
+}
+
+// Special helper for Hero images to ensure max quality
+export function urlForHero(source) {
+  // force format to webp for better quality/size ratio, quality 90
+  return builder.image(source).auto('format').quality(90).fit('max')
 }
 
 // Fetch all projects (optionally excluding one ID)

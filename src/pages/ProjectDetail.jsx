@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { getProjectBySlug, urlFor } from '../lib/sanity';
+import { getProjectBySlug, urlFor, urlForHero } from '../lib/sanity';
 import Contact from '../components/Contact';
 import { motion } from 'framer-motion';
 import { PortableText } from '@portabletext/react';
@@ -395,16 +395,16 @@ const ProjectDetail = () => {
 
           {(project.detailHeroImage || project.image) && (
             <img 
-              src={project.rawDetailHeroImage || project.rawImage ? urlFor(project.rawDetailHeroImage || project.rawImage).width(1600).url() : (project.detailHeroImage || project.image)} 
+              src={project.rawDetailHeroImage || project.rawImage ? urlForHero(project.rawDetailHeroImage || project.rawImage).width(1600).url() : (project.detailHeroImage || project.image)} 
               srcSet={project.rawDetailHeroImage || project.rawImage ? `
-                ${urlFor(project.rawDetailHeroImage || project.rawImage).width(600).url()} 600w,
-                ${urlFor(project.rawDetailHeroImage || project.rawImage).width(1000).url()} 1000w,
-                ${urlFor(project.rawDetailHeroImage || project.rawImage).width(1600).url()} 1600w,
-                ${urlFor(project.rawDetailHeroImage || project.rawImage).width(2000).url()} 2000w
+                ${urlForHero(project.rawDetailHeroImage || project.rawImage).width(600).url()} 600w,
+                ${urlForHero(project.rawDetailHeroImage || project.rawImage).width(1000).url()} 1000w,
+                ${urlForHero(project.rawDetailHeroImage || project.rawImage).width(1600).url()} 1600w,
+                ${urlForHero(project.rawDetailHeroImage || project.rawImage).width(2400).url()} 2400w
               ` : undefined}
               sizes="100vw"
               alt={project.title}
-              priority="true" // React equivalent of fetchPriority="high" for hero
+              fetchPriority="high" // Use standard fetchPriority for LCP
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
           )}
