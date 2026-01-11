@@ -11,7 +11,7 @@ const NotFound = () => {
     <div style={{
       height: '100vh',
       width: '100%',
-      backgroundColor: '#0047b3', // Fallback blue
+      backgroundColor: '#ffffff', // White background to match Contact section
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
@@ -22,8 +22,8 @@ const NotFound = () => {
     }}>
       <SEO title="Page Not Found" />
 
-      {/* Background Sky - No Mask for full visibility */}
-      <FooterSky mask={false} />
+      {/* Background Sky - Uses default mask to fade from white (top) to blue (bottom) */}
+      <FooterSky />
 
       {/* Content */}
       <div style={{ 
@@ -32,7 +32,7 @@ const NotFound = () => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        marginTop: '-10vh' // Slight adjustment to sit nicely above clouds
+        marginTop: '-5vh'
       }}>
         {/* 404 Big Text */}
         <h1 style={{ 
@@ -41,7 +41,7 @@ const NotFound = () => {
           fontSize: 'clamp(8rem, 30vw, 22rem)', 
           lineHeight: 0.8,
           margin: '0 0 20px 0',
-          color: '#1a1a1a', // Black text as requested
+          color: '#1a1a1a', // Black text
           paddingBottom: '20px',
           textAlign: 'center'
         }}>
@@ -61,7 +61,7 @@ const NotFound = () => {
           Page Not Found
         </div>
 
-        {/* Back Button */}
+        {/* Back Button - Matches "Get in Touch" style */}
         <Link 
           to="/"
           style={{
