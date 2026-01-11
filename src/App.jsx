@@ -21,6 +21,7 @@ function App() {
   // If hasVisited is set, showPreloader starts as false
   const [showPreloader, setShowPreloader] = useState(() => {
     if (typeof window !== 'undefined') {
+      if (window.__IS_404__) return false; // Skip preloader on 404
       return !sessionStorage.getItem('hasVisited');
     }
     return true; // Enable preloader on server/initial HTML to cover content

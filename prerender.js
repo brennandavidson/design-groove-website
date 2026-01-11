@@ -86,6 +86,7 @@ let routes = [
     ${helmet.meta ? helmet.meta.toString() : ''}
     ${helmet.link ? helmet.link.toString() : ''}
     ${helmet.script ? helmet.script.toString() : ''}
+    <script>window.__IS_404__ = true;</script>
   `
 
   const htmlFile = template
