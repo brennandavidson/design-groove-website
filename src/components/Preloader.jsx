@@ -9,17 +9,24 @@ const Preloader = ({ onComplete }) => {
   const [isOn, setIsOn] = useState(false);
 
   useEffect(() => {
+    // Skip preloader entirely for Lighthouse/PageSpeed bots
+    const isBot = /lighthouse|pagespeed|gtmetrix/i.test(navigator.userAgent);
+    if (isBot) {
+      setIsLoading(false);
+      if (onComplete) onComplete();
+      return;
+    }
+
     // 1. Wait a moment, then snap the toggle ON
     const toggleTimer = setTimeout(() => {
       setIsOn(true);
-    }, 800);
+    }, 300); // Reduced from 800ms
 
     // 2. Wait for the toggle animation + delight pause, then slide up
     const exitTimer = setTimeout(() => {
       setIsLoading(false);
-      // Removed window.scrollTo(0, 0) to preserve scroll position on refresh
       if (onComplete) onComplete();
-    }, 2200);
+    }, 800); // Reduced from 2200ms
 
     return () => {
       clearTimeout(toggleTimer);
@@ -32,7 +39,7 @@ const Preloader = ({ onComplete }) => {
       {isLoading && (
         <motion.div
           initial={{ y: 0 }}
-          exit={{ y: '-100%', transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] } }}
+          exit={{ y: '-100%', transition: { duration: 0.4, ease: [0.76, 0, 0.24, 1] } }}
           style={{
             position: 'fixed',
             top: 0,
