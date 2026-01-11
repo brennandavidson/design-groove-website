@@ -5,25 +5,24 @@ import { motion, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import FooterSky from './FooterSky';
 
-const BlurChar = ({ char, index, isMobile }) => {
+const BlurChar = ({ char, index }) => {
   if (char === ' ') return <span style={{ display: 'inline-block', width: '0.3em' }}>&nbsp;</span>;
 
   // Variants triggered by parent's 'animate' state
-  // Mobile: skip blur filter (expensive), just use opacity + y
   const childVariant = {
-    hidden: {
-      opacity: 0,
-      y: 20,
-      ...(isMobile ? {} : { filter: 'blur(6px)' })
+    hidden: { 
+      opacity: 0, 
+      y: 20, 
+      filter: 'blur(6px)' 
     },
-    visible: {
-      opacity: 1,
-      y: 0,
-      ...(isMobile ? {} : { filter: 'blur(0px)' }),
-      transition: {
-        duration: isMobile ? 0.6 : 1.0, // Faster on mobile
-        ease: [0.2, 0.65, 0.3, 0.9],
-        delay: index * (isMobile ? 0.03 : 0.05) // Faster stagger on mobile
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      filter: 'blur(0px)',
+      transition: { 
+        duration: 1.0, 
+        ease: [0.2, 0.65, 0.3, 0.9], 
+        delay: index * 0.05 // Stagger calculation
       }
     }
   };
@@ -31,8 +30,8 @@ const BlurChar = ({ char, index, isMobile }) => {
   return (
     <motion.span
       variants={childVariant}
-      style={{
-        display: 'inline-block',
+      style={{ 
+        display: 'inline-block', 
         fontFamily: 'Instrument Serif',
         color: '#1a1a1a'
       }}
@@ -48,8 +47,8 @@ const Contact = () => {
   
   // Use a Ref + useInView hook for robust scroll detection
   const containerRef = useRef(null);
-  const isContainerInView = useInView(containerRef, {
-    once: true, // Only trigger animation once, not on every scroll
+  const isContainerInView = useInView(containerRef, { 
+    once: false, 
     amount: 0.2 // Trigger when 20% of the container is visible (more reliable)
   });
 
@@ -143,14 +142,14 @@ const Contact = () => {
           {/* Line 1: READY */}
           <div style={{ display: 'block' }}>
             {"Ready".split('').map((char, i) => (
-              <BlurChar key={i} char={char} index={i} isMobile={isMobile} />
+              <BlurChar key={i} char={char} index={i} />
             ))}
           </div>
-
+          
           {/* Line 2: TO TALK? */}
           <div style={{ display: 'block' }}>
             {"To Talk?".split('').map((char, i) => (
-              <BlurChar key={i} char={char} index={i + 5} isMobile={isMobile} />
+              <BlurChar key={i} char={char} index={i + 5} />
             ))}
           </div>
         </motion.h2>
