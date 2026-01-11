@@ -23,7 +23,7 @@ const NotFound = () => {
       {/* 404 Big Text */}
       <h1 style={{ 
         fontFamily: 'Instrument Serif', 
-        fontStyle: 'italic', 
+        fontStyle: 'normal', 
         fontSize: 'clamp(8rem, 25vw, 20rem)', // Responsive sizing
         lineHeight: 0.8,
         margin: '0 0 20px 0',
