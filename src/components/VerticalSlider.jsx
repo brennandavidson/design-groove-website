@@ -75,22 +75,6 @@ const VerticalSlider = ({ orientation = 'vertical' }) => {
 
   const isVertical = orientation === 'vertical';
 
-  // Show placeholder skeleton while loading to prevent CLS
-  if (sliderItems.length === 0) {
-    return (
-      <div
-        className="infinite-slider-container"
-        style={{
-          height: '100%',
-          width: '100%',
-          overflow: 'hidden',
-          position: 'relative',
-          backgroundColor: '#f5f5f5'
-        }}
-      />
-    );
-  }
-
   return (
     <div
       className="infinite-slider-container"
