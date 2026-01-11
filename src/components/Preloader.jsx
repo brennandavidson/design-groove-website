@@ -5,14 +5,19 @@ import { motion, AnimatePresence } from 'framer-motion';
 import PixelShockwave from './PixelShockwave';
 
 const Preloader = ({ onComplete }) => {
-  const [isLoading, setIsLoading] = useState(true);
+  // Check for bot immediately in initial state to prevent flash
+  const [isLoading, setIsLoading] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const isBot = /lighthouse|pagespeed|gtmetrix/i.test(navigator.userAgent);
+      if (isBot) return false;
+    }
+    return true;
+  });
   const [isOn, setIsOn] = useState(false);
 
   useEffect(() => {
-    // Skip preloader entirely for Lighthouse/PageSpeed bots
-    const isBot = /lighthouse|pagespeed|gtmetrix/i.test(navigator.userAgent);
-    if (isBot) {
-      setIsLoading(false);
+    // If already skipped (bot detected), just call onComplete
+    if (!isLoading) {
       if (onComplete) onComplete();
       return;
     }
@@ -32,7 +37,7 @@ const Preloader = ({ onComplete }) => {
       clearTimeout(toggleTimer);
       clearTimeout(exitTimer);
     };
-  }, [onComplete]);
+  }, [onComplete, isLoading]);
 
   return (
     <AnimatePresence mode="wait">

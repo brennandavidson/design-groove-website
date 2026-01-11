@@ -50,8 +50,8 @@ let lcpPreloads = []
         const match = imageRef.match(/image-([a-zA-Z0-9]+)-(\d+x\d+)/)
         if (match) {
           const [, id, dimensions] = match
-          // Mobile horizontal slider: ~35vh height, images loaded at ~400-600px width
-          const url = `https://cdn.sanity.io/images/8jhw3vic/production/${id}-${dimensions}.webp?w=600&fm=webp&q=100`
+          // Mobile viewport (393px) with 2x DPR = 786px → browser picks 800w from srcSet
+          const url = `https://cdn.sanity.io/images/8jhw3vic/production/${id}-${dimensions}.webp?w=800&fm=webp&q=100`
           lcpPreloads.push(url)
           console.log(`LCP preload ${i + 1}:`, url)
         }
