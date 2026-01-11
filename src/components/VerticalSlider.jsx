@@ -137,15 +137,17 @@ const VerticalSlider = ({ orientation = 'vertical' }) => {
            // Optimization logic
            const isFirst = index === 0;
            const srcSet = item.imageSource ? `
+             ${urlFor(item.imageSource).width(400).url()} 400w,
              ${urlFor(item.imageSource).width(600).url()} 600w,
-             ${urlFor(item.imageSource).width(1000).url()} 1000w,
-             ${urlFor(item.imageSource).width(1600).url()} 1600w,
-             ${urlFor(item.imageSource).width(2400).url()} 2400w
+             ${urlFor(item.imageSource).width(800).url()} 800w,
+             ${urlFor(item.imageSource).width(1200).url()} 1200w
            ` : undefined;
-           
-           const sizes = isVertical 
-             ? '(max-width: 900px) 100vw, 50vw' // Desktop: Increased to 50vw for better quality
-             : '(max-width: 600px) 80vw, 100vw'; // Mobile: Increased estimates
+
+           // Mobile horizontal: ~35vh height = ~280px, aspect ratio gives ~224px width
+           // Desktop vertical: 30vw of viewport
+           const sizes = isVertical
+             ? '(max-width: 900px) 100vw, 30vw'
+             : '(max-width: 600px) 50vw, 35vw';
 
            return (
            <div 

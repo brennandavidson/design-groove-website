@@ -24,14 +24,36 @@ let routes = [
   '/book',
 ]
 
+// Store LCP image URL for homepage preload
+let lcpImageUrl = null
+
 ;(async () => {
-  // Fetch dynamic routes
+  // Fetch dynamic routes and LCP image
   try {
     console.log('Fetching project slugs...')
-    const projects = await client.fetch('*[_type == "project"]{ "slug": slug.current }')
+    const projects = await client.fetch(`*[_type == "project" && showInWorkList != false] | order(order asc, year desc) {
+      "slug": slug.current,
+      "heroImageId": heroImage.asset._ref,
+      "imageId": image.asset._ref
+    }`)
     const projectRoutes = projects.map(p => `/work/${p.slug}`)
     routes = [...routes, ...projectRoutes]
     console.log(`Added ${projectRoutes.length} project routes.`)
+
+    // Get first project's hero image for LCP preload
+    if (projects.length > 0) {
+      const firstProject = projects[0]
+      const imageRef = firstProject.heroImageId || firstProject.imageId
+      if (imageRef) {
+        // Convert Sanity image ref to URL (format: image-{id}-{dimensions}.{format})
+        const [, id, dimensions] = imageRef.match(/image-([a-zA-Z0-9]+)-(\d+x\d+)/) || []
+        if (id && dimensions) {
+          // Preload a mobile-optimized size (400px width for mobile LCP)
+          lcpImageUrl = `https://cdn.sanity.io/images/8jhw3vic/production/${id}-${dimensions}.webp?w=400&fm=webp&q=100`
+          console.log('LCP image URL for preload:', lcpImageUrl)
+        }
+      }
+    }
   } catch (error) {
     console.error('Failed to fetch project routes:', error)
   }
@@ -56,11 +78,18 @@ let routes = [
     const { html, helmet } = render(url, context)
 
     const appHtml = html
+
+    // Add LCP preload for homepage only
+    const lcpPreload = (url === '/' && lcpImageUrl)
+      ? `<link rel="preload" as="image" href="${lcpImageUrl}" fetchpriority="high" />`
+      : ''
+
     const helmetHtml = `
       ${helmet.title ? helmet.title.toString() : ''}
       ${helmet.meta ? helmet.meta.toString() : ''}
       ${helmet.link ? helmet.link.toString() : ''}
       ${helmet.script ? helmet.script.toString() : ''}
+      ${lcpPreload}
       ${cssContent ? `<style>${cssContent}</style>` : ''}
     `
 
