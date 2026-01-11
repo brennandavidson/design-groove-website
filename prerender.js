@@ -56,7 +56,7 @@ let routes = [
       ${helmet.title ? helmet.title.toString() : ''}
       ${helmet.meta ? helmet.meta.toString() : ''}
       ${helmet.link ? helmet.link.toString() : ''}
-      ${helmet.script ? helmet.link.toString() : ''}
+      ${helmet.script ? helmet.script.toString() : ''}
     `
 
     const htmlFile = template
