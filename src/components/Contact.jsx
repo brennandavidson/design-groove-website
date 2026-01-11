@@ -47,8 +47,8 @@ const Contact = () => {
   
   // Use a Ref + useInView hook for robust scroll detection
   const containerRef = useRef(null);
-  const isContainerInView = useInView(containerRef, { 
-    once: false, 
+  const isContainerInView = useInView(containerRef, {
+    once: true, // Only animate once - prevents re-triggering on scroll back
     amount: 0.2 // Trigger when 20% of the container is visible (more reliable)
   });
 

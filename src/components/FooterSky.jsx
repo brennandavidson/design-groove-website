@@ -63,27 +63,28 @@ const ComplexCloud = ({ scale = 1 }) => {
 };
 
 // Animated Container
-const DriftingCloud = ({ x, y, scale, duration, delay }) => (
+const DriftingCloud = ({ x, y, scale, duration, delay, isMobile }) => (
   <motion.div
     style={{
       position: 'absolute',
       left: x,
       bottom: y,
       zIndex: Math.round(scale * 10), // Larger clouds in front
-      filter: scale < 1 ? 'blur(2px)' : 'blur(4px)', // Reduce blur for smaller/mobile clouds to maintain definition
+      // Skip blur filter on mobile - too expensive, causes frame drops
+      filter: isMobile ? 'none' : (scale < 1 ? 'blur(2px)' : 'blur(4px)'),
     }}
     // Oscillation instead of linear drift to prevent hard jumps
     // Moving back and forth (reverse) with easeInOut creates a natural "floating" effect
-    animate={{ 
-      x: ['-2%', '-8%'], 
+    animate={{
+      x: ['-2%', '-8%'],
       y: ['0px', '-10px'] // Slight vertical bobbing for extra life
     }}
-    transition={{ 
-      duration: duration, 
-      repeat: Infinity, 
-      repeatType: "reverse", 
-      ease: "easeInOut", 
-      delay: delay 
+    transition={{
+      duration: duration,
+      repeat: Infinity,
+      repeatType: "reverse",
+      ease: "easeInOut",
+      delay: delay
     }}
   >
     <ComplexCloud scale={scale} />
@@ -133,65 +134,65 @@ const FooterSky = ({ mask = true }) => {
           
           {/* --- LEFT GROUP (TOWER) --- */}
           {/* Forming the left side of the "Valley" */}
-          <DriftingCloud 
-            x={isMobile ? "-45%" : "-5%"} 
-            y={isMobile ? "120px" : "50px"} 
-            scale={1.6 * mScale} 
-            duration={90} delay={0} 
+          <DriftingCloud
+            x={isMobile ? "-45%" : "-5%"}
+            y={isMobile ? "120px" : "50px"}
+            scale={1.6 * mScale}
+            duration={90} delay={0} isMobile={isMobile}
           />
-          <DriftingCloud 
-            x={isMobile ? "-15%" : "15%"} 
-            y={isMobile ? "40px" : "-20px"} 
-            scale={1.4 * mScale} 
-            duration={85} delay={-10} 
+          <DriftingCloud
+            x={isMobile ? "-15%" : "15%"}
+            y={isMobile ? "40px" : "-20px"}
+            scale={1.4 * mScale}
+            duration={85} delay={-10} isMobile={isMobile}
           />
-          <DriftingCloud 
-            x={isMobile ? "-35%" : "5%"} 
-            y={isMobile ? "-20px" : "-80px"} 
-            scale={1.0 * mScale} 
-            duration={120} delay={-5} 
+          <DriftingCloud
+            x={isMobile ? "-35%" : "5%"}
+            y={isMobile ? "-20px" : "-80px"}
+            scale={1.0 * mScale}
+            duration={120} delay={-5} isMobile={isMobile}
           />
 
           {/* --- RIGHT GROUP (TOWER) --- */}
           {/* Forming the right side of the "Valley" */}
-          <DriftingCloud 
-            x={isMobile ? "95%" : "85%"} 
-            y={isMobile ? "130px" : "60px"} 
-            scale={1.7 * mScale} 
-            duration={95} delay={-20} 
+          <DriftingCloud
+            x={isMobile ? "95%" : "85%"}
+            y={isMobile ? "130px" : "60px"}
+            scale={1.7 * mScale}
+            duration={95} delay={-20} isMobile={isMobile}
           />
-          <DriftingCloud 
-            x={isMobile ? "75%" : "70%"} 
-            y={isMobile ? "50px" : "0px"} 
-            scale={1.3 * mScale} 
-            duration={80} delay={-15} 
+          <DriftingCloud
+            x={isMobile ? "75%" : "70%"}
+            y={isMobile ? "50px" : "0px"}
+            scale={1.3 * mScale}
+            duration={80} delay={-15} isMobile={isMobile}
           />
-          <DriftingCloud 
-            x={isMobile ? "105%" : "90%"} 
-            y={isMobile ? "-10px" : "-50px"} 
-            scale={1.1 * mScale} 
-            duration={110} delay={-30} 
+          <DriftingCloud
+            x={isMobile ? "105%" : "90%"}
+            y={isMobile ? "-10px" : "-50px"}
+            scale={1.1 * mScale}
+            duration={110} delay={-30} isMobile={isMobile}
           />
 
           {/* --- CENTER GROUP (LOW/CONNECTING) --- */}
           {/* Lower, smaller clouds to complete the arc but keep the middle open */}
-          <DriftingCloud 
-            x={isMobile ? "20%" : "40%"} 
-            y={isMobile ? "-80px" : "-100px"} 
-            scale={0.9 * mScale} 
-            duration={130} delay={-40} 
+          <DriftingCloud
+            x={isMobile ? "20%" : "40%"}
+            y={isMobile ? "-80px" : "-100px"}
+            scale={0.9 * mScale}
+            duration={130} delay={-40} isMobile={isMobile}
           />
-          <DriftingCloud 
-            x={isMobile ? "50%" : "55%"} 
-            y={isMobile ? "-100px" : "-120px"} 
-            scale={0.8 * mScale} 
-            duration={140} delay={-60} 
+          <DriftingCloud
+            x={isMobile ? "50%" : "55%"}
+            y={isMobile ? "-100px" : "-120px"}
+            scale={0.8 * mScale}
+            duration={140} delay={-60} isMobile={isMobile}
           />
-          <DriftingCloud 
-            x={isMobile ? "80%" : "30%"} 
-            y={isMobile ? "-90px" : "-140px"} 
-            scale={0.7 * mScale} 
-            duration={150} delay={-10} 
+          <DriftingCloud
+            x={isMobile ? "80%" : "30%"}
+            y={isMobile ? "-90px" : "-140px"}
+            scale={0.7 * mScale}
+            duration={150} delay={-10} isMobile={isMobile}
           />
 
       </div>
