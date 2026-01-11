@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { ReactLenis } from 'lenis/react';
 import { Routes, Route } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
@@ -7,16 +7,18 @@ import Navbar from './components/Navbar';
 import Preloader from './components/Preloader';
 import ScrollToTop from './components/ScrollToTop';
 
-// Synchronous Imports for SSG/LCP Optimization
+// Critical Route - Static Import to prevent hydration flash
 import Home from './pages/Home';
-import WorkCollection from './pages/WorkCollection';
-import ProjectDetail from './pages/ProjectDetail';
-import ServicesPage from './pages/Services';
-import ContactPage from './pages/ContactPage';
-import BookPage from './pages/BookPage';
-import ProcessPage from './pages/ProcessPage';
-import AboutPage from './pages/AboutPage';
-import NotFound from './pages/NotFound';
+
+// Lazy Load other routes to reduce initial bundle size
+const WorkCollection = lazy(() => import('./pages/WorkCollection'));
+const ProjectDetail = lazy(() => import('./pages/ProjectDetail'));
+const ServicesPage = lazy(() => import('./pages/Services'));
+const ContactPage = lazy(() => import('./pages/ContactPage'));
+const BookPage = lazy(() => import('./pages/BookPage'));
+const ProcessPage = lazy(() => import('./pages/ProcessPage'));
+const AboutPage = lazy(() => import('./pages/AboutPage'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
 function App() {
   // Lazy initialization to prevent flashes and handle "first touch" logic correctly
@@ -124,17 +126,19 @@ function App() {
       {/* Fixed Navigation (Always on top) */}
       <Navbar />
       
-      <Routes>
-        <Route path="/" element={<Home isLoaded={isLoaded} />} />
-        <Route path="/work" element={<WorkCollection />} />
-        <Route path="/services" element={<ServicesPage />} />
-        <Route path="/work/:slug" element={<ProjectDetail />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/book" element={<BookPage />} />
-        <Route path="/process" element={<ProcessPage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <Suspense fallback={<div style={{ height: '100vh', width: '100%', backgroundColor: '#fff' }} />}>
+        <Routes>
+          <Route path="/" element={<Home isLoaded={isLoaded} />} />
+          <Route path="/work" element={<WorkCollection />} />
+          <Route path="/services" element={<ServicesPage />} />
+          <Route path="/work/:slug" element={<ProjectDetail />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/book" element={<BookPage />} />
+          <Route path="/process" element={<ProcessPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Suspense>
     </div>
   );
 
