@@ -264,13 +264,13 @@ const ProjectDetail = () => {
 
         @media (max-width: 900px) {
           .project-detail-container {
-            padding: 100px 4vw 4rem; /* Fixed top padding for nav clearance */
+            padding: 10rem 4vw 4rem; /* Standardized: matches other pages */
           }
           .project-header {
-            gap: 1rem !important; /* Tighter gap between title and meta */
+            gap: 1rem !important;
           }
           .project-meta {
-            gap: 1.5rem !important; /* Tighter meta items */
+            gap: 1.5rem !important;
           }
           .section-heading {
             font-size: 1.5rem !important;
@@ -287,14 +287,14 @@ const ProjectDetail = () => {
             gap: 1.5rem;
           }
           .project-detail-inner {
-            gap: 2rem; /* Tighter gap between header, hero, content */
+            gap: 2rem;
           }
           .project-content-wrapper {
-            gap: 2.5rem; /* Consistent section spacing */
+            gap: 2.5rem;
             padding-top: 2rem;
           }
           .section-content-group {
-            gap: 1.5rem; /* Tighter spacing within sections */
+            gap: 1.5rem;
           }
           .related-projects-section {
             padding: 0 4vw 4rem;
@@ -311,8 +311,11 @@ const ProjectDetail = () => {
           .related-header {
             flex-direction: column;
             align-items: flex-start;
-            gap: 0.75rem;
-            padding-bottom: 0.5rem;
+            gap: 1rem;
+            padding-bottom: 1.5rem;
+          }
+          .related-header h2 {
+            font-size: 2rem !important;
           }
         }
       `}</style>
@@ -620,10 +623,10 @@ const ProjectDetail = () => {
         <section className="related-projects-section">
           <div className="related-projects-inner">
            <div className="related-header">
-            <h2 style={{ 
-              fontFamily: 'Instrument Serif', 
-              fontSize: '3rem', 
-              fontWeight: 400, 
+            <h2 style={{
+              fontFamily: 'Instrument Serif',
+              fontSize: '3rem',
+              fontWeight: 400,
               margin: 0,
               color: '#1a1a1a'
             }}>
