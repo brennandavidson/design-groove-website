@@ -4,7 +4,7 @@ import { createImageUrlBuilder } from '@sanity/image-url'
 export const client = createClient({
   projectId: '8jhw3vic',
   dataset: 'production',
-  useCdn: true, // Enable CDN for faster response times
+  useCdn: false, // Disable CDN to ensure fresh data and bypass cache
   apiVersion: '2024-01-01'
 })
 
@@ -12,8 +12,8 @@ export const client = createClient({
 const builder = createImageUrlBuilder(client)
 
 export function urlFor(source) {
-  // Return maximum quality image to prevent compression artifacts
-  return builder.image(source).auto('format').fit('max').quality(100)
+  // Return maximum quality image, preserve original format (no auto-format)
+  return builder.image(source).quality(100)
 }
 
 // Fetch all projects (optionally excluding one ID)
