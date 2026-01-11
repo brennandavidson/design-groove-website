@@ -23,7 +23,7 @@ function App() {
     if (typeof window !== 'undefined') {
       return !sessionStorage.getItem('hasVisited');
     }
-    return false;
+    return true; // Enable preloader on server/initial HTML to cover content
   });
   
   // If hasVisited is set, isLoaded starts as true (content ready)
@@ -31,7 +31,7 @@ function App() {
     if (typeof window !== 'undefined') {
       return !!sessionStorage.getItem('hasVisited');
     }
-    return true;
+    return false; // Content is not loaded on server/initial HTML
   });
 
   // Initialize mobile state based on current width to prevent layout shifts
