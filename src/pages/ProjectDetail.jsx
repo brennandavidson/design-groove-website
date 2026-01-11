@@ -198,19 +198,21 @@ const ProjectDetail = () => {
           display: grid;
           grid-template-columns: 2fr 1fr;
           gap: 4vw;
-          border-top: 1px solid #e5e5e5;
-          padding-top: 6rem;
+          padding-top: 2rem;
         }
         .related-projects-section {
           padding: 0 4vw 12rem;
           width: 100%;
+          border-top: 1px solid #e5e5e5;
+          margin-top: -6rem;
         }
         .related-projects-inner {
           max-width: 1800px;
           margin: 0 auto;
           display: flex;
           flex-direction: column;
-          gap: 6rem;
+          gap: 4rem;
+          padding-top: 4rem;
         }
         .related-projects-grid {
           display: grid;
@@ -236,14 +238,16 @@ const ProjectDetail = () => {
           }
           .content-grid {
             grid-template-columns: 1fr;
-            padding-top: 4rem;
-            gap: 4rem;
+            padding-top: 1rem;
+            gap: 2rem;
           }
           .related-projects-section {
             padding: 0 4vw 6rem;
+            margin-top: -4rem;
           }
           .related-projects-inner {
-            gap: 2rem; /* Reduced gap from 6rem */
+            gap: 2rem;
+            padding-top: 3rem;
           }
           .related-projects-grid {
             grid-template-columns: 1fr;
@@ -440,7 +444,7 @@ const ProjectDetail = () => {
           {/* Testimonial Section */}
           {project.testimonial && (
             <div style={{
-              padding: '4rem 0',
+              padding: '6rem 0 0',
               borderTop: '1px solid #e5e5e5',
               display: 'flex',
               flexDirection: 'column',
@@ -488,45 +492,45 @@ const ProjectDetail = () => {
             </div>
           )}
 
-          {/* Remaining Rich Content & Sidebar */}
-          <div className="content-grid">
-            {/* Main Case Study Content (Portable Text) */}
-            <div>
-              {/* If we have 'content', use PortableText. Fallback to description if not. */}
-              {/* Only show if content is available AND it's not the old generic block we replaced */}
-              {project.content && !project.testimonial ? (
-                <PortableText value={project.content} components={myPortableTextComponents} />
-              ) : (
-                project.description && (
-                  <>
-                    <h3 style={{ 
-                      fontFamily: 'Instrument Serif', 
-                      fontSize: '2rem', 
-                      marginBottom: '2rem', 
-                      fontWeight: 400 
-                    }}>
-                      About the Project
-                    </h3>
-                    <p style={{ 
-                      fontFamily: 'Inter', 
-                      fontSize: '1.1rem', 
-                      lineHeight: 1.6, 
-                      color: '#1a1a1a', 
-                      maxWidth: '800px', 
-                      whiteSpace: 'pre-wrap' 
-                    }}>
-                      {project.description}
-                    </p>
-                  </>
-                )
-              )}
-            </div>
+          {/* Remaining Rich Content & Sidebar - only render if there's content to show */}
+          {((project.content && !project.testimonial) || project.description) && (
+            <div className="content-grid">
+              {/* Main Case Study Content (Portable Text) */}
+              <div>
+                {project.content && !project.testimonial ? (
+                  <PortableText value={project.content} components={myPortableTextComponents} />
+                ) : (
+                  project.description && (
+                    <>
+                      <h3 style={{
+                        fontFamily: 'Instrument Serif',
+                        fontSize: '2rem',
+                        marginBottom: '2rem',
+                        fontWeight: 400
+                      }}>
+                        About the Project
+                      </h3>
+                      <p style={{
+                        fontFamily: 'Inter',
+                        fontSize: '1.1rem',
+                        lineHeight: 1.6,
+                        color: '#1a1a1a',
+                        maxWidth: '800px',
+                        whiteSpace: 'pre-wrap'
+                      }}>
+                        {project.description}
+                      </p>
+                    </>
+                  )
+                )}
+              </div>
 
-            {/* Sidebar / Actions */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', alignItems: 'flex-start' }}>
-              {/* Removed sticky button from sidebar as it's now under The Result */}
+              {/* Sidebar / Actions */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', alignItems: 'flex-start' }}>
+                {/* Removed sticky button from sidebar as it's now under The Result */}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
       </section>

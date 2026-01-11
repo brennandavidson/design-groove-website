@@ -18,6 +18,8 @@ const ContactPage = () => {
     company: '',
     message: ''
   });
+  const [status, setStatus] = useState('idle'); // idle, submitting, success, error
+  const [isButtonHovered, setIsButtonHovered] = useState(false);
 
   const handleChange = (e) => {
     setFormState({
@@ -26,11 +28,29 @@ const ContactPage = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log('Form submitted:', formState);
-    alert('Thanks for reaching out! We will get back to you shortly.');
+    setStatus('submitting');
+
+    try {
+      const response = await fetch('https://formspree.io/f/xnjjawqn', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(formState)
+      });
+
+      if (response.ok) {
+        setStatus('success');
+        setFormState({ name: '', email: '', company: '', message: '' });
+      } else {
+        setStatus('error');
+      }
+    } catch (err) {
+      setStatus('error');
+    }
   };
 
   const inputStyle = {
@@ -188,33 +208,111 @@ const ContactPage = () => {
             <div style={{ paddingTop: isMobile ? '0.5rem' : '1rem' }}>
               <button
                 type="submit"
+                disabled={status === 'submitting'}
                 style={{
                   padding: isMobile ? '14px 32px' : '16px 40px',
-                  backgroundColor: '#1a1a1a',
-                  color: '#ffffff',
-                  border: '1px solid #1a1a1a',
+                  backgroundColor: status === 'submitting' ? '#666' : (isButtonHovered ? '#ffffff' : '#1a1a1a'),
+                  color: status === 'submitting' ? '#ffffff' : (isButtonHovered ? '#1a1a1a' : '#ffffff'),
+                  border: '1px solid',
+                  borderColor: status === 'submitting' ? '#666' : '#1a1a1a',
                   borderRadius: '100px',
                   fontFamily: 'Inter',
                   fontSize: isMobile ? '0.9rem' : '1rem',
                   fontWeight: 500,
                   letterSpacing: '0.05em',
                   textTransform: 'uppercase',
-                  cursor: 'pointer',
+                  cursor: status === 'submitting' ? 'not-allowed' : 'pointer',
                   transition: 'all 0.3s ease',
-                  width: isMobile ? '100%' : 'auto'
+                  width: isMobile ? '100%' : 'auto',
+                  opacity: status === 'submitting' ? 0.7 : 1
                 }}
-                onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = '#ffffff';
-                  e.target.style.color = '#1a1a1a';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = '#1a1a1a';
-                  e.target.style.color = '#ffffff';
-                }}
+                onMouseEnter={() => setIsButtonHovered(true)}
+                onMouseLeave={() => setIsButtonHovered(false)}
               >
-                Send Message
+                {status === 'submitting' ? 'Sending...' : 'Send Message'}
               </button>
             </div>
+
+            {/* Success Message */}
+            {status === 'success' && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '1rem',
+                  padding: '1.5rem',
+                  border: '1px solid #e5e5e5',
+                  borderRadius: '4px',
+                  backgroundColor: '#ffffff'
+                }}
+              >
+                <div style={{
+                  width: '40px',
+                  height: '40px',
+                  borderRadius: '50%',
+                  backgroundColor: '#0073E6',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0
+                }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                </div>
+                <div>
+                  <h4 style={{ fontFamily: 'Instrument Serif', fontSize: '1.25rem', margin: 0, color: '#1a1a1a' }}>
+                    Message sent!
+                  </h4>
+                  <p style={{ fontFamily: 'Inter', fontSize: '0.9rem', margin: '0.25rem 0 0', color: '#666' }}>
+                    We'll get back to you shortly.
+                  </p>
+                </div>
+              </motion.div>
+            )}
+
+            {/* Error Message */}
+            {status === 'error' && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '1rem',
+                  padding: '1.5rem',
+                  border: '1px solid #e5e5e5',
+                  borderRadius: '4px',
+                  backgroundColor: '#ffffff'
+                }}
+              >
+                <div style={{
+                  width: '40px',
+                  height: '40px',
+                  borderRadius: '50%',
+                  backgroundColor: '#1a1a1a',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0
+                }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </div>
+                <div>
+                  <h4 style={{ fontFamily: 'Instrument Serif', fontSize: '1.25rem', margin: 0, color: '#1a1a1a' }}>
+                    Something went wrong
+                  </h4>
+                  <p style={{ fontFamily: 'Inter', fontSize: '0.9rem', margin: '0.25rem 0 0', color: '#666' }}>
+                    Please try again or email us directly.
+                  </p>
+                </div>
+              </motion.div>
+            )}
 
           </motion.form>
         </div>

@@ -4,28 +4,34 @@ import { Link } from 'react-router-dom';
 
 const ProjectCard = ({ project, index, setHoveredProject }) => {
   const [isHovered, setHovered] = useState(false);
+  const [isVideoReady, setIsVideoReady] = useState(false);
   const cardRef = useRef(null);
   const videoRef = useRef(null);
   const mouseRef = useRef({ x: 0, y: 0 });
 
+  // Handle video ready state
+  const handleVideoCanPlay = () => {
+    setIsVideoReady(true);
+  };
+
   // Handle video play/pause on hover
   useEffect(() => {
     if (videoRef.current) {
-      if (isHovered) {
-        // Play video when hovered
+      if (isHovered && isVideoReady) {
+        // Play video when hovered and video is ready
         const playPromise = videoRef.current.play();
         if (playPromise !== undefined) {
           playPromise.catch(error => {
             console.log("Video play failed (likely due to user interaction policy):", error);
           });
         }
-      } else {
+      } else if (!isHovered) {
         // Pause and reset when not hovered
         videoRef.current.pause();
         videoRef.current.currentTime = 0;
       }
     }
-  }, [isHovered]);
+  }, [isHovered, isVideoReady]);
 
   // Track global mouse position to check hover status during scroll
   useEffect(() => {
@@ -75,8 +81,9 @@ const ProjectCard = ({ project, index, setHoveredProject }) => {
   };
 
   return (
-    <Link 
+    <Link
       to={project.slug ? `/work/${project.slug.current}` : '#'}
+      className="project-card-link"
       style={{ textDecoration: 'none', display: 'block', width: '100%' }}
     >
       <motion.div
@@ -96,13 +103,16 @@ const ProjectCard = ({ project, index, setHoveredProject }) => {
         onMouseLeave={handleMouseLeave}
       >
         {/* Image Container */}
-        <div style={{ 
-          width: '100%', 
-          aspectRatio: '1.2', 
+        <div style={{
+          width: '100%',
+          aspectRatio: '1.2',
           overflow: 'hidden',
           backgroundColor: '#f0f0f0',
           position: 'relative',
-          marginBottom: '2rem'
+          marginBottom: '2rem',
+          // Prevent sub-pixel rendering issues
+          transform: 'translateZ(0)',
+          willChange: 'transform'
         }}>
           {project.image ? (
             <>
@@ -111,38 +121,37 @@ const ProjectCard = ({ project, index, setHoveredProject }) => {
                 <video
                   ref={videoRef}
                   src={project.hoverVideo}
-                  poster={project.image} // Use static image as poster
                   muted
                   loop
                   playsInline
-                  // Preload none to save bandwidth until hover
-                  preload="none"
+                  preload="auto"
+                  onCanPlayThrough={handleVideoCanPlay}
                   style={{
                     position: 'absolute',
-                    top: 0,
-                    left: 0,
+                    top: '50%',
+                    left: '50%',
                     width: '100%',
                     height: '100%',
                     objectFit: 'cover',
-                    zIndex: 1, // On top of image
-                    opacity: isHovered ? 1 : 0,
-                    transition: 'opacity 0.6s ease-in-out' // Smoother transition
+                    transform: 'translate(-50%, -50%) scale(1.001)',
+                    zIndex: 1,
+                    opacity: isHovered && isVideoReady ? 1 : 0,
+                    transition: 'opacity 0.4s ease-out',
+                    imageRendering: 'crisp-edges'
                   }}
                 />
               )}
 
-              <motion.img 
-                src={project.image} 
+              <img
+                src={project.image}
                 alt={project.title}
-                style={{ 
-                  width: '100%', 
-                  height: '100%', 
+                style={{
+                  width: '100%',
+                  height: '100%',
                   objectFit: 'cover',
-                  position: 'relative', // Ensure it sits below video when video is visible
+                  position: 'relative',
                   zIndex: 0
                 }}
-                animate={{ scale: isHovered && !project.hoverVideo ? 1.03 : 1 }}
-                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               />
             </>
           ) : (
@@ -201,7 +210,11 @@ const ProjectCard = ({ project, index, setHoveredProject }) => {
         </div>
         
         <style>{`
-          /* No specific media queries needed for this layout as it uses standard classes */
+          /* Override global link hover opacity for project cards */
+          .project-card-link,
+          .project-card-link:hover {
+            opacity: 1 !important;
+          }
         `}</style>
       </motion.div>
     </Link>
