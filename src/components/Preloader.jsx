@@ -55,7 +55,7 @@ const Preloader = ({ onComplete }) => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            paddingBottom: isMobile ? '15vh' : '0', // Shift content up on mobile
+            paddingBottom: isMobile ? '5vh' : '0', // Slight shift up on mobile
           }}
         >
           {/* Toggle Container */}

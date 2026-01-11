@@ -615,11 +615,11 @@ const Navbar = () => {
                   e.preventDefault();
                   handleNavigation(item);
                 }}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                whileHover={{ scale: 1.05 }}
-                transition={{
-                  delay: viewportWidth <= 900 ? 0.1 : (0.05 + index * 0.08), // No stagger on mobile
+                initial={viewportWidth <= 900 ? false : { opacity: 0, y: 20 }}
+                animate={viewportWidth <= 900 ? {} : { opacity: 1, y: 0 }}
+                whileHover={viewportWidth <= 900 ? {} : { scale: 1.05 }}
+                transition={viewportWidth <= 900 ? {} : {
+                  delay: 0.05 + index * 0.08,
                   duration: 0.3,
                   ease: "easeOut"
                 }}
@@ -644,11 +644,11 @@ const Navbar = () => {
                   setIsMenuOpen(false);
                   navigate('/book');
                 }}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                whileHover={{ scale: 1.05 }}
-                transition={{
-                  delay: viewportWidth <= 900 ? 0.15 : (0.05 + 5 * 0.08),
+                initial={viewportWidth <= 900 ? false : { opacity: 0, y: 20 }}
+                animate={viewportWidth <= 900 ? {} : { opacity: 1, y: 0 }}
+                whileHover={viewportWidth <= 900 ? {} : { scale: 1.05 }}
+                transition={viewportWidth <= 900 ? {} : {
+                  delay: 0.05 + 5 * 0.08,
                   duration: 0.3,
                   ease: "easeOut"
                 }}
