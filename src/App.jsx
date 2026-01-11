@@ -72,9 +72,9 @@ function App() {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 900);
     };
-    
+
     window.addEventListener('resize', checkMobile);
-    
+
     // Explicitly set auto restoration so browser handles the initial position
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'auto';
@@ -85,13 +85,15 @@ function App() {
     if (isScrollRestoring) {
       const timer = setTimeout(() => {
         setIsScrollRestoring(false);
+        // Remove the static HTML mask once React's mask is gone
+        if (window.__removeMask) window.__removeMask();
       }, 400); // Increased to 400ms to be absolutely safe against lag
       return () => {
         clearTimeout(timer);
         window.removeEventListener('resize', checkMobile);
       };
     }
-    
+
     return () => {
       window.removeEventListener('resize', checkMobile);
     };
@@ -107,7 +109,11 @@ function App() {
       </Helmet>
       <ScrollToTop />
       {/* Only render Preloader if it should be shown */}
-      {showPreloader && <Preloader onComplete={() => setIsLoaded(true)} />}
+      {showPreloader && <Preloader onComplete={() => {
+        setIsLoaded(true);
+        // Remove the static HTML mask once preloader is done
+        if (window.__removeMask) window.__removeMask();
+      }} />}
       
       {/* Scroll Restoration Mask - Pure White Overlay */}
       {/* Only active if Preloader is NOT active (Refresh scenario) */}

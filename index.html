@@ -11,6 +11,18 @@
     <!--app-head-->
   </head>
   <body>
+    <!-- Static mask to prevent flash before React hydrates -->
+    <div id="static-mask" style="position:fixed;inset:0;background:#ffffff;z-index:99999;"></div>
+    <script>
+      // Remove mask after a short delay or when React signals ready
+      // This runs synchronously before React, ensuring mask is visible immediately
+      window.__removeMask = function() {
+        var mask = document.getElementById('static-mask');
+        if (mask) mask.remove();
+      };
+      // Fallback: remove after 1.5s if React doesn't signal (safety net)
+      setTimeout(window.__removeMask, 1500);
+    </script>
     <div id="root"><!--app-html--></div>
     <script type="module" src="/src/entry-client.jsx"></script>
   </body>
