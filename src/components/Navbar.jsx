@@ -200,10 +200,8 @@ const Navbar = () => {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            height: viewportWidth <= 900 ? 'calc(60px + env(safe-area-inset-top, 0px))' : '120px', // Account for notch
-            paddingTop: viewportWidth <= 900 ? 'env(safe-area-inset-top, 0px)' : '0', // Push content below notch
-            paddingLeft: '4vw',
-            paddingRight: '4vw',
+            height: viewportWidth <= 900 ? '60px' : '120px',
+            padding: '0 4vw',
             transition: 'box-shadow 0.3s ease, opacity 0.2s ease, visibility 0.2s ease', // Added opacity/vis transition
             // Hide on Desktop if scrolled down (prevents flash). Always visible on Mobile.
             visibility: (viewportWidth <= 900 || isHeroNavVisible) ? 'visible' : 'hidden',
@@ -338,11 +336,8 @@ const Navbar = () => {
             // Use box-shadow for the line to avoid border layout/color issues and prevent black flash
             boxShadow: isBookPage ? 'none' : ((viewportWidth <= 900) ? (hasScrolled ? '0 1px 0 0 #e5e5e5' : 'none') : ((hasScrolled && !isAtBottom) ? '0 1px 0 0 #e5e5e5' : 'none')),
             transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
-            height: viewportWidth <= 900 ? 'calc(60px + env(safe-area-inset-top, 0px))' : '100px', // Account for notch
-            paddingTop: viewportWidth <= 900 ? 'env(safe-area-inset-top, 0px)' : '0', // Push content below notch
-            paddingBottom: 0,
-            paddingLeft: 0,
-            paddingRight: 0
+            height: viewportWidth <= 900 ? '60px' : '100px',
+            padding: 0
           }}
         >
           <div style={{
@@ -512,7 +507,7 @@ const Navbar = () => {
         aria-label="Toggle menu"
         style={{
           position: 'fixed',
-          top: viewportWidth <= 900 ? 'calc(10px + env(safe-area-inset-top, 0px))' : '2rem', // Center in nav, accounting for notch
+          top: viewportWidth <= 900 ? '10px' : '2rem', // Center in 60px nav
           right: (isMenuOpen) ? '4vw' : // Menu Open: Top Right
                  (viewportWidth > 900 && viewportWidth < 1800 && isAtTop) ? '34vw' : // Compact Desktop + At Top: Inline (34vw)
                  '4vw', // All other cases (Standard Desktop, Mobile, Scrolled): Top Right

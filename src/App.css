@@ -236,7 +236,6 @@ main {
     text-align: center;
     margin-top: 2rem; /* Reduced from 4rem */
     padding-top: 1.5rem; /* Reduced from 3rem */
-    padding-bottom: env(safe-area-inset-bottom, 0px); /* Account for home indicator */
   }
 
   .footer-col-left {
@@ -289,7 +288,7 @@ main {
 
 /* FORCED OVERRIDES */
 .contact-footer {
-  padding-bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px)) !important; /* Minimal padding + home indicator */
+  padding-bottom: 1rem !important;
 }
 .contact-cta-wrapper {
   margin-top: 4rem !important;
