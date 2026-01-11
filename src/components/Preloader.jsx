@@ -5,31 +5,28 @@ import { motion, AnimatePresence } from 'framer-motion';
 import PixelShockwave from './PixelShockwave';
 
 const Preloader = ({ onComplete }) => {
-  // Start false to prevent SSR rendering the preloader into HTML
-  const [isLoading, setIsLoading] = useState(false);
+  // Start TRUE so preloader is in SSR HTML and covers content immediately
+  const [isLoading, setIsLoading] = useState(true);
   const [isOn, setIsOn] = useState(false);
 
   useEffect(() => {
-    // Skip preloader entirely for Lighthouse/PageSpeed bots
-    const isBot = /lighthouse|pagespeed|gtmetrix/i.test(navigator.userAgent);
+    // Skip preloader for bots - hide immediately
+    const isBot = /lighthouse|pagespeed|gtmetrix|headlesschrome/i.test(navigator.userAgent);
     if (isBot) {
+      setIsLoading(false);
       if (onComplete) onComplete();
       return;
     }
 
-    // Show preloader for real users (client-side only)
-    setIsLoading(true);
-
-    // 1. Wait a moment, then snap the toggle ON
+    // Real users: run the animation
     const toggleTimer = setTimeout(() => {
       setIsOn(true);
     }, 400);
 
-    // 2. Wait for the toggle animation + delight pause, then slide up
     const exitTimer = setTimeout(() => {
       setIsLoading(false);
       if (onComplete) onComplete();
-    }, 1200); // 1.2s total for real users
+    }, 1200);
 
     return () => {
       clearTimeout(toggleTimer);

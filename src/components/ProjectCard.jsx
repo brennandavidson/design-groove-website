@@ -6,9 +6,18 @@ import { urlFor } from '../lib/sanity';
 const ProjectCard = ({ project, index, setHoveredProject }) => {
   const [isHovered, setHovered] = useState(false);
   const [isVideoReady, setIsVideoReady] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const cardRef = useRef(null);
   const videoRef = useRef(null);
   const mouseRef = useRef({ x: 0, y: 0 });
+
+  // Check if mobile (no video needed - hover doesn't work on touch)
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 900);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Handle video ready state
   const handleVideoCanPlay = () => {
@@ -123,8 +132,8 @@ const ProjectCard = ({ project, index, setHoveredProject }) => {
         }}>
           {project.image ? (
             <>
-              {/* Optional Hover Video */}
-              {project.hoverVideo && (
+              {/* Optional Hover Video - Desktop only (hover doesn't work on mobile) */}
+              {project.hoverVideo && !isMobile && (
                 <video
                   ref={videoRef}
                   src={project.hoverVideo}
