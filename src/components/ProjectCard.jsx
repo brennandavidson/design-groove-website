@@ -150,7 +150,8 @@ const ProjectCard = ({ project, index, setHoveredProject }) => {
                   ${urlFor(project.rawImage).width(900).url()} 900w,
                   ${urlFor(project.rawImage).width(1200).url()} 1200w,
                   ${urlFor(project.rawImage).width(1800).url()} 1800w,
-                  ${urlFor(project.rawImage).width(2400).url()} 2400w
+                  ${urlFor(project.rawImage).width(2400).url()} 2400w,
+                  ${urlFor(project.rawImage).width(3200).url()} 3200w
                 ` : undefined}
                 sizes="(max-width: 900px) 95vw, 50vw"
                 alt={project.title}

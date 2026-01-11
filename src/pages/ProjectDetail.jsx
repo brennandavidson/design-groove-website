@@ -23,9 +23,10 @@ const myPortableTextComponents = {
               ${urlFor(value).width(800).url()} 800w,
               ${urlFor(value).width(1200).url()} 1200w,
               ${urlFor(value).width(1600).url()} 1600w,
-              ${urlFor(value).width(2400).url()} 2400w
+              ${urlFor(value).width(2400).url()} 2400w,
+              ${urlFor(value).width(3200).url()} 3200w
             `}
-            sizes="(max-width: 900px) 100vw, 1200px"
+            sizes="100vw"
             alt={value.alt || 'Case study image'}
             loading="lazy"
             style={{ 
@@ -400,7 +401,8 @@ const ProjectDetail = () => {
                 ${urlFor(project.rawDetailHeroImage || project.rawImage).width(600).url()} 600w,
                 ${urlFor(project.rawDetailHeroImage || project.rawImage).width(1000).url()} 1000w,
                 ${urlFor(project.rawDetailHeroImage || project.rawImage).width(1600).url()} 1600w,
-                ${urlFor(project.rawDetailHeroImage || project.rawImage).width(2400).url()} 2400w
+                ${urlFor(project.rawDetailHeroImage || project.rawImage).width(2400).url()} 2400w,
+                ${urlFor(project.rawDetailHeroImage || project.rawImage).width(3200).url()} 3200w
               ` : undefined}
               sizes="100vw"
               alt={project.title}
@@ -426,10 +428,13 @@ const ProjectDetail = () => {
                 <img 
                   src={project.rawChallengeImage ? urlFor(project.rawChallengeImage).width(800).url() : project.challengeImage}
                   srcSet={project.rawChallengeImage ? `
-                    ${urlFor(project.rawChallengeImage).width(400).url()} 400w,
-                    ${urlFor(project.rawChallengeImage).width(800).url()} 800w
+                    ${urlFor(project.rawChallengeImage).width(800).url()} 800w,
+                    ${urlFor(project.rawChallengeImage).width(1200).url()} 1200w,
+                    ${urlFor(project.rawChallengeImage).width(1600).url()} 1600w,
+                    ${urlFor(project.rawChallengeImage).width(2400).url()} 2400w,
+                    ${urlFor(project.rawChallengeImage).width(3200).url()} 3200w
                   ` : undefined}
-                  sizes="(max-width: 900px) 100vw, 30vw"
+                  sizes="100vw"
                   alt="Challenge context" 
                   loading="lazy"
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
@@ -452,10 +457,13 @@ const ProjectDetail = () => {
                 <img 
                   src={project.rawSolutionImage ? urlFor(project.rawSolutionImage).width(800).url() : project.solutionImage}
                   srcSet={project.rawSolutionImage ? `
-                    ${urlFor(project.rawSolutionImage).width(400).url()} 400w,
-                    ${urlFor(project.rawSolutionImage).width(800).url()} 800w
+                    ${urlFor(project.rawSolutionImage).width(800).url()} 800w,
+                    ${urlFor(project.rawSolutionImage).width(1200).url()} 1200w,
+                    ${urlFor(project.rawSolutionImage).width(1600).url()} 1600w,
+                    ${urlFor(project.rawSolutionImage).width(2400).url()} 2400w,
+                    ${urlFor(project.rawSolutionImage).width(3200).url()} 3200w
                   ` : undefined}
-                  sizes="(max-width: 900px) 100vw, 30vw"
+                  sizes="100vw"
                   alt="Solution details" 
                   loading="lazy"
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
