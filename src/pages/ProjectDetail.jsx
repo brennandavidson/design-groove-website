@@ -264,7 +264,17 @@ const ProjectDetail = () => {
 
         @media (max-width: 900px) {
           .project-detail-container {
-            padding: 6rem 4vw 6rem; /* Reduced from 8rem 4vw 8rem */
+            padding: 100px 4vw 4rem; /* Fixed top padding for nav clearance */
+          }
+          .project-header {
+            gap: 1rem !important; /* Tighter gap between title and meta */
+          }
+          .project-meta {
+            gap: 1.5rem !important; /* Tighter meta items */
+          }
+          .section-heading {
+            font-size: 1.5rem !important;
+            margin-bottom: 1rem !important;
           }
           .back-button {
             top: 1rem;
@@ -274,32 +284,35 @@ const ProjectDetail = () => {
           .content-grid {
             grid-template-columns: 1fr;
             padding-top: 1rem;
-            gap: 2rem;
+            gap: 1.5rem;
+          }
+          .project-detail-inner {
+            gap: 2rem; /* Tighter gap between header, hero, content */
           }
           .project-content-wrapper {
-            gap: 3rem; /* Reduced from 6rem */
-            padding-top: 3rem; /* Reduced from 6rem */
+            gap: 2.5rem; /* Consistent section spacing */
+            padding-top: 2rem;
           }
           .section-content-group {
-            gap: 2rem; /* Reduced from 3rem */
+            gap: 1.5rem; /* Tighter spacing within sections */
           }
           .related-projects-section {
-            padding: 0 4vw 6rem;
-            margin-top: -4rem;
+            padding: 0 4vw 4rem;
+            margin-top: -2rem;
           }
           .related-projects-inner {
-            gap: 2rem;
-            padding-top: 3rem;
+            gap: 1.5rem;
+            padding-top: 2rem;
           }
           .related-projects-grid {
             grid-template-columns: 1fr;
-            row-gap: 4rem;
+            row-gap: 3rem;
           }
           .related-header {
             flex-direction: column;
             align-items: flex-start;
-            gap: 1rem;
-            padding-bottom: 0.5rem; /* Reduced from 2rem */
+            gap: 0.75rem;
+            padding-bottom: 0.5rem;
           }
         }
       `}</style>
@@ -310,14 +323,14 @@ const ProjectDetail = () => {
         <div className="project-detail-inner">
         
         {/* Header: Title + Meta */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-          <motion.h1 
+        <div className="project-header" style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+          <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            style={{ 
-              fontFamily: 'Instrument Serif', 
-              fontSize: 'clamp(4rem, 8vw, 8rem)', 
+            style={{
+              fontFamily: 'Instrument Serif',
+              fontSize: 'clamp(2.5rem, 8vw, 8rem)',
               lineHeight: 1,
               fontWeight: 400,
               margin: 0,
@@ -327,17 +340,18 @@ const ProjectDetail = () => {
             {project.title}
           </motion.h1>
 
-          <motion.div 
+          <motion.div
+            className="project-meta"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            style={{ 
-              display: 'flex', 
+            style={{
+              display: 'flex',
               flexWrap: 'wrap',
-              gap: '4rem', 
-              fontFamily: 'Inter', 
-              fontSize: '0.9rem', 
-              textTransform: 'uppercase', 
+              gap: '4rem',
+              fontFamily: 'Inter',
+              fontSize: '0.9rem',
+              textTransform: 'uppercase',
               letterSpacing: '0.05em',
               color: '#1a1a1a'
             }}
@@ -420,7 +434,7 @@ const ProjectDetail = () => {
           {/* Section 1: The Challenge */}
           <div className="section-content-group">
             <div style={{ maxWidth: '800px' }}>
-              <h3 style={{ fontFamily: 'Instrument Serif', fontSize: '2rem', marginBottom: '1.5rem' }}>The Challenge</h3>
+              <h3 className="section-heading" style={{ fontFamily: 'Instrument Serif', fontSize: '2rem', marginBottom: '1.5rem' }}>The Challenge</h3>
               <p style={{ fontFamily: 'Inter', fontSize: '1.1rem', lineHeight: 1.6, opacity: 0.8 }}>
                 {project.challenge || 'Details on the challenge faced coming soon.'}
               </p>
@@ -448,8 +462,8 @@ const ProjectDetail = () => {
 
           {/* Section 2: What We Did */}
           <div className="section-content-group" style={{ alignItems: 'flex-start' }}>
-            <div style={{ maxWidth: '800px', textAlign: 'left' }}> 
-              <h3 style={{ fontFamily: 'Instrument Serif', fontSize: '2rem', marginBottom: '1.5rem' }}>What We Did</h3>
+            <div style={{ maxWidth: '800px', textAlign: 'left' }}>
+              <h3 className="section-heading" style={{ fontFamily: 'Instrument Serif', fontSize: '2rem', marginBottom: '1.5rem' }}>What We Did</h3>
               <p style={{ fontFamily: 'Inter', fontSize: '1.1rem', lineHeight: 1.6, opacity: 0.8 }}>
                 {project.solution || 'Details on the solution provided coming soon.'}
               </p>
@@ -478,7 +492,7 @@ const ProjectDetail = () => {
           {/* Section 3: The Result */}
           <div className="section-content-group">
             <div style={{ maxWidth: '800px' }}>
-              <h3 style={{ fontFamily: 'Instrument Serif', fontSize: '2rem', marginBottom: '1.5rem' }}>The Result</h3>
+              <h3 className="section-heading" style={{ fontFamily: 'Instrument Serif', fontSize: '2rem', marginBottom: '1.5rem' }}>The Result</h3>
               <p style={{ fontFamily: 'Inter', fontSize: '1.1rem', lineHeight: 1.6, opacity: 0.8, marginBottom: '2rem' }}>
                 {project.result || 'Details on the final outcome coming soon.'}
               </p>
