@@ -18,15 +18,21 @@ const ProjectCard = ({ project, index, setHoveredProject }) => {
   // Handle video play/pause on hover
   useEffect(() => {
     if (videoRef.current) {
-      if (isHovered && isVideoReady) {
-        // Play video when hovered and video is ready
-        const playPromise = videoRef.current.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(error => {
-            console.log("Video play failed (likely due to user interaction policy):", error);
-          });
+      if (isHovered) {
+        // Start loading video on hover (needed since preload="none")
+        if (!isVideoReady) {
+          videoRef.current.load();
         }
-      } else if (!isHovered) {
+        // Play video when hovered and video is ready
+        if (isVideoReady) {
+          const playPromise = videoRef.current.play();
+          if (playPromise !== undefined) {
+            playPromise.catch(error => {
+              console.log("Video play failed (likely due to user interaction policy):", error);
+            });
+          }
+        }
+      } else {
         // Pause and reset when not hovered
         videoRef.current.pause();
         videoRef.current.currentTime = 0;
