@@ -12,7 +12,8 @@ export const client = createClient({
 const builder = createImageUrlBuilder(client)
 
 export function urlFor(source) {
-  return builder.image(source)
+  // Return maximum quality image to prevent compression artifacts
+  return builder.image(source).auto('format').fit('max').quality(100)
 }
 
 // Fetch all projects (optionally excluding one ID)
