@@ -8,8 +8,12 @@ const Preloader = ({ onComplete }) => {
   // Start TRUE so preloader is in SSR HTML and covers content immediately
   const [isLoading, setIsLoading] = useState(true);
   const [isOn, setIsOn] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    // Check if mobile
+    setIsMobile(window.innerWidth <= 900);
+
     // Skip preloader for bots - hide immediately
     const isBot = /lighthouse|pagespeed|gtmetrix|headlesschrome/i.test(navigator.userAgent);
     if (isBot) {
@@ -51,10 +55,11 @@ const Preloader = ({ onComplete }) => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
+            paddingBottom: isMobile ? '15vh' : '0', // Shift content up on mobile
           }}
         >
           {/* Toggle Container */}
-          <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '30px' }}>
+          <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: isMobile ? '24px' : '30px' }}>
             
             {/* Top Text: Heading - Static */}
             <h1 style={{ 

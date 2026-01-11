@@ -598,7 +598,8 @@ const Navbar = () => {
               flexDirection: 'column',
               justifyContent: 'center',
               alignItems: 'center',
-              gap: '2rem' // Reduced gap for tighter layout
+              gap: viewportWidth <= 900 ? '1.5rem' : '2rem',
+              paddingBottom: viewportWidth <= 900 ? '15vh' : '0' // Shift content up on mobile
             }}
           >
             {['Work', 'Services', 'Our Process', 'About', 'Contact'].map((item, index) => (
@@ -614,42 +615,23 @@ const Navbar = () => {
                   e.preventDefault();
                   handleNavigation(item);
                 }}
-                initial="hidden"
-                animate="visible"
-                whileHover="hover"
-                variants={{
-                  hidden: { opacity: 0, y: 30 },
-                  visible: { 
-                    opacity: 1, 
-                    y: 0,
-                    transition: { 
-                      delay: 0.05 + index * 0.08,
-                      duration: 0.4,
-                      ease: "easeOut"
-                    }
-                  },
-                  hover: { 
-                    scale: 1.05,
-                    transition: { 
-                      duration: 0.2,
-                      ease: "easeInOut",
-                      delay: 0 // Crucial: Remove the stagger delay for hover
-                    }
-                  }
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                whileHover={{ scale: 1.05 }}
+                transition={{
+                  delay: viewportWidth <= 900 ? 0.1 : (0.05 + index * 0.08), // No stagger on mobile
+                  duration: 0.3,
+                  ease: "easeOut"
                 }}
-            style={{
-              fontSize: viewportWidth <= 900 ? '2.5rem' : '4rem', // Smaller text on mobile
-              fontFamily: 'Instrument Serif',
-              fontWeight: 400,
-              fontStyle: 'italic',
-              color: '#1a1a1a',
-              textDecoration: 'none',
-              cursor: 'pointer',
-              display: 'block', // Use block for better transform stability
-              backfaceVisibility: 'hidden', // Force GPU
-              WebkitFontSmoothing: 'antialiased',
-              transform: 'translateZ(0)'
-            }}
+                style={{
+                  fontSize: viewportWidth <= 900 ? '2.5rem' : '4rem',
+                  fontFamily: 'Instrument Serif',
+                  fontWeight: 400,
+                  fontStyle: 'italic',
+                  color: '#1a1a1a',
+                  textDecoration: 'none',
+                  cursor: 'pointer'
+                }}
               >
                 {item}
               </motion.a>
@@ -662,27 +644,16 @@ const Navbar = () => {
                   setIsMenuOpen(false);
                   navigate('/book');
                 }}
-                initial="hidden"
-                animate="visible"
-                whileHover="hover"
-                variants={{
-                  hidden: { opacity: 0, y: 30 },
-                  visible: { 
-                    opacity: 1, 
-                    y: 0,
-                    transition: { 
-                      delay: 0.05 + 5 * 0.08,
-                      duration: 0.4,
-                      ease: "easeOut"
-                    }
-                  },
-                  hover: { 
-                    scale: 1.05,
-                    transition: { duration: 0.2 }
-                  }
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                whileHover={{ scale: 1.05 }}
+                transition={{
+                  delay: viewportWidth <= 900 ? 0.15 : (0.05 + 5 * 0.08),
+                  duration: 0.3,
+                  ease: "easeOut"
                 }}
-                style={{ 
-                  marginTop: '1rem',
+                style={{
+                  marginTop: viewportWidth <= 900 ? '0.5rem' : '1rem',
                   padding: '16px 32px',
                   backgroundColor: '#1a1a1a',
                   border: '1px solid #1a1a1a',
