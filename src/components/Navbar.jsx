@@ -20,7 +20,15 @@ const Navbar = () => {
   const isBookPage = pathname === '/book';
 
   // Control visibility of the absolute hero navbar
-  const [isHeroNavVisible, setIsHeroNavVisible] = useState(true); // SSR-safe default
+  const [isHeroNavVisible, setIsHeroNavVisible] = useState(() => {
+    if (typeof window !== 'undefined') {
+      // If we've visited before, default to hidden to prevent flash at bottom
+      const hasVisited = sessionStorage.getItem('hasVisited');
+      if (hasVisited) return false;
+      return true;
+    }
+    return true;
+  });
 
   useEffect(() => {
     // Scroll handler to toggle visibility based on position
@@ -32,9 +40,9 @@ const Navbar = () => {
       }
     };
 
-    // CRITICAL: Delay initial check by 50ms to allow browser scroll restoration
-    // This prevents showing the nav when refreshing at the bottom (where scrollY is momentarily 0)
-    const timer = setTimeout(handleScroll, 50);
+    // CRITICAL: Delay initial check to allow browser scroll restoration
+    // This prevents showing the nav when refreshing at the bottom
+    const timer = setTimeout(handleScroll, 100);
     
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => {
