@@ -13,6 +13,7 @@ import ContactPage from './pages/ContactPage';
 import BookPage from './pages/BookPage';
 import ProcessPage from './pages/ProcessPage';
 import AboutPage from './pages/AboutPage';
+import NotFound from './pages/NotFound';
 
 function App() {
   // Lazy initialization to prevent flashes and handle "first touch" logic correctly
@@ -84,6 +85,7 @@ function App() {
         <Route path="/book" element={<BookPage />} />
         <Route path="/process" element={<ProcessPage />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );
