@@ -3,7 +3,7 @@ import { motion, useInView, useScroll, useTransform, useMotionValueEvent, Animat
 import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
 import Contact from '../components/Contact';
-import { StrategyWidget } from '../components/ServiceWidgets';
+import { StrategyWidget, BrandDesignWidget } from '../components/ServiceWidgets';
 
 // --- DATA ---
 const serviceData = [
@@ -33,7 +33,8 @@ const serviceData = [
       "Brand guidelines"
     ],
     image: "https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=2000&auto=format&fit=crop",
-    shortDesc: "Visual Identity Systems"
+    shortDesc: "Visual Identity Systems",
+    widget: <BrandDesignWidget />
   },
   {
     title: "Development & Automation",
