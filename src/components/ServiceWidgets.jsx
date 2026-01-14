@@ -178,7 +178,7 @@ export const BrandDesignWidget = ({ scale = 1 }) => {
         viewport={{ once: true, margin: "-50px" }}
       >
         <motion.div
-            style={{ position: 'absolute', top: centerY - 100, left: centerX - 120, fontSize: '120px', fontFamily: 'Instrument Serif', color: 'rgba(0,0,0,0.03)', lineHeight: 1, whiteSpace: 'nowrap' }}
+            style={{ position: 'absolute', top: centerY - 100, left: centerX - 160, fontSize: '120px', fontFamily: 'Instrument Serif', color: 'rgba(0,0,0,0.03)', lineHeight: 1, whiteSpace: 'nowrap' }}
             animate={{ x: [-20, 0, -20] }}
             transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         >
@@ -192,7 +192,7 @@ export const BrandDesignWidget = ({ scale = 1 }) => {
                     position: 'absolute', width: '60px', height: '80px', borderRadius: '12px',
                     background: i === 0 ? '#1a1a1a' : i === 1 ? '#0073E6' : '#ffffff',
                     border: '1px solid rgba(0,0,0,0.1)', boxShadow: '0 8px 20px rgba(0,0,0,0.1)',
-                    left: centerX - 140 + (i * 30), top: centerY - 40 + (i * 20), zIndex: i + 1
+                    left: centerX - 180 + (i * 30), top: centerY - 40 + (i * 20), zIndex: i + 1
                 }}
                 animate={{ y: [0, -10, 0], rotate: [0, 5, 0] }}
                 transition={{ duration: 4, delay: i * 0.5, repeat: Infinity, ease: "easeInOut" }}
@@ -201,7 +201,7 @@ export const BrandDesignWidget = ({ scale = 1 }) => {
 
         <motion.div
             style={{
-                ...glassStyle, width: '240px', height: '160px', left: centerX - 20, top: centerY - 60, zIndex: 10,
+                ...glassStyle, width: '240px', height: '160px', left: centerX - 60, top: centerY - 60, zIndex: 10,
                 borderRadius: '16px', alignItems: 'flex-start', padding: '24px', flexDirection: 'column', gap: '16px', background: 'rgba(255,255,255,0.9)'
             }}
             animate={{ y: [0, 5, 0] }}
