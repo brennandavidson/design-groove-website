@@ -63,6 +63,13 @@ function App() {
   });
 
   useEffect(() => {
+    // If Preloader is active, we MUST remove the static HTML mask immediately
+    // so the Preloader (which has its own white background) is visible.
+    // Otherwise, the static mask (z-index 99999) covers the Preloader (z-index 9999).
+    if (showPreloader) {
+       if (window.__removeMask) window.__removeMask();
+    }
+
     // If this is the first visit (preloader is showing), mark it as visited for next time
     // This happens after the first render, but since we init state from storage, it's fine.
     if (!sessionStorage.getItem('hasVisited')) {

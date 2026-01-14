@@ -20,6 +20,17 @@
         var mask = document.getElementById('static-mask');
         if (mask) mask.remove();
       };
+      
+      // Hide preloader immediately if returning user to prevent flash
+      try {
+        if (sessionStorage.getItem('hasVisited')) {
+          var style = document.createElement('style');
+          style.id = 'hide-preloader-style';
+          style.innerHTML = '#app-preloader { display: none !important; }';
+          document.head.appendChild(style);
+        }
+      } catch (e) {}
+
       // Fallback: remove after 1.5s if React doesn't signal (safety net)
       setTimeout(window.__removeMask, 1500);
     </script>

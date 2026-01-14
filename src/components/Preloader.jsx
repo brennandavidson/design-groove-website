@@ -25,13 +25,13 @@ const Preloader = ({ onComplete }) => {
     // Real users: run the animation
     const toggleTimer = setTimeout(() => {
       setIsOn(true);
-    }, 400);
+    }, 1000);
 
-    // Exit after toggle + 1.2s for full animation to complete
+    // Exit after toggle + wait time for full animation to complete
     const exitTimer = setTimeout(() => {
       setIsLoading(false);
       if (onComplete) onComplete();
-    }, 1600);
+    }, 3000);
 
     return () => {
       clearTimeout(toggleTimer);
@@ -43,6 +43,7 @@ const Preloader = ({ onComplete }) => {
     <AnimatePresence mode="wait">
       {isLoading && (
         <motion.div
+          id="app-preloader"
           initial={{ y: 0 }}
           exit={{ y: '-100%', transition: { duration: 0.4, ease: [0.76, 0, 0.24, 1] } }}
           style={{
