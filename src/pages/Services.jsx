@@ -3,7 +3,7 @@ import { motion, useInView, useScroll, useTransform, useMotionValueEvent, Animat
 import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
 import Contact from '../components/Contact';
-import { StrategyWidget, BrandDesignWidget, DevelopmentWidget } from '../components/ServiceWidgets';
+import { StrategyWidget, BrandDesignWidget, DevelopmentWidget, GrowthWidget } from '../components/ServiceWidgets';
 
 // --- DATA ---
 const serviceData = [
@@ -61,7 +61,8 @@ const serviceData = [
       "Ongoing support"
     ],
     image: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop",
-    shortDesc: "Scaling & Iteration"
+    shortDesc: "Scaling & Iteration",
+    widget: <GrowthWidget />
   }
 ];
 

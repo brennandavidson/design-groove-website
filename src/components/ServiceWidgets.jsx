@@ -393,3 +393,113 @@ export const DevelopmentWidget = ({ scale = 1 }) => {
     </div>
   );
 };
+
+// --- WIDGET 4: GROWTH & OPTIMIZATION ---
+// Concept: "The Growth Engine" - Continuous improvement loop.
+// Visuals: A rising graph + cyclical optimization indicators.
+export const GrowthWidget = ({ scale = 1 }) => {
+  const containerRef = useRef(null);
+  const W = 500;
+  const H = 300;
+  const centerX = W / 2;
+  const centerY = H / 2;
+
+  return (
+    <div ref={containerRef} style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden', background: '#f8f9fa' }}>
+      
+      {/* Background Grid */}
+      <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(#e5e7eb 1px, transparent 1px), linear-gradient(90deg, #e5e7eb 1px, transparent 1px)', backgroundSize: '40px 40px', opacity: 0.4 }} />
+
+      <motion.div 
+        style={{ width: `${W}px`, height: `${H}px`, position: 'relative', flexShrink: 0, transform: `scale(${scale})`, transformOrigin: 'center center' }}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-50px" }}
+      >
+        
+        {/* Main Graph Card */}
+        <motion.div
+            style={{
+                ...glassStyle,
+                width: '320px', height: '180px',
+                left: centerX - 160, top: centerY - 90,
+                flexDirection: 'column', alignItems: 'flex-start', padding: '24px',
+                zIndex: 10, background: 'rgba(255,255,255,0.9)'
+            }}
+            animate={{ y: [0, -5, 0] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        >
+            <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', marginBottom: '20px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <span style={{ fontSize: '12px', color: '#64748b', fontWeight: 500 }}>Conversion Rate</span>
+                    <span style={{ fontSize: '24px', fontWeight: 700, color: '#1a1a1a' }}>4.8%</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(16, 185, 129, 0.1)', padding: '4px 8px', borderRadius: '12px', height: 'fit-content' }}>
+                    <span style={{ fontSize: '12px', color: '#10b981', fontWeight: 700 }}>+24%</span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+                </div>
+            </div>
+
+            {/* Graph Area */}
+            <div style={{ position: 'relative', width: '100%', height: '80px', display: 'flex', alignItems: 'flex-end', gap: '8px' }}>
+                {/* Bars */}
+                {[0.4, 0.5, 0.45, 0.6, 0.75, 0.65, 0.85, 0.9, 1].map((h, i) => (
+                    <motion.div
+                        key={i}
+                        style={{ flex: 1, background: i > 5 ? '#0073E6' : '#e2e8f0', borderRadius: '4px 4px 0 0' }}
+                        initial={{ height: '0%' }}
+                        whileInView={{ height: `${h * 100}%` }}
+                        transition={{ duration: 0.8, delay: i * 0.1, ease: "easeOut" }}
+                    />
+                ))}
+                
+                {/* Trend Line Overlay */}
+                <svg style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', overflow: 'visible' }}>
+                    <motion.path
+                        d="M 0 80 L 30 60 L 60 65 L 90 50 L 120 30 L 150 40 L 180 20 L 210 15 L 240 5"
+                        fill="none"
+                        stroke="#0073E6"
+                        strokeWidth="2"
+                        initial={{ pathLength: 0 }}
+                        whileInView={{ pathLength: 1 }}
+                        transition={{ duration: 1.5, delay: 1 }}
+                    />
+                    <motion.circle 
+                        cx="240" cy="5" r="4" fill="#0073E6" stroke="white" strokeWidth="2"
+                        initial={{ scale: 0 }}
+                        whileInView={{ scale: 1 }}
+                        transition={{ duration: 0.3, delay: 2.5 }}
+                    />
+                </svg>
+            </div>
+        </motion.div>
+
+        {/* Floating Optimization Badges */}
+        {[
+            { label: 'A/B Test', icon: '⚡', x: centerX + 120, y: centerY - 60, delay: 0 },
+            { label: 'Analytics', icon: '📊', x: centerX - 140, y: centerY + 40, delay: 1.5 },
+            { label: 'Refine', icon: '🔧', x: centerX + 100, y: centerY + 70, delay: 3 }
+        ].map((item, i) => (
+            <motion.div
+                key={i}
+                style={{
+                    ...glassStyle,
+                    left: item.x, top: item.y,
+                    padding: '8px 16px', gap: '8px',
+                    boxShadow: '0 8px 20px rgba(0,0,0,0.06)'
+                }}
+                animate={{ 
+                    y: [0, -10, 0],
+                    opacity: [0.8, 1, 0.8]
+                }}
+                transition={{ duration: 4, delay: item.delay, repeat: Infinity, ease: "easeInOut" }}
+            >
+                <span>{item.icon}</span>
+                <span style={{ fontSize: '11px', fontWeight: 600 }}>{item.label}</span>
+            </motion.div>
+        ))}
+
+      </motion.div>
+    </div>
+  );
+};
