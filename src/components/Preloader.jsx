@@ -31,7 +31,7 @@ const Preloader = ({ onComplete }) => {
     const exitTimer = setTimeout(() => {
       setIsLoading(false);
       if (onComplete) onComplete();
-    }, 3000);
+    }, 2200);
 
     return () => {
       clearTimeout(toggleTimer);
