@@ -234,7 +234,8 @@ export const BrandDesignWidget = ({ scale = 1 }) => {
 };
 
 // --- WIDGET 3: DEVELOPMENT & AUTOMATION ---
-// Concept: "The Connected Ecosystem" - Clean, glass nodes synchronizing.
+// Concept: "The Vertical Tech Stack" - A robust, integrated system view.
+// Represents the full stack: Infrastructure -> Logic -> Experience.
 export const DevelopmentWidget = ({ scale = 1 }) => {
   const containerRef = useRef(null);
   
@@ -243,16 +244,18 @@ export const DevelopmentWidget = ({ scale = 1 }) => {
   const centerX = W / 2;
   const centerY = H / 2;
 
-  // Node Dimensions
-  const coreSize = 80;
-  const satW = 100;
-  const satH = 36;
-  const radius = 130;
+  // Configuration
+  const cardW = 260;
+  const cardH = 60;
+  const gap = 20;
+  
+  // Positions
+  const topY = centerY - (cardH + gap);
+  const midY = centerY;
+  const botY = centerY + (cardH + gap);
 
-  // Satellites positions
-  const sat1 = { x: centerX, y: centerY - radius }; // Top
-  const sat2 = { x: centerX + radius * 0.866, y: centerY + radius * 0.5 }; // Bottom Right
-  const sat3 = { x: centerX - radius * 0.866, y: centerY + radius * 0.5 }; // Bottom Left
+  // Animation Cycle
+  const duration = 6;
 
   return (
     <div ref={containerRef} style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden', background: '#f8f9fa' }}>
@@ -267,111 +270,122 @@ export const DevelopmentWidget = ({ scale = 1 }) => {
         viewport={{ once: true, margin: "-50px" }}
       >
         
-        {/* Connector Layer */}
-        <svg width={W} height={H} style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'none', zIndex: Z_SVG }}>
-            <defs>
-                <linearGradient id="sync-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="#0073E6" stopOpacity="0" />
-                    <stop offset="50%" stopColor="#0073E6" stopOpacity="0.5" />
-                    <stop offset="100%" stopColor="#0073E6" stopOpacity="0" />
-                </linearGradient>
-            </defs>
+        {/* Central Data Spine (Back) */}
+        <div style={{ position: 'absolute', left: centerX - 1, top: topY + cardH/2, bottom: botY - cardH/2, width: '2px', background: '#e2e8f0', zIndex: 0 }} />
+        
+        {/* Active Data Pulse along Spine */}
+        <motion.div
+            style={{ 
+                position: 'absolute', left: centerX - 2, width: '4px', height: '40px', 
+                background: 'linear-gradient(to bottom, rgba(0,115,230,0), #0073E6, rgba(0,115,230,0))',
+                zIndex: 1, borderRadius: '2px'
+            }}
+            animate={{ 
+                top: [botY - cardH/2, topY - cardH],
+                opacity: [0, 1, 0]
+            }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+        />
 
-            {/* Connecting Lines */}
-            {[sat1, sat2, sat3].map((sat, i) => (
-                <g key={i}>
-                    {/* Base Line */}
-                    <motion.line 
-                        x1={centerX} y1={centerY} x2={sat.x} y2={sat.y} 
-                        stroke="#e2e8f0" strokeWidth="1"
-                    />
-                    
-                    {/* Data Particle - Outbound */}
-                    <motion.circle r="3" fill="#0073E6">
-                        <animateMotion 
-                            dur="2s"
-                            repeatCount="indefinite"
-                            path={`M ${centerX} ${centerY} L ${sat.x} ${sat.y}`}
-                            begin={`${i * 0.6}s`}
-                            calcMode="linear"
-                        />
-                        <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" begin={`${i * 0.6}s`} />
-                    </motion.circle>
+        {/* --- LAYERS --- */}
 
-                    {/* Data Particle - Inbound */}
-                    <motion.circle r="3" fill="#10b981">
-                        <animateMotion 
-                            dur="2s"
-                            repeatCount="indefinite"
-                            path={`M ${sat.x} ${sat.y} L ${centerX} ${centerY}`}
-                            begin={`${i * 0.6 + 1}s`}
-                            calcMode="linear"
-                        />
-                        <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" begin={`${i * 0.6 + 1}s`} />
-                    </motion.circle>
-                </g>
-            ))}
-        </svg>
-
-        {/* Central Core: The Platform */}
+        {/* 1. TOP: EXPERIENCE (Frontend) */}
         <motion.div
             style={{
                 ...glassStyle,
-                width: coreSize, height: coreSize,
-                left: centerX - coreSize/2, top: centerY - coreSize/2,
-                borderRadius: '50%',
-                flexDirection: 'column',
-                gap: '4px',
-                zIndex: 10,
-                border: '2px solid #0073E6',
-                background: 'rgba(255,255,255,0.9)'
+                width: cardW, height: cardH,
+                left: centerX - cardW/2, top: topY - cardH/2,
+                justifyContent: 'space-between', padding: '0 24px',
+                zIndex: 10
             }}
-            animate={{
-                boxShadow: [
-                    '0 0 0 0px rgba(0,115,230,0)',
-                    '0 0 0 10px rgba(0,115,230,0.05)',
-                    '0 0 0 20px rgba(0,115,230,0)'
-                ]
-            }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
+            animate={{ y: [0, -5, 0] }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
         >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0073E6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
-                <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
-                <line x1="6" y1="6" x2="6.01" y2="6"></line>
-                <line x1="6" y1="18" x2="6.01" y2="18"></line>
-            </svg>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(0,115,230,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#0073E6', fontSize: '16px' }}>
+                    ✦
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <span style={{ fontSize: '13px', fontWeight: 700, color: '#1a1a1a' }}>Experience</span>
+                    <span style={{ fontSize: '10px', color: '#64748b', fontWeight: 500 }}>Frontend & UI</span>
+                </div>
+            </div>
+            {/* Status Light */}
+            <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 8px #10b981' }} />
         </motion.div>
 
-        {/* Satellite Nodes */}
-        {[
-            { label: 'Payments', icon: <path d="M1 4h22v16H1zM1 10h22" />, pos: sat1 },
-            { label: 'CRM', icon: <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2 M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" />, pos: sat2 },
-            { label: 'Email', icon: <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z M22 6l-10 7L2 6" />, pos: sat3 }
-        ].map((item, i) => (
+        {/* 2. MIDDLE: INTELLIGENCE (Automation/Logic) */}
+        <motion.div
+            style={{
+                ...glassStyle,
+                width: cardW, height: cardH,
+                left: centerX - cardW/2, top: midY - cardH/2,
+                justifyContent: 'space-between', padding: '0 24px',
+                zIndex: 9
+            }}
+            animate={{ y: [0, 5, 0] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
+        >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(0,115,230,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#0073E6', fontSize: '16px' }}>
+                    ⚡
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <span style={{ fontSize: '13px', fontWeight: 700, color: '#1a1a1a' }}>Intelligence</span>
+                    <span style={{ fontSize: '10px', color: '#64748b', fontWeight: 500 }}>Automation & Logic</span>
+                </div>
+            </div>
+            {/* Processing Activity */}
+            <div style={{ display: 'flex', gap: '3px' }}>
+                {[0, 1, 2].map(i => (
+                    <motion.div 
+                        key={i}
+                        style={{ width: '3px', height: '3px', borderRadius: '50%', background: '#0073E6' }}
+                        animate={{ opacity: [0.3, 1, 0.3] }}
+                        transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
+                    />
+                ))}
+            </div>
+        </motion.div>
+
+        {/* 3. BOTTOM: INFRASTRUCTURE (Backend/Data) */}
+        <motion.div
+            style={{
+                ...glassStyle,
+                width: cardW, height: cardH,
+                left: centerX - cardW/2, top: botY - cardH/2,
+                justifyContent: 'space-between', padding: '0 24px',
+                zIndex: 8
+            }}
+            animate={{ y: [0, -3, 0] }}
+            transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
+        >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(0,115,230,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#0073E6', fontSize: '16px' }}>
+                    ⚓
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <span style={{ fontSize: '13px', fontWeight: 700, color: '#1a1a1a' }}>Infrastructure</span>
+                    <span style={{ fontSize: '10px', color: '#64748b', fontWeight: 500 }}>Backend & Data</span>
+                </div>
+            </div>
+            <div style={{ fontSize: '10px', color: '#94a3b8', fontFamily: 'monospace' }}>API: OK</div>
+        </motion.div>
+
+        {/* Floating Code Snippets / Particles - Adds "Tech" feel */}
+        {[0, 1, 2, 3].map(i => (
             <motion.div
                 key={i}
                 style={{
-                    ...glassStyle,
-                    width: satW, height: satH,
-                    left: item.pos.x - satW/2, top: item.pos.y - satH/2,
-                    gap: '8px',
-                    zIndex: 5
+                    position: 'absolute',
+                    fontSize: '10px', fontFamily: 'monospace', color: 'rgba(0,115,230,0.4)',
+                    left: i % 2 === 0 ? centerX + cardW/2 + 20 : centerX - cardW/2 - 60,
+                    top: centerY + (i - 1.5) * 40
                 }}
-                animate={{ y: [0, -5, 0] }}
-                transition={{ duration: 4, delay: i * 1, repeat: Infinity, ease: "easeInOut" }}
+                animate={{ y: [0, -20, 0], opacity: [0, 1, 0] }}
+                transition={{ duration: 4, delay: i * 1, repeat: Infinity }}
             >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    {item.icon}
-                </svg>
-                <span style={{ fontSize: '11px', color: '#475569' }}>{item.label}</span>
-                
-                {/* Sync Status Dot */}
-                <motion.div 
-                    style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981', marginLeft: 'auto', marginRight: '4px' }}
-                    animate={{ opacity: [0.4, 1, 0.4] }}
-                    transition={{ duration: 2, repeat: Infinity, delay: i * 0.5 }}
-                />
+                {i === 0 ? '{ status: 200 }' : i === 1 ? 'GET /api/v1' : i === 2 ? 'await fetch()' : 'sync: true'}
             </motion.div>
         ))}
 
