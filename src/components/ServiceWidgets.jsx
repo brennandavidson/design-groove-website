@@ -252,7 +252,7 @@ export const BrandDesignWidget = ({ scale = 1 }) => {
             Aa
         </motion.div>
 
-        {/* Layer 2: Color Palette Cards (Floating) */}
+        {/* Layer 2: Color Palette Cards (Floating) - ENHANCED MOTION */}
         {[0, 1, 2].map((i) => (
             <motion.div
                 key={i}
@@ -268,20 +268,22 @@ export const BrandDesignWidget = ({ scale = 1 }) => {
                     top: centerY - 40 + (i * 20),
                     zIndex: i + 1
                 }}
+                initial={{ y: 0, rotate: 0 }}
                 animate={{
-                    y: [0, -10, 0],
-                    rotate: [0, 5, 0]
+                    y: [0, -15, 0], // Increased amplitude
+                    rotate: [0, 8, -2, 0], // More complex rotation
+                    scale: [1, 1.05, 1] // Subtle breathing
                 }}
                 transition={{
-                    duration: 4,
-                    delay: i * 0.5,
+                    duration: 5,
+                    delay: i * 0.8, // More staggered
                     repeat: Infinity,
                     ease: "easeInOut"
                 }}
             />
         ))}
 
-        {/* Layer 3: The Design System Spec (Main Card) */}
+        {/* Layer 3: The Design System Spec (Main Card) - ENHANCED INTERACTION */}
         <motion.div
             style={{
                 ...glassStyle,
@@ -298,29 +300,67 @@ export const BrandDesignWidget = ({ scale = 1 }) => {
                 background: 'rgba(255,255,255,0.9)'
             }}
             animate={{
-                y: [0, 5, 0]
+                y: [0, 8, 0],
+                boxShadow: [
+                    '0 4px 20px rgba(0,0,0,0.08), 0 0 0 1px rgba(255,255,255,0.5)',
+                    '0 12px 30px rgba(0,0,0,0.12), 0 0 0 1px rgba(255,255,255,0.5)',
+                    '0 4px 20px rgba(0,0,0,0.08), 0 0 0 1px rgba(255,255,255,0.5)'
+                ]
             }}
             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
         >
-            {/* Header: Typography Spec */}
+            {/* Header: Typography Spec - TYPING EFFECT */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                <div style={{ fontSize: '24px', fontFamily: 'Instrument Serif', color: '#1a1a1a' }}>Heading</div>
+                <div style={{ fontSize: '24px', fontFamily: 'Instrument Serif', color: '#1a1a1a', display: 'flex' }}>
+                    Heading
+                    <motion.span
+                        animate={{ opacity: [0, 1, 0] }}
+                        transition={{ duration: 1, repeat: Infinity }}
+                        style={{ marginLeft: '2px', color: '#0073E6' }}
+                    >|</motion.span>
+                </div>
                 <div style={{ fontSize: '10px', fontFamily: 'Inter', color: '#94a3b8' }}>Instrument Serif • 400 • 32px</div>
             </div>
 
-            {/* Grid/Spacing Spec */}
-            <div style={{ display: 'flex', gap: '8px', width: '100%' }}>
+            {/* Grid/Spacing Spec - MEASUREMENT LINES */}
+            <div style={{ display: 'flex', gap: '8px', width: '100%', position: 'relative' }}>
                 <div style={{ flex: 1, height: '40px', background: 'rgba(0,115,230,0.05)', border: '1px dashed rgba(0,115,230,0.2)', borderRadius: '4px' }} />
                 <div style={{ flex: 1, height: '40px', background: 'rgba(0,115,230,0.05)', border: '1px dashed rgba(0,115,230,0.2)', borderRadius: '4px' }} />
+                
+                {/* Animated measurement bracket */}
+                <motion.div
+                    style={{ 
+                        position: 'absolute', top: -8, left: '50%', width: '100%', height: '6px', 
+                        borderTop: '1px solid #0073E6', borderLeft: '1px solid #0073E6', borderRight: '1px solid #0073E6',
+                        x: '-50%'
+                    }}
+                    initial={{ opacity: 0, width: '0%' }}
+                    animate={{ opacity: [0, 1, 1, 0], width: ['0%', '100%', '100%', '0%'] }}
+                    transition={{ duration: 4, repeat: Infinity, delay: 1 }}
+                />
+                <motion.div
+                    style={{ position: 'absolute', top: -20, left: '50%', x: '-50%', fontSize: '9px', color: '#0073E6', fontWeight: 600 }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: [0, 1, 1, 0] }}
+                    transition={{ duration: 4, repeat: Infinity, delay: 1 }}
+                >
+                    16px
+                </motion.div>
             </div>
 
-            {/* Button Spec */}
+            {/* Button Spec - HOVER STATE ANIMATION */}
             <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <div style={{ width: '80px', height: '28px', background: '#1a1a1a', borderRadius: '14px' }} />
+                <motion.div 
+                    style={{ width: '80px', height: '28px', background: '#1a1a1a', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                    animate={{ scale: [1, 0.95, 1], background: ['#1a1a1a', '#333333', '#1a1a1a'] }}
+                    transition={{ duration: 2, repeat: Infinity, repeatDelay: 2 }}
+                >
+                    <div style={{ width: '40%', height: '2px', background: 'white', opacity: 0.8 }} />
+                </motion.div>
                 <div style={{ width: '80px', height: '28px', border: '1px solid #e2e8f0', borderRadius: '14px' }} />
             </div>
 
-            {/* Cursor interacting */}
+            {/* Cursor interacting - MORE DYNAMIC PATH */}
             <motion.div
                 style={{
                     position: 'absolute',
@@ -329,14 +369,12 @@ export const BrandDesignWidget = ({ scale = 1 }) => {
                     background: '#0073E6',
                     borderRadius: '50% 50% 50% 0',
                     transform: 'rotate(-45deg)',
-                    right: '-10px',
-                    bottom: '-10px',
-                    boxShadow: '0 4px 12px rgba(0,115,230,0.3)'
+                    zIndex: 20
                 }}
                 animate={{
-                    x: [0, -20, 0],
-                    y: [0, -20, 0],
-                    scale: [1, 0.9, 1]
+                    x: [0, -40, -40, 0, 0], // Move to button
+                    y: [0, 20, 20, 0, 0],
+                    scale: [1, 1, 0.8, 1, 1], // Click effect
                 }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             />
