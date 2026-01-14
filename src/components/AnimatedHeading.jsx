@@ -57,7 +57,7 @@ const AnimatedHeading = ({ text, highlightWords = [] }) => {
           variants={child}
           style={isHighlight(word) ? { fontStyle: 'italic', color: '#0073E6' } : {}}
         >
-          {word}
+          {word}{' '}
         </motion.span>
       ))}
     </motion.h2>
