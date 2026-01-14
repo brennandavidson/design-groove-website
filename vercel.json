@@ -5,8 +5,6 @@
   "redirects": [
     { "source": "/portfolio", "destination": "/work", "permanent": true },
     { "source": "/expert-web-development", "destination": "/services", "permanent": true },
-    { "source": "/services/:path*", "destination": "/services", "permanent": true },
-    { "source": "/solutions/:path*", "destination": "/services", "permanent": true },
     { "source": "/case-studies/:slug", "destination": "/work/:slug", "permanent": true }
   ]
 }
