@@ -210,7 +210,8 @@ export const StrategyWidget = ({ scale = 1 }) => {
 };
 
 // --- WIDGET 2: BRAND & DESIGN ---
-// Concept: "The Component Builder" - Elements assembling into a polished UI
+// Concept: "The Style System" - A more elegant, less "UI builder" look.
+// Focuses on typography, color, and spacing coming together.
 export const BrandDesignWidget = ({ scale = 1 }) => {
   const containerRef = useRef(null);
   
@@ -218,9 +219,6 @@ export const BrandDesignWidget = ({ scale = 1 }) => {
   const H = 300;
   const centerX = W / 2;
   const centerY = H / 2;
-
-  // Animation Cycle
-  const duration = 4;
 
   return (
     <div ref={containerRef} style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden', background: '#f8f9fa' }}>
@@ -236,164 +234,112 @@ export const BrandDesignWidget = ({ scale = 1 }) => {
         viewport={{ once: true, margin: "-50px" }}
       >
         
-        {/* Floating Assets (Orbiting/Floating) */}
-        
-        {/* 1. Palette Chip */}
+        {/* Layer 1: Typography (Back) */}
         <motion.div
-            style={{ 
-                ...glassStyle,
-                width: '60px', height: '60px',
-                borderRadius: '12px',
-                left: centerX - 140, top: centerY - 80,
-                display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px', padding: '8px'
+            style={{
+                position: 'absolute',
+                top: centerY - 100,
+                left: centerX - 120,
+                fontSize: '120px',
+                fontFamily: 'Instrument Serif',
+                color: 'rgba(0,0,0,0.03)',
+                lineHeight: 1,
+                whiteSpace: 'nowrap'
             }}
-            animate={{ 
-                y: [0, -10, 0],
-                rotate: [-5, 5, -5]
-            }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-        >
-            <div style={{ background: '#0073E6', borderRadius: '4px' }} />
-            <div style={{ background: '#1a1a1a', borderRadius: '4px' }} />
-            <div style={{ background: '#cbd5e1', borderRadius: '4px' }} />
-            <div style={{ background: '#64748b', borderRadius: '4px' }} />
-        </motion.div>
-
-        {/* 2. Typography Chip */}
-        <motion.div
-            style={{ 
-                ...glassStyle,
-                width: '50px', height: '50px',
-                borderRadius: '12px',
-                left: centerX + 120, top: centerY - 60,
-                fontSize: '24px', fontFamily: 'Instrument Serif', fontWeight: 400
-            }}
-            animate={{ 
-                y: [0, 10, 0],
-                rotate: [5, -5, 5]
-            }}
-            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+            animate={{ x: [-20, 0, -20] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         >
             Aa
         </motion.div>
 
-        {/* 3. Icon Chip */}
-        <motion.div
-            style={{ 
-                ...glassStyle,
-                width: '40px', height: '40px',
-                borderRadius: '10px',
-                left: centerX - 120, top: centerY + 60,
-                display: 'flex', alignItems: 'center', justifyContent: 'center'
-            }}
-            animate={{ 
-                y: [0, 8, 0],
-                rotate: [-3, 3, -3]
-            }}
-            transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
-        >
-             <div style={{ width: '20px', height: '20px', border: '2px solid #0073E6', borderRadius: '50%' }} />
-        </motion.div>
-
-
-        {/* Central Component: The Transformation */}
-        <motion.div
-            style={{ 
-                ...glassStyle,
-                width: '200px', height: '240px',
-                left: centerX - 100, top: centerY - 120, // Centered
-                display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px',
-                zIndex: 5,
-                borderRadius: '16px',
-                background: 'rgba(255,255,255,0.85)'
-            }}
-            animate={{ 
-                boxShadow: [
-                    '0 4px 20px rgba(0,0,0,0.08), 0 0 0 1px rgba(255,255,255,0.5)', 
-                    '0 15px 40px rgba(0, 115, 230, 0.25), 0 0 0 1px rgba(0, 115, 230, 0.3)',
-                    '0 4px 20px rgba(0,0,0,0.08), 0 0 0 1px rgba(255,255,255,0.5)'
-                ]
-            }}
-            transition={{ duration: duration, repeat: Infinity, ease: "easeInOut" }}
-        >
-            
-            {/* Image Placeholder */}
-            <motion.div 
-                style={{ width: '100%', height: '100px', borderRadius: '8px', marginBottom: '16px', overflow: 'hidden', position: 'relative' }}
-            >
-                {/* Wireframe State */}
-                <div style={{ position: 'absolute', inset: 0, background: '#f1f5f9', border: '1px dashed #cbd5e1' }} />
-                
-                {/* Colored State - Wipes In */}
-                <motion.div 
-                    style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, #e0f2fe 0%, #0073E6 100%)' }}
-                    animate={{ clipPath: ['inset(100% 0 0 0)', 'inset(0% 0 0 0)', 'inset(0% 0 0 0)', 'inset(0% 0 0 0)'] }}
-                    transition={{ duration: duration, times: [0, 0.3, 0.8, 1], repeat: Infinity, ease: "easeInOut" }}
-                />
-            </motion.div>
-
-            {/* Title Line */}
-            <div style={{ width: '100%', height: '12px', marginBottom: '8px', position: 'relative' }}>
-                 <div style={{ position: 'absolute', inset: 0, background: '#e2e8f0', borderRadius: '4px' }} />
-                 <motion.div 
-                    style={{ position: 'absolute', inset: 0, background: '#1a1a1a', borderRadius: '4px' }}
-                    animate={{ width: ['0%', '70%', '70%', '0%'] }}
-                    transition={{ duration: duration, times: [0, 0.3, 0.8, 1], repeat: Infinity, ease: "easeInOut" }}
-                />
-            </div>
-
-            {/* Text Lines */}
-            <div style={{ width: '100%', height: '8px', marginBottom: '4px', position: 'relative' }}>
-                 <div style={{ position: 'absolute', inset: 0, background: '#f1f5f9', borderRadius: '4px' }} />
-                 <motion.div 
-                    style={{ position: 'absolute', inset: 0, background: '#94a3b8', borderRadius: '4px' }}
-                    animate={{ width: ['0%', '100%', '100%', '0%'] }}
-                    transition={{ duration: duration, times: [0.1, 0.4, 0.8, 1], repeat: Infinity, ease: "easeInOut" }}
-                />
-            </div>
-            <div style={{ width: '100%', height: '8px', marginBottom: 'auto', position: 'relative' }}>
-                 <div style={{ position: 'absolute', inset: 0, background: '#f1f5f9', borderRadius: '4px' }} />
-                 <motion.div 
-                    style={{ position: 'absolute', inset: 0, background: '#94a3b8', borderRadius: '4px' }}
-                    animate={{ width: ['0%', '80%', '80%', '0%'] }}
-                    transition={{ duration: duration, times: [0.15, 0.45, 0.8, 1], repeat: Infinity, ease: "easeInOut" }}
-                />
-            </div>
-
-            {/* Button */}
-            <div style={{ width: '100%', height: '36px', position: 'relative' }}>
-                 <div style={{ position: 'absolute', inset: 0, border: '1px solid #cbd5e1', borderRadius: '18px' }} />
-                 <motion.div 
-                    style={{ position: 'absolute', inset: 0, background: '#0073E6', borderRadius: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                    animate={{ 
-                        opacity: [0, 1, 1, 0],
-                        scale: [0.9, 1, 1, 0.9]
-                    }}
-                    transition={{ duration: duration, times: [0.2, 0.5, 0.8, 1], repeat: Infinity, ease: "easeInOut" }}
-                >
-                    <div style={{ width: '40%', height: '4px', background: 'white', borderRadius: '2px' }} />
-                </motion.div>
-            </div>
-
-            {/* Magic Wand / Cursor Effect */}
+        {/* Layer 2: Color Palette Cards (Floating) */}
+        {[0, 1, 2].map((i) => (
             <motion.div
-                style={{ 
-                    position: 'absolute', width: '24px', height: '24px', 
-                    borderRadius: '50%', border: '2px solid #0073E6', 
-                    zIndex: 10, pointerEvents: 'none',
-                    top: '50%', left: '50%'
+                key={i}
+                style={{
+                    position: 'absolute',
+                    width: '60px',
+                    height: '80px',
+                    borderRadius: '12px',
+                    background: i === 0 ? '#1a1a1a' : i === 1 ? '#0073E6' : '#ffffff',
+                    border: '1px solid rgba(0,0,0,0.1)',
+                    boxShadow: '0 8px 20px rgba(0,0,0,0.1)',
+                    left: centerX - 140 + (i * 30),
+                    top: centerY - 40 + (i * 20),
+                    zIndex: i + 1
                 }}
-                animate={{ 
-                    top: ['10%', '30%', '80%', '110%'],
-                    left: ['10%', '60%', '50%', '110%'],
-                    opacity: [0, 1, 1, 0],
-                    scale: [0, 1, 1, 0]
+                animate={{
+                    y: [0, -10, 0],
+                    rotate: [0, 5, 0]
                 }}
-                transition={{ duration: duration, times: [0, 0.3, 0.6, 1], repeat: Infinity, ease: "easeInOut" }}
-            >
-                <div style={{ position: 'absolute', top: -2, left: -2, width: 24, height: 24, borderRadius: '50%', background: 'rgba(0,115,230,0.2)' }} />
-            </motion.div>
+                transition={{
+                    duration: 4,
+                    delay: i * 0.5,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                }}
+            />
+        ))}
 
+        {/* Layer 3: The Design System Spec (Main Card) */}
+        <motion.div
+            style={{
+                ...glassStyle,
+                width: '240px',
+                height: '160px',
+                left: centerX - 20,
+                top: centerY - 60,
+                zIndex: 10,
+                borderRadius: '16px',
+                alignItems: 'flex-start',
+                padding: '24px',
+                flexDirection: 'column',
+                gap: '16px',
+                background: 'rgba(255,255,255,0.9)'
+            }}
+            animate={{
+                y: [0, 5, 0]
+            }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        >
+            {/* Header: Typography Spec */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <div style={{ fontSize: '24px', fontFamily: 'Instrument Serif', color: '#1a1a1a' }}>Heading</div>
+                <div style={{ fontSize: '10px', fontFamily: 'Inter', color: '#94a3b8' }}>Instrument Serif • 400 • 32px</div>
+            </div>
+
+            {/* Grid/Spacing Spec */}
+            <div style={{ display: 'flex', gap: '8px', width: '100%' }}>
+                <div style={{ flex: 1, height: '40px', background: 'rgba(0,115,230,0.05)', border: '1px dashed rgba(0,115,230,0.2)', borderRadius: '4px' }} />
+                <div style={{ flex: 1, height: '40px', background: 'rgba(0,115,230,0.05)', border: '1px dashed rgba(0,115,230,0.2)', borderRadius: '4px' }} />
+            </div>
+
+            {/* Button Spec */}
+            <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div style={{ width: '80px', height: '28px', background: '#1a1a1a', borderRadius: '14px' }} />
+                <div style={{ width: '80px', height: '28px', border: '1px solid #e2e8f0', borderRadius: '14px' }} />
+            </div>
+
+            {/* Cursor interacting */}
+            <motion.div
+                style={{
+                    position: 'absolute',
+                    width: '20px',
+                    height: '20px',
+                    background: '#0073E6',
+                    borderRadius: '50% 50% 50% 0',
+                    transform: 'rotate(-45deg)',
+                    right: '-10px',
+                    bottom: '-10px',
+                    boxShadow: '0 4px 12px rgba(0,115,230,0.3)'
+                }}
+                animate={{
+                    x: [0, -20, 0],
+                    y: [0, -20, 0],
+                    scale: [1, 0.9, 1]
+                }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            />
         </motion.div>
 
       </motion.div>
