@@ -3,6 +3,7 @@ import { motion, useInView, useScroll, useTransform, useMotionValueEvent, Animat
 import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
 import Contact from '../components/Contact';
+import { StrategyWidget } from '../components/ServiceWidgets';
 
 // --- DATA ---
 const serviceData = [
@@ -17,7 +18,8 @@ const serviceData = [
       "Email sequences"
     ],
     image: "https://images.unsplash.com/photo-1506729623306-b5a934d88b53?q=80&w=2070&auto=format&fit=crop",
-    shortDesc: "Positioning & Offer Design"
+    shortDesc: "Positioning & Offer Design",
+    widget: <StrategyWidget />
   },
   {
     title: "Brand & Design",
@@ -269,21 +271,28 @@ const MobileScrollLayout = ({ serviceData }) => {
               }}
               transition={{ duration: 1, ease: "easeInOut" }} // Smoother transition
             >
-              <img
-                src={getUnsplashUrl(service.image, 800)}
-                srcSet={`
-                  ${getUnsplashUrl(service.image, 400)} 400w,
-                  ${getUnsplashUrl(service.image, 800)} 800w
-                `}
-                sizes="100vw"
-                alt={service.title}
-                loading={index === 0 ? "eager" : "lazy"}
-                style={{ 
-                  width: '100%', 
-                  height: '100%', 
-                  objectFit: 'cover' 
-                }} 
-              />
+              {service.widget ? (
+                <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f8f9fa' }}>
+                    {/* Inject scale prop for mobile */}
+                    {React.cloneElement(service.widget, { scale: 0.65 })}
+                </div>
+              ) : (
+                <img
+                    src={getUnsplashUrl(service.image, 800)}
+                    srcSet={`
+                    ${getUnsplashUrl(service.image, 400)} 400w,
+                    ${getUnsplashUrl(service.image, 800)} 800w
+                    `}
+                    sizes="100vw"
+                    alt={service.title}
+                    loading={index === 0 ? "eager" : "lazy"}
+                    style={{ 
+                    width: '100%', 
+                    height: '100%', 
+                    objectFit: 'cover' 
+                    }} 
+                />
+              )}
             </motion.div>
           ))}
         </div>
@@ -483,18 +492,24 @@ const StickyImageLayer = ({ service, triggerRef, index, isFirst }) => {
         willChange: 'clip-path'
       }}
     >
-      <img 
-        src={getUnsplashUrl(service.image, 1600)}
-        srcSet={`
-          ${getUnsplashUrl(service.image, 800)} 800w,
-          ${getUnsplashUrl(service.image, 1200)} 1200w,
-          ${getUnsplashUrl(service.image, 2000)} 2000w
-        `}
-        sizes="(max-width: 900px) 100vw, 50vw"
-        alt={service.title}
-        loading={isFirst ? "eager" : "lazy"}
-        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-      />
+      {service.widget ? (
+        <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f8f9fa' }}>
+            {service.widget}
+        </div>
+      ) : (
+        <img 
+            src={getUnsplashUrl(service.image, 1600)}
+            srcSet={`
+            ${getUnsplashUrl(service.image, 800)} 800w,
+            ${getUnsplashUrl(service.image, 1200)} 1200w,
+            ${getUnsplashUrl(service.image, 2000)} 2000w
+            `}
+            sizes="(max-width: 900px) 100vw, 50vw"
+            alt={service.title}
+            loading={isFirst ? "eager" : "lazy"}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+        />
+      )}
     </motion.div>
   );
 };
