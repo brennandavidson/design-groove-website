@@ -421,8 +421,8 @@ export const GrowthWidget = ({ scale = 1 }) => {
         <motion.div
             style={{
                 ...glassStyle,
-                width: '320px', height: '180px',
-                left: centerX - 160, top: centerY - 90,
+                width: '300px', height: '180px',
+                left: centerX - 150, top: centerY - 90,
                 flexDirection: 'column', alignItems: 'flex-start', padding: '24px',
                 zIndex: 10, background: 'rgba(255,255,255,0.9)'
             }}
@@ -476,9 +476,9 @@ export const GrowthWidget = ({ scale = 1 }) => {
 
         {/* Floating Optimization Badges */}
         {[
-            { label: 'A/B Test', icon: '⚡', x: centerX + 120, y: centerY - 60, delay: 0 },
-            { label: 'Analytics', icon: '📊', x: centerX - 140, y: centerY + 40, delay: 1.5 },
-            { label: 'Refine', icon: '🔧', x: centerX + 100, y: centerY + 70, delay: 3 }
+            { label: 'A/B Test', icon: '⚡', x: centerX + 130, y: centerY - 80, delay: 0 },
+            { label: 'Analytics', icon: '📊', x: centerX - 190, y: centerY + 20, delay: 1.5 },
+            { label: 'Refine', icon: '🔧', x: centerX - 30, y: centerY + 100, delay: 3 }
         ].map((item, i) => (
             <motion.div
                 key={i}
