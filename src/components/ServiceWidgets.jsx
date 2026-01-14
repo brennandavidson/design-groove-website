@@ -234,6 +234,7 @@ export const BrandDesignWidget = ({ scale = 1 }) => {
 };
 
 // --- WIDGET 3: DEVELOPMENT & AUTOMATION ---
+// Concept: "The Connected Ecosystem" - Clean, glass nodes synchronizing.
 export const DevelopmentWidget = ({ scale = 1 }) => {
   const containerRef = useRef(null);
   
@@ -242,14 +243,16 @@ export const DevelopmentWidget = ({ scale = 1 }) => {
   const centerX = W / 2;
   const centerY = H / 2;
 
-  // Orbit parameters
-  const orbitRadius = 120;
-  
-  const satellites = [
-    { id: 'payments', label: 'Payments', icon: '$', angle: -90 }, // Top
-    { id: 'crm', label: 'CRM', icon: '👤', angle: 30 }, // Bottom Right
-    { id: 'email', label: 'Email', icon: '@', angle: 150 } // Bottom Left
-  ];
+  // Node Dimensions
+  const coreSize = 80;
+  const satW = 100;
+  const satH = 36;
+  const radius = 130;
+
+  // Satellites positions
+  const sat1 = { x: centerX, y: centerY - radius }; // Top
+  const sat2 = { x: centerX + radius * 0.866, y: centerY + radius * 0.5 }; // Bottom Right
+  const sat3 = { x: centerX - radius * 0.866, y: centerY + radius * 0.5 }; // Bottom Left
 
   return (
     <div ref={containerRef} style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden', background: '#f8f9fa' }}>
@@ -264,125 +267,113 @@ export const DevelopmentWidget = ({ scale = 1 }) => {
         viewport={{ once: true, margin: "-50px" }}
       >
         
-        {/* Connecting Lines Layer */}
+        {/* Connector Layer */}
         <svg width={W} height={H} style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'none', zIndex: Z_SVG }}>
             <defs>
-                <linearGradient id="line-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="#0073E6" stopOpacity="0.2" />
-                    <stop offset="50%" stopColor="#0073E6" stopOpacity="0.8" />
-                    <stop offset="100%" stopColor="#0073E6" stopOpacity="0.2" />
+                <linearGradient id="sync-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#0073E6" stopOpacity="0" />
+                    <stop offset="50%" stopColor="#0073E6" stopOpacity="0.5" />
+                    <stop offset="100%" stopColor="#0073E6" stopOpacity="0" />
                 </linearGradient>
             </defs>
-            {satellites.map((sat) => {
-                // Calculate satellite position relative to center
-                const rad = sat.angle * (Math.PI / 180);
-                const x = centerX + orbitRadius * Math.cos(rad);
-                const y = centerY + orbitRadius * Math.sin(rad);
-                
-                return (
-                    <g key={`link-${sat.id}`}>
-                        {/* Static Line */}
-                        <motion.line 
-                            x1={centerX} y1={centerY} x2={x} y2={y} 
-                            stroke="#e2e8f0" strokeWidth="2" strokeDasharray="4 4"
-                        />
-                        
-                        {/* Active Pulse (Data Packet) - Outward */}
-                        <motion.circle r="3" fill="#0073E6">
-                            <animateMotion 
-                                dur="2s"
-                                repeatCount="indefinite"
-                                path={`M ${centerX} ${centerY} L ${x} ${y}`}
-                                begin="0s"
-                                calcMode="linear"
-                            />
-                            <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" />
-                        </motion.circle>
 
-                        {/* Active Pulse (Data Packet) - Inward (Response) */}
-                        <motion.circle r="3" fill="#10b981">
-                            <animateMotion 
-                                dur="2s"
-                                repeatCount="indefinite"
-                                path={`M ${x} ${y} L ${centerX} ${centerY}`}
-                                begin="1s"
-                                calcMode="linear"
-                            />
-                            <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" begin="1s" />
-                        </motion.circle>
-                    </g>
-                );
-            })}
+            {/* Connecting Lines */}
+            {[sat1, sat2, sat3].map((sat, i) => (
+                <g key={i}>
+                    {/* Base Line */}
+                    <motion.line 
+                        x1={centerX} y1={centerY} x2={sat.x} y2={sat.y} 
+                        stroke="#e2e8f0" strokeWidth="1"
+                    />
+                    
+                    {/* Data Particle - Outbound */}
+                    <motion.circle r="3" fill="#0073E6">
+                        <animateMotion 
+                            dur="2s"
+                            repeatCount="indefinite"
+                            path={`M ${centerX} ${centerY} L ${sat.x} ${sat.y}`}
+                            begin={`${i * 0.6}s`}
+                            calcMode="linear"
+                        />
+                        <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" begin={`${i * 0.6}s`} />
+                    </motion.circle>
+
+                    {/* Data Particle - Inbound */}
+                    <motion.circle r="3" fill="#10b981">
+                        <animateMotion 
+                            dur="2s"
+                            repeatCount="indefinite"
+                            path={`M ${sat.x} ${sat.y} L ${centerX} ${centerY}`}
+                            begin={`${i * 0.6 + 1}s`}
+                            calcMode="linear"
+                        />
+                        <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" begin={`${i * 0.6 + 1}s`} />
+                    </motion.circle>
+                </g>
+            ))}
         </svg>
 
-        {/* Central Hub: The Platform */}
+        {/* Central Core: The Platform */}
         <motion.div
             style={{
                 ...glassStyle,
-                width: '100px', height: '100px',
+                width: coreSize, height: coreSize,
+                left: centerX - coreSize/2, top: centerY - coreSize/2,
                 borderRadius: '50%',
-                left: centerX - 50, top: centerY - 50,
-                border: '4px solid rgba(255,255,255,0.8)',
-                boxShadow: '0 0 30px rgba(0,115,230,0.15), 0 0 0 1px rgba(0,115,230,0.1)',
-                zIndex: 10,
                 flexDirection: 'column',
-                gap: '4px'
+                gap: '4px',
+                zIndex: 10,
+                border: '2px solid #0073E6',
+                background: 'rgba(255,255,255,0.9)'
             }}
             animate={{
                 boxShadow: [
-                    '0 0 30px rgba(0,115,230,0.15), 0 0 0 1px rgba(0,115,230,0.1)',
-                    '0 0 50px rgba(0,115,230,0.3), 0 0 0 4px rgba(0,115,230,0.1)',
-                    '0 0 30px rgba(0,115,230,0.15), 0 0 0 1px rgba(0,115,230,0.1)'
+                    '0 0 0 0px rgba(0,115,230,0)',
+                    '0 0 0 10px rgba(0,115,230,0.05)',
+                    '0 0 0 20px rgba(0,115,230,0)'
                 ]
             }}
-            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
         >
-            <div style={{ fontSize: '24px' }}>⚡</div>
-            <div style={{ fontSize: '10px', color: '#64748b', fontWeight: 700 }}>CORE</div>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0073E6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                <line x1="6" y1="18" x2="6.01" y2="18"></line>
+            </svg>
         </motion.div>
 
-        {/* Satellites */}
-        {satellites.map((sat, i) => {
-            const rad = sat.angle * (Math.PI / 180);
-            const x = centerX + orbitRadius * Math.cos(rad);
-            const y = centerY + orbitRadius * Math.sin(rad);
-
-            return (
-                <motion.div
-                    key={sat.id}
-                    style={{
-                        ...glassStyle,
-                        width: '80px', height: '60px',
-                        left: x - 40, top: y - 30,
-                        flexDirection: 'column',
-                        gap: '2px',
-                        zIndex: 5
-                    }}
-                    animate={{
-                        y: [0, -5, 0]
-                    }}
-                    transition={{
-                        duration: 3,
-                        delay: i * 0.5,
-                        repeat: Infinity,
-                        ease: "easeInOut"
-                    }}
-                >
-                    <div style={{ fontSize: '18px', marginBottom: '2px' }}>{sat.icon}</div>
-                    <div style={{ fontSize: '10px', color: '#64748b' }}>{sat.label}</div>
-                    
-                    {/* Status Dot */}
-                    <motion.div
-                        style={{
-                            position: 'absolute', top: '6px', right: '6px',
-                            width: '6px', height: '6px', borderRadius: '50%', background: '#10b981'
-                        }}
-                        animate={{ opacity: [0.5, 1, 0.5] }}
-                        transition={{ duration: 1.5, repeat: Infinity }}
-                    />
-                </motion.div>
-            );
-        })}
+        {/* Satellite Nodes */}
+        {[
+            { label: 'Payments', icon: <path d="M1 4h22v16H1zM1 10h22" />, pos: sat1 },
+            { label: 'CRM', icon: <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2 M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" />, pos: sat2 },
+            { label: 'Email', icon: <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z M22 6l-10 7L2 6" />, pos: sat3 }
+        ].map((item, i) => (
+            <motion.div
+                key={i}
+                style={{
+                    ...glassStyle,
+                    width: satW, height: satH,
+                    left: item.pos.x - satW/2, top: item.pos.y - satH/2,
+                    gap: '8px',
+                    zIndex: 5
+                }}
+                animate={{ y: [0, -5, 0] }}
+                transition={{ duration: 4, delay: i * 1, repeat: Infinity, ease: "easeInOut" }}
+            >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    {item.icon}
+                </svg>
+                <span style={{ fontSize: '11px', color: '#475569' }}>{item.label}</span>
+                
+                {/* Sync Status Dot */}
+                <motion.div 
+                    style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981', marginLeft: 'auto', marginRight: '4px' }}
+                    animate={{ opacity: [0.4, 1, 0.4] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: i * 0.5 }}
+                />
+            </motion.div>
+        ))}
 
       </motion.div>
     </div>
