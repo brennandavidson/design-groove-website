@@ -67,43 +67,44 @@ const HVACLanding = () => {
             color: '#4a4a4a',
             maxWidth: '800px',
             margin: '0 auto 2.5rem',
-            padding: '0 1rem' // Added padding to prevent edge touching on mobile
+            padding: '0 1rem'
           }}>
             Leads hit your phone by text. Reviews stack automatically. Old customers come back. We build it in 7-10 days. You just answer your phone.
           </p>
 
           <div style={{ 
-            display: 'flex', 
-            flexDirection: isMobile ? 'column' : 'row',
-            justifyContent: 'center',
-            alignItems: isMobile ? 'flex-start' : 'center',
-            flexWrap: 'wrap',
-            gap: isMobile ? '0.75rem' : '2rem',
-            marginBottom: '4rem',
+            display: 'grid', 
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(250px, 1fr))',
+            gap: '1rem',
+            maxWidth: '1100px',
+            margin: '0 auto 4rem',
             fontSize: '1rem',
             fontWeight: 500,
-            maxWidth: isMobile ? 'max-content' : '100%',
-            margin: isMobile ? '0 auto 4rem' : '0 auto 4rem'
+            justifyItems: isMobile ? 'start' : 'center'
           }}>
-            <span style={{ display: 'flex', alignItems: 'center', textAlign: 'left', gap: '0.5rem' }}>
-              <span style={{ color: '#0073E6', flexShrink: 0 }}>✓</span> Leads Text Your Phone in Seconds
-            </span>
-            <span style={{ display: 'flex', alignItems: 'center', textAlign: 'left', gap: '0.5rem' }}>
-              <span style={{ color: '#0073E6', flexShrink: 0 }}>✓</span> Reviews Request Themselves
-            </span>
-            <span style={{ display: 'flex', alignItems: 'center', textAlign: 'left', gap: '0.5rem' }}>
-              <span style={{ color: '#0073E6', flexShrink: 0 }}>✓</span> Past Customers Reactivated
-            </span>
-            <span style={{ display: 'flex', alignItems: 'center', textAlign: 'left', gap: '0.5rem' }}>
-              <span style={{ color: '#0073E6', flexShrink: 0 }}>✓</span> Website Included
-            </span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textAlign: 'left' }}>
+              <span style={{ color: '#0073E6', flexShrink: 0, fontSize: '1.2em' }}>✓</span> 
+              <span>Leads Text Your Phone in Seconds</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textAlign: 'left' }}>
+              <span style={{ color: '#0073E6', flexShrink: 0, fontSize: '1.2em' }}>✓</span> 
+              <span>Reviews Request Themselves</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textAlign: 'left' }}>
+              <span style={{ color: '#0073E6', flexShrink: 0, fontSize: '1.2em' }}>✓</span> 
+              <span>Past Customers Reactivated</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textAlign: 'left' }}>
+              <span style={{ color: '#0073E6', flexShrink: 0, fontSize: '1.2em' }}>✓</span> 
+              <span>Website Included</span>
+            </div>
           </div>
 
            {/* MOCKUP PLACEHOLDER */}
            <div style={{
             width: '100%',
             maxWidth: '1000px',
-            aspectRatio: '16/9', // Maintain aspect ratio for hero image
+            aspectRatio: '16/9',
             backgroundColor: '#f5f5f5',
             borderRadius: '12px',
             margin: '0 auto 4rem',
@@ -114,9 +115,6 @@ const HVACLanding = () => {
             position: 'relative',
             overflow: 'hidden'
           }}>
-            {/* If you have the image file, you can replace this with:
-               <img src="/assets/your-mockup-image.png" alt="HVAC System Mockup" style={{ width: '100%', height: 'auto' }} /> 
-            */}
              <div style={{ textAlign: 'center', color: '#888', padding: '2rem' }}>
               <p style={{ fontSize: '1.2rem', fontWeight: 600 }}>[INSERT MOCKUP IMAGE HERE]</p>
               <p>Upload the mockup (laptop/phone) image to /public/assets/ and reference it here.</p>
@@ -128,9 +126,9 @@ const HVACLanding = () => {
             width: '100%',
             maxWidth: '900px',
             aspectRatio: '16/9',
-            backgroundColor: '#000', // Darker background for video placeholder
+            backgroundColor: '#000',
             borderRadius: '12px',
-            margin: '0 auto 4rem', // Added margin bottom
+            margin: '0 auto 4rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -297,7 +295,7 @@ const HVACLanding = () => {
                {/* Video Testimonial 1 - Mobile Portrait */}
                <div style={{
                 width: isMobile ? '100%' : '300px',
-                aspectRatio: '9/16', // Mobile Portrait
+                aspectRatio: '9/16',
                 backgroundColor: '#f0f0f0',
                 borderRadius: '12px',
                 display: 'flex',
@@ -310,7 +308,7 @@ const HVACLanding = () => {
               {/* Video Testimonial 2 - Mobile Portrait */}
               <div style={{
                 width: isMobile ? '100%' : '300px',
-                aspectRatio: '9/16', // Mobile Portrait
+                aspectRatio: '9/16',
                 backgroundColor: '#f0f0f0',
                 borderRadius: '12px',
                 display: 'flex',

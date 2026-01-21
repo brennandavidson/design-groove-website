@@ -18,6 +18,9 @@ const Navbar = () => {
   const navigate = useNavigate();
   const isHomePage = pathname === '/';
   const isBookPage = pathname === '/book';
+  
+  // Don't render global navbar on HVAC landing page
+  if (pathname === '/hvac-system') return null;
 
   // Control visibility of the absolute hero navbar
   const [isHeroNavVisible, setIsHeroNavVisible] = useState(() => {
