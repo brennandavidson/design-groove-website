@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { InlineWidget } from "react-calendly";
 import FooterSky from '../components/FooterSky';
+import HVACCredibility from '../components/HVACCredibility';
 
 // Simple Navbar for Landing Page
 const LandingNavbar = () => (
@@ -273,27 +274,8 @@ const HVACLanding = () => {
               marginBottom: '3rem'
             }}>Trusted by HVAC Pros</h2>
 
-            {/* Logo Strip Placeholder */}
-            <div style={{ 
-              display: 'flex', 
-              flexWrap: 'wrap', 
-              justifyContent: 'center', 
-              gap: '2rem', 
-              opacity: 0.6, 
-              marginBottom: '4rem',
-              filter: 'grayscale(100%)'
-            }}>
-              {['Az Family Air', 'Trustworthy Air', 'ASH', 'Top Tech', 'Air Assurance', 'Az Cooling Specialists'].map(name => (
-                <div key={name} style={{ 
-                  padding: '1rem 2rem', 
-                  border: '1px solid #ddd', 
-                  borderRadius: '8px',
-                  fontWeight: 600 
-                }}>
-                  {name}
-                </div>
-              ))}
-            </div>
+            {/* Logo Strip Slider */}
+            <HVACCredibility />
 
             <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', flexWrap: isMobile ? 'wrap' : 'nowrap' }}>
                {/* Video Testimonial 1 - Mobile Portrait */}
