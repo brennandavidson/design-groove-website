@@ -11,7 +11,7 @@ const LandingNavbar = () => (
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#ffffff'
+    // backgroundColor: '#ffffff' // Removed background
   }}>
     <a href="/" style={{ display: 'block' }}>
       <img 
