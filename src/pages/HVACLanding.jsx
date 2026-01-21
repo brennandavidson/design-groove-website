@@ -76,22 +76,26 @@ const HVACLanding = () => {
             display: 'flex', 
             flexDirection: isMobile ? 'column' : 'row',
             justifyContent: 'center',
-            gap: isMobile ? '1rem' : '2rem',
+            alignItems: isMobile ? 'flex-start' : 'center',
+            flexWrap: 'wrap',
+            gap: isMobile ? '0.75rem' : '2rem',
             marginBottom: '4rem',
             fontSize: '1rem',
-            fontWeight: 500
+            fontWeight: 500,
+            maxWidth: isMobile ? 'max-content' : '100%',
+            margin: isMobile ? '0 auto 4rem' : '0 auto 4rem'
           }}>
-            <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-              <span style={{ color: '#0073E6' }}>✓</span> Leads Text Your Phone in Seconds
+            <span style={{ display: 'flex', alignItems: 'center', textAlign: 'left', gap: '0.5rem' }}>
+              <span style={{ color: '#0073E6', flexShrink: 0 }}>✓</span> Leads Text Your Phone in Seconds
             </span>
-            <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-              <span style={{ color: '#0073E6' }}>✓</span> Reviews Request Themselves
+            <span style={{ display: 'flex', alignItems: 'center', textAlign: 'left', gap: '0.5rem' }}>
+              <span style={{ color: '#0073E6', flexShrink: 0 }}>✓</span> Reviews Request Themselves
             </span>
-            <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-              <span style={{ color: '#0073E6' }}>✓</span> Past Customers Reactivated
+            <span style={{ display: 'flex', alignItems: 'center', textAlign: 'left', gap: '0.5rem' }}>
+              <span style={{ color: '#0073E6', flexShrink: 0 }}>✓</span> Past Customers Reactivated
             </span>
-            <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-              <span style={{ color: '#0073E6' }}>✓</span> Website Included
+            <span style={{ display: 'flex', alignItems: 'center', textAlign: 'left', gap: '0.5rem' }}>
+              <span style={{ color: '#0073E6', flexShrink: 0 }}>✓</span> Website Included
             </span>
           </div>
 
