@@ -17,13 +17,13 @@ const LandingNavbar = () => (
     zIndex: 10,
     backgroundColor: 'transparent'
   }}>
-    <a href="/" style={{ display: 'block' }}>
+    <div style={{ display: 'block' }}>
       <img 
         src="/assets/dg-logo-dark.svg" 
         alt="Design Groove" 
         style={{ height: '32px', width: 'auto' }} 
       />
-    </a>
+    </div>
   </nav>
 );
 
