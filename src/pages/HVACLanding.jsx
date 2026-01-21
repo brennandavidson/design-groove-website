@@ -1,8 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { InlineWidget } from "react-calendly";
-import Navbar from '../components/Navbar';
 import FooterSky from '../components/FooterSky';
+
+// Simple Navbar for Landing Page
+const LandingNavbar = () => (
+  <nav style={{
+    width: '100%',
+    padding: '2rem 4vw',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#ffffff'
+  }}>
+    <a href="/" style={{ display: 'block' }}>
+      <img 
+        src="/assets/dg-logo-dark.svg" 
+        alt="Design Groove" 
+        style={{ height: '32px', width: 'auto' }} 
+      />
+    </a>
+  </nav>
+);
 
 const HVACLanding = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -21,13 +40,13 @@ const HVACLanding = () => {
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
-      <Navbar />
+      <LandingNavbar />
 
       <main style={{ backgroundColor: '#ffffff', color: '#1a1a1a', fontFamily: 'Inter, sans-serif' }}>
         
         {/* HERO SECTION */}
         <section style={{ 
-          padding: isMobile ? '8rem 5vw 4rem' : '10rem 5vw 6rem', 
+          padding: isMobile ? '4rem 5vw 4rem' : '6rem 5vw 6rem', 
           textAlign: 'center',
           maxWidth: '1200px',
           margin: '0 auto'
@@ -47,10 +66,10 @@ const HVACLanding = () => {
             lineHeight: 1.5,
             color: '#4a4a4a',
             maxWidth: '800px',
-            margin: '0 auto 2.5rem'
+            margin: '0 auto 2.5rem',
+            padding: '0 1rem' // Added padding to prevent edge touching on mobile
           }}>
-            Leads hit your phone by text. Reviews stack automatically. Old customers come back.<br className={isMobile ? 'hidden' : ''} />
-            We build it in 7-10 days. You just answer your phone.
+            Leads hit your phone by text. Reviews stack automatically. Old customers come back. We build it in 7-10 days. You just answer your phone.
           </p>
 
           <div style={{ 
@@ -76,14 +95,14 @@ const HVACLanding = () => {
             </span>
           </div>
 
-          {/* VSL PLACEHOLDER */}
-          <div style={{
+           {/* MOCKUP PLACEHOLDER */}
+           <div style={{
             width: '100%',
-            maxWidth: '900px',
-            aspectRatio: '16/9',
-            backgroundColor: '#f0f0f0',
+            maxWidth: '1000px',
+            aspectRatio: '16/9', // Maintain aspect ratio for hero image
+            backgroundColor: '#f5f5f5',
             borderRadius: '12px',
-            margin: '0 auto',
+            margin: '0 auto 4rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -91,11 +110,57 @@ const HVACLanding = () => {
             position: 'relative',
             overflow: 'hidden'
           }}>
-            <div style={{ textAlign: 'center', color: '#888' }}>
+            {/* If you have the image file, you can replace this with:
+               <img src="/assets/your-mockup-image.png" alt="HVAC System Mockup" style={{ width: '100%', height: 'auto' }} /> 
+            */}
+             <div style={{ textAlign: 'center', color: '#888', padding: '2rem' }}>
+              <p style={{ fontSize: '1.2rem', fontWeight: 600 }}>[INSERT MOCKUP IMAGE HERE]</p>
+              <p>Upload the mockup (laptop/phone) image to /public/assets/ and reference it here.</p>
+            </div>
+          </div>
+
+          {/* VSL PLACEHOLDER */}
+          <div style={{
+            width: '100%',
+            maxWidth: '900px',
+            aspectRatio: '16/9',
+            backgroundColor: '#000', // Darker background for video placeholder
+            borderRadius: '12px',
+            margin: '0 auto 4rem', // Added margin bottom
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            border: '1px solid #333',
+            position: 'relative',
+            overflow: 'hidden'
+          }}>
+            <div style={{ textAlign: 'center', color: '#fff' }}>
               <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>▶</div>
               <p>Video Sales Letter Placeholder</p>
             </div>
           </div>
+
+          {/* BOOKER - MOVED HERE */}
+          <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+            <h2 style={{ 
+              fontFamily: 'Instrument Serif, serif',
+              fontSize: isMobile ? '2rem' : '3rem',
+              marginBottom: '1rem',
+              marginTop: '0'
+            }}>Ready to fix your leads?</h2>
+            <p style={{ fontSize: '1.2rem', color: '#666', marginBottom: '2rem' }}>
+              Book a 15-min call. We'll show you how it works.
+            </p>
+            
+            <InlineWidget
+              url="https://calendly.com/designgroove/discovery-call?primary_color=0073e6&hide_gdpr_banner=1"
+              styles={{
+                height: '700px',
+                width: '100%'
+              }}
+            />
+          </div>
+
         </section>
 
         {/* HOW IT WORKS SECTION */}
@@ -224,56 +289,34 @@ const HVACLanding = () => {
               ))}
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '2rem' }}>
-               {/* Video Testimonial 1 */}
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', flexWrap: isMobile ? 'wrap' : 'nowrap' }}>
+               {/* Video Testimonial 1 - Mobile Portrait */}
                <div style={{
-                aspectRatio: '16/9',
+                width: isMobile ? '100%' : '300px',
+                aspectRatio: '9/16', // Mobile Portrait
                 backgroundColor: '#f0f0f0',
                 borderRadius: '12px',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'center',
+                maxWidth: '300px'
               }}>
-                <p style={{ color: '#666' }}>ASH Review Video</p>
+                <p style={{ color: '#666' }}>ASH Review Video (9:16)</p>
               </div>
-              {/* Video Testimonial 2 */}
+              {/* Video Testimonial 2 - Mobile Portrait */}
               <div style={{
-                aspectRatio: '16/9',
+                width: isMobile ? '100%' : '300px',
+                aspectRatio: '9/16', // Mobile Portrait
                 backgroundColor: '#f0f0f0',
                 borderRadius: '12px',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'center',
+                maxWidth: '300px'
               }}>
-                <p style={{ color: '#666' }}>Rob Review Video</p>
+                <p style={{ color: '#666' }}>Rob Review Video (9:16)</p>
               </div>
             </div>
-          </div>
-        </section>
-
-        {/* CALENDAR SECTION */}
-        <section style={{ 
-          padding: '4rem 5vw 8rem', 
-          backgroundColor: '#fff',
-          textAlign: 'center' 
-        }}>
-          <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
-            <h2 style={{ 
-              fontFamily: 'Instrument Serif, serif',
-              fontSize: isMobile ? '2rem' : '3rem',
-              marginBottom: '1rem'
-            }}>Ready to fix your leads?</h2>
-            <p style={{ fontSize: '1.2rem', color: '#666', marginBottom: '2rem' }}>
-              Book a 15-min call. We'll show you how it works.
-            </p>
-            
-            <InlineWidget
-              url="https://calendly.com/designgroove/discovery-call?primary_color=0073e6&hide_gdpr_banner=1"
-              styles={{
-                height: '700px',
-                width: '100%'
-              }}
-            />
           </div>
         </section>
 
