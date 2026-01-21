@@ -11,7 +11,7 @@ const LandingNavbar = () => (
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: '#ffffff' // Removed background
+    backgroundColor: 'transparent' // Explicitly transparent
   }}>
     <a href="/" style={{ display: 'block' }}>
       <img 
@@ -73,14 +73,14 @@ const HVACLanding = () => {
           </p>
 
           <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(250px, 1fr))',
-            gap: '1rem',
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            gap: isMobile ? '1rem' : '2rem',
             maxWidth: '1100px',
             margin: '0 auto 4rem',
             fontSize: '1rem',
-            fontWeight: 500,
-            justifyItems: isMobile ? 'start' : 'center'
+            fontWeight: 500
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textAlign: 'left' }}>
               <span style={{ color: '#0073E6', flexShrink: 0, fontSize: '1.2em' }}>✓</span> 
