@@ -49,11 +49,11 @@ const HVACCredibility = () => {
           <div style={{
             display: 'flex',
             width: 'fit-content',
-            gap: gapSize,
+            // gap: gapSize, // REMOVED parent gap to fix loop math
             animation: 'scrollLogos 40s linear infinite'
           }}>
             {/* First Set */}
-            <div style={{ display: 'flex', gap: gapSize, alignItems: 'center' }}>
+            <div style={{ display: 'flex', gap: gapSize, alignItems: 'center', paddingRight: gapSize }}>
               {displayLogos.map((file, index) => (
                 <div key={`set1-${index}`} style={{ 
                   display: 'flex', 
@@ -83,9 +83,9 @@ const HVACCredibility = () => {
                 </div>
               ))}
             </div>
-             <div style={{ display: 'flex', gap: gapSize, alignItems: 'center' }}>
+            <div style={{ display: 'flex', gap: gapSize, alignItems: 'center', paddingRight: gapSize }}>
               {displayLogos.map((file, index) => (
-                <div key={`set2-${index}`} style={{ 
+                <div key={`set2-${index}`} style={{  
                   display: 'flex', 
                   alignItems: 'center', 
                   justifyContent: 'center',
@@ -120,7 +120,7 @@ const HVACCredibility = () => {
       <style>{`
         @keyframes scrollLogos {
           0% { transform: translateX(0); }
-          100% { transform: translateX(calc(-50% - ${isMobile ? '0.75rem' : '2rem'})); }
+          100% { transform: translateX(-50%); }
         }
       `}</style>
     </section>
