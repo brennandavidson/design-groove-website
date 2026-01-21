@@ -6,12 +6,16 @@ import FooterSky from '../components/FooterSky';
 // Simple Navbar for Landing Page
 const LandingNavbar = () => (
   <nav style={{
+    position: 'absolute',
+    top: 0,
+    left: 0,
     width: '100%',
     padding: '2rem 4vw',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'transparent' // Explicitly transparent
+    zIndex: 10,
+    backgroundColor: 'transparent'
   }}>
     <a href="/" style={{ display: 'block' }}>
       <img 
@@ -46,7 +50,7 @@ const HVACLanding = () => {
         
         {/* HERO SECTION */}
         <section style={{ 
-          padding: isMobile ? '4rem 5vw 4rem' : '6rem 5vw 6rem', 
+          padding: isMobile ? '8rem 5vw 4rem' : '10rem 5vw 6rem', // Increased top padding for absolute nav
           textAlign: 'center',
           maxWidth: '1200px',
           margin: '0 auto'
@@ -76,8 +80,8 @@ const HVACLanding = () => {
             display: 'flex',
             flexWrap: 'wrap',
             justifyContent: 'center',
-            gap: isMobile ? '1rem' : '2rem',
-            maxWidth: '1100px',
+            gap: isMobile ? '1rem' : '1.5rem',
+            maxWidth: '1200px',
             margin: '0 auto 4rem',
             fontSize: '1rem',
             fontWeight: 500
