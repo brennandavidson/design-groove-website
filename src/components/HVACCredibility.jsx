@@ -25,7 +25,7 @@ const HVACCredibility = () => {
 
   // Duplicate the logos enough times to ensure smooth scrolling
   const displayLogos = [...logoFiles, ...logoFiles, ...logoFiles];
-  const gapSize = isMobile ? '1.5rem' : '4rem';
+  const gapSize = isMobile ? '1.5rem' : '3rem';
   const minWidth = isMobile ? '100px' : '140px';
 
   return (
@@ -67,6 +67,7 @@ const HVACCredibility = () => {
                     alt="Client Logo"
                     onError={(e) => {
                       e.target.style.display = 'none';
+                      e.target.parentElement.style.display = 'none'; // Hide parent to prevent gaps
                     }}
                     style={{
                       maxHeight: '50px',
