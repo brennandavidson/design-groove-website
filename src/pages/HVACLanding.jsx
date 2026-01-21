@@ -51,7 +51,7 @@ const HVACLanding = () => {
         
         {/* HERO SECTION */}
         <section style={{ 
-          padding: isMobile ? '8rem 5vw 4rem' : '10rem 5vw 6rem', // Increased top padding for absolute nav
+          padding: isMobile ? '8rem 5vw 4rem' : '10rem 5vw 6rem',
           textAlign: 'center',
           maxWidth: '1200px',
           margin: '0 auto'
@@ -102,27 +102,6 @@ const HVACLanding = () => {
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textAlign: 'left' }}>
               <span style={{ color: '#0073E6', flexShrink: 0, fontSize: '1.2em' }}>✓</span> 
               <span>Website Included</span>
-            </div>
-          </div>
-
-           {/* MOCKUP PLACEHOLDER */}
-           <div style={{
-            width: '100%',
-            maxWidth: '1000px',
-            aspectRatio: '16/9',
-            backgroundColor: '#f5f5f5',
-            borderRadius: '12px',
-            margin: '0 auto 4rem',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            border: '1px solid #e0e0e0',
-            position: 'relative',
-            overflow: 'hidden'
-          }}>
-             <div style={{ textAlign: 'center', color: '#888', padding: '2rem' }}>
-              <p style={{ fontSize: '1.2rem', fontWeight: 600 }}>[INSERT MOCKUP IMAGE HERE]</p>
-              <p>Upload the mockup (laptop/phone) image to /public/assets/ and reference it here.</p>
             </div>
           </div>
 
@@ -185,82 +164,120 @@ const HVACLanding = () => {
               marginBottom: '3rem'
             }}>How It Works</h2>
 
+            {/* Redesigned Layout: Mockup Visual + Steps */}
             <div style={{ 
-              display: 'grid', 
-              gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr 1fr', 
-              gap: '2rem'
+                display: 'flex', 
+                flexDirection: 'column', 
+                gap: '3rem',
+                alignItems: 'center'
             }}>
-              {/* Step 1 */}
-              <div style={{ 
-                backgroundColor: '#fff', 
-                padding: '2rem', 
-                borderRadius: '12px', 
-                boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
-                textAlign: 'center'
-              }}>
-                <div style={{ 
-                  height: '200px', 
-                  backgroundColor: '#eee', 
-                  borderRadius: '8px', 
-                  marginBottom: '1.5rem',
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  justifyContent: 'center',
-                  color: '#666' 
+                
+                {/* 1. The System Visual (Mockup) */}
+                <div style={{
+                    width: '100%',
+                    maxWidth: '1000px',
+                    position: 'relative'
                 }}>
-                  [Form Screenshot]
+                    <img 
+                        src="/assets/demo-site-mockup.png" 
+                        alt="HVAC Lead System Dashboard" 
+                        style={{
+                            width: '100%',
+                            height: 'auto',
+                            borderRadius: '12px',
+                            boxShadow: '0 10px 40px rgba(0,0,0,0.1)'
+                        }}
+                    />
                 </div>
-                <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>1. Lead fills out form</h3>
-                <p style={{ color: '#666' }}>Customer requests a quote on your new site.</p>
-              </div>
 
-              {/* Step 2 */}
-              <div style={{ 
-                backgroundColor: '#fff', 
-                padding: '2rem', 
-                borderRadius: '12px', 
-                boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
-                textAlign: 'center'
-              }}>
+                {/* 2. The 3 Steps Grid */}
                 <div style={{ 
-                  height: '200px', 
-                  backgroundColor: '#eee', 
-                  borderRadius: '8px', 
-                  marginBottom: '1.5rem',
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  justifyContent: 'center',
-                  color: '#666' 
+                  display: 'grid', 
+                  gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr 1fr', 
+                  gap: '2rem',
+                  width: '100%'
                 }}>
-                  [Phone Notification]
-                </div>
-                <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>2. You get a text instantly</h3>
-                <p style={{ color: '#666' }}>Notification hits your phone in seconds.</p>
-              </div>
+                  {/* Step 1 */}
+                  <div style={{ 
+                    backgroundColor: '#fff', 
+                    padding: '2rem', 
+                    borderRadius: '12px', 
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
+                    textAlign: 'center'
+                  }}>
+                    <div style={{ 
+                      height: '60px', 
+                      width: '60px',
+                      backgroundColor: '#e6f2ff', 
+                      borderRadius: '50%', 
+                      marginBottom: '1.5rem',
+                      display: 'inline-flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      color: '#0073E6',
+                      fontSize: '1.5rem',
+                      fontWeight: 'bold'
+                    }}>
+                      1
+                    </div>
+                    <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>Lead fills out form</h3>
+                    <p style={{ color: '#666' }}>Customer requests a quote on your new site.</p>
+                  </div>
 
-              {/* Step 3 */}
-              <div style={{ 
-                backgroundColor: '#fff', 
-                padding: '2rem', 
-                borderRadius: '12px', 
-                boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
-                textAlign: 'center'
-              }}>
-                <div style={{ 
-                  height: '200px', 
-                  backgroundColor: '#eee', 
-                  borderRadius: '8px', 
-                  marginBottom: '1.5rem',
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  justifyContent: 'center',
-                  color: '#666' 
-                }}>
-                  [Text Thread]
+                  {/* Step 2 */}
+                  <div style={{ 
+                    backgroundColor: '#fff', 
+                    padding: '2rem', 
+                    borderRadius: '12px', 
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
+                    textAlign: 'center'
+                  }}>
+                    <div style={{ 
+                      height: '60px', 
+                      width: '60px',
+                      backgroundColor: '#e6f2ff', 
+                      borderRadius: '50%', 
+                      marginBottom: '1.5rem',
+                      display: 'inline-flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      color: '#0073E6',
+                      fontSize: '1.5rem',
+                      fontWeight: 'bold'
+                    }}>
+                      2
+                    </div>
+                    <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>You get a text</h3>
+                    <p style={{ color: '#666' }}>Notification hits your phone in seconds.</p>
+                  </div>
+
+                  {/* Step 3 */}
+                  <div style={{ 
+                    backgroundColor: '#fff', 
+                    padding: '2rem', 
+                    borderRadius: '12px', 
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
+                    textAlign: 'center'
+                  }}>
+                    <div style={{ 
+                      height: '60px', 
+                      width: '60px',
+                      backgroundColor: '#e6f2ff', 
+                      borderRadius: '50%', 
+                      marginBottom: '1.5rem',
+                      display: 'inline-flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      color: '#0073E6',
+                      fontSize: '1.5rem',
+                      fontWeight: 'bold'
+                    }}>
+                      3
+                    </div>
+                    <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>Close the job</h3>
+                    <p style={{ color: '#666' }}>Reply directly to the text to start the conversation.</p>
+                  </div>
                 </div>
-                <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>3. Conversation starts</h3>
-                <p style={{ color: '#666' }}>You reply directly to close the job.</p>
-              </div>
             </div>
           </div>
         </section>
