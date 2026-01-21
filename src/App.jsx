@@ -18,6 +18,7 @@ const ContactPage = lazy(() => import('./pages/ContactPage'));
 const BookPage = lazy(() => import('./pages/BookPage'));
 const ProcessPage = lazy(() => import('./pages/ProcessPage'));
 const AboutPage = lazy(() => import('./pages/AboutPage'));
+const HVACLanding = lazy(() => import('./pages/HVACLanding'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 function App() {
@@ -149,6 +150,7 @@ function App() {
           <Route path="/book" element={<BookPage />} />
           <Route path="/process" element={<ProcessPage />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/hvac-system" element={<HVACLanding />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
