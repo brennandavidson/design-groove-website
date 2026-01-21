@@ -22,7 +22,7 @@ const HVACCredibility = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  const gapSize = isMobile ? 32 : 60; // px values for calculation
+  const gapSize = isMobile ? 48 : 100; // px values for calculation
   const logoHeight = isMobile ? '45px' : '50px';
 
   return (
