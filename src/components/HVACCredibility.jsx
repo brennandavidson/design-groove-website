@@ -4,13 +4,13 @@ import React, { useState, useEffect } from 'react';
 
 const logoFiles = [
   'ash-cooling-and-heating.png',
-  'Group 20.png',
-  'image 6.png',
-  'image 7.png',
-  'image 8.png',
-  'image 9.png',
-  'image 10.png',
-  'Mask group.png'
+  'group-20.png',
+  'image-6.png',
+  'image-7.png',
+  'image-8.png',
+  'image-9.png',
+  'image-10.png',
+  'mask-group.png'
 ];
 
 const HVACCredibility = () => {
