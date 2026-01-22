@@ -404,8 +404,8 @@ const HVACLanding = () => {
                   fontSize: '1.1rem',
                   fontWeight: 600,
                   marginBottom: '0.5rem'
-                }}>2. You get a text instantly</div>
-                <p style={{ color: '#666', fontSize: '0.95rem', margin: 0 }}>Lead details hit your phone in seconds</p>
+                }}>2. They get a text. You get a text.</div>
+                <p style={{ color: '#666', fontSize: '0.95rem', margin: 0 }}>Lead gets an instant response and you get notified automatically.</p>
               </div>
 
               {/* Panel 3: Text Conversation Mockup */}
