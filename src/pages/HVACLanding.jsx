@@ -379,7 +379,8 @@ const HVACLanding = () => {
                       borderRadius: '16px',
                       padding: '0.85rem',
                       boxShadow: '0 2px 12px rgba(0,0,0,0.3)',
-                      width: '100%'
+                      width: '100%',
+                      textAlign: 'left'
                     }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
                         <div style={{
@@ -446,7 +447,8 @@ const HVACLanding = () => {
                         borderRadius: '14px 14px 14px 4px',
                         fontSize: '0.8rem',
                         maxWidth: '88%',
-                        alignSelf: 'flex-start'
+                        alignSelf: 'flex-start',
+                        textAlign: 'left'
                       }}>AC not cooling, need someone ASAP</div>
                       <div style={{
                         backgroundColor: '#0073E6',
@@ -455,7 +457,8 @@ const HVACLanding = () => {
                         borderRadius: '14px 14px 4px 14px',
                         fontSize: '0.8rem',
                         maxWidth: '88%',
-                        alignSelf: 'flex-end'
+                        alignSelf: 'flex-end',
+                        textAlign: 'left'
                       }}>Hey John! I can be there in 45 min. Work for you?</div>
                       <div style={{
                         backgroundColor: '#333',
@@ -464,7 +467,8 @@ const HVACLanding = () => {
                         borderRadius: '14px 14px 14px 4px',
                         fontSize: '0.8rem',
                         maxWidth: '88%',
-                        alignSelf: 'flex-start'
+                        alignSelf: 'flex-start',
+                        textAlign: 'left'
                       }}>Yes! Thank you 🙏</div>
                     </div>
                   </div>
@@ -501,7 +505,8 @@ const HVACLanding = () => {
                         backgroundColor: 'rgba(255,255,255,0.97)',
                         borderRadius: '16px',
                         padding: '0.85rem',
-                        boxShadow: '0 2px 12px rgba(0,0,0,0.3)'
+                        boxShadow: '0 2px 12px rgba(0,0,0,0.3)',
+                        textAlign: 'left'
                       }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
                           <div style={{
@@ -529,7 +534,8 @@ const HVACLanding = () => {
                         backgroundColor: 'rgba(255,255,255,0.97)',
                         borderRadius: '16px',
                         padding: '0.85rem',
-                        boxShadow: '0 2px 12px rgba(0,0,0,0.3)'
+                        boxShadow: '0 2px 12px rgba(0,0,0,0.3)',
+                        textAlign: 'left'
                       }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
                           <div style={{
@@ -598,7 +604,8 @@ const HVACLanding = () => {
                         fontSize: '0.8rem',
                         maxWidth: '90%',
                         alignSelf: 'flex-end',
-                        lineHeight: 1.5
+                        lineHeight: 1.5,
+                        textAlign: 'left'
                       }}>Thanks for choosing us! Mind leaving a quick review? ⭐</div>
                       <div style={{
                         backgroundColor: '#333',
@@ -608,7 +615,8 @@ const HVACLanding = () => {
                         fontSize: '0.8rem',
                         maxWidth: '85%',
                         alignSelf: 'flex-start',
-                        lineHeight: 1.5
+                        lineHeight: 1.5,
+                        textAlign: 'left'
                       }}>Done! You guys are the best 👍</div>
                       <div style={{
                         display: 'flex',
@@ -669,7 +677,8 @@ const HVACLanding = () => {
                         fontSize: '0.8rem',
                         maxWidth: '90%',
                         alignSelf: 'flex-end',
-                        lineHeight: 1.5
+                        lineHeight: 1.5,
+                        textAlign: 'left'
                       }}>Hey Sarah! Time for your AC tune-up. Want to schedule?</div>
                       <div style={{
                         backgroundColor: '#333',
@@ -679,7 +688,8 @@ const HVACLanding = () => {
                         fontSize: '0.8rem',
                         maxWidth: '85%',
                         alignSelf: 'flex-start',
-                        lineHeight: 1.5
+                        lineHeight: 1.5,
+                        textAlign: 'left'
                       }}>Perfect timing! Yes please 🙌</div>
                     </div>
                   </div>
