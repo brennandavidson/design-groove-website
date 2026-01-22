@@ -302,16 +302,19 @@ const HVACLanding = () => {
                 <div style={{
                   width: '100%',
                   maxWidth: '400px',
-                  aspectRatio: '9/16',
-                  backgroundColor: '#e8e8e8',
                   borderRadius: '16px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
                   boxShadow: '0 8px 30px rgba(0,0,0,0.12)',
                   overflow: 'hidden'
                 }}>
-                  <p style={{ color: '#888' }}>ASH Video</p>
+                  <div style={{ padding: '177.78% 0 0 0', position: 'relative' }}>
+                    <iframe
+                      src="https://player.vimeo.com/video/1157084342?badge=0&autopause=0&player_id=0&app_id=58479"
+                      frameBorder="0"
+                      allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
+                      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+                      title="ASH Cooling & Heating Testimonial"
+                    />
+                  </div>
                 </div>
               </div>
 
