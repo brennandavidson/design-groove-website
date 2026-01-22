@@ -376,27 +376,35 @@ const HVACLanding = () => {
                   }}>
                     <div style={{
                       backgroundColor: 'rgba(255,255,255,0.97)',
-                      borderRadius: '14px',
-                      padding: '0.85rem',
+                      borderRadius: '16px',
+                      padding: '0.75rem 1rem',
                       boxShadow: '0 2px 12px rgba(0,0,0,0.3)',
-                      width: '100%'
+                      width: '100%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.75rem'
                     }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
-                        <div style={{
-                          width: '22px',
-                          height: '22px',
-                          backgroundColor: '#34C759',
-                          borderRadius: '5px',
-                          fontSize: '12px',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center'
-                        }}>💬</div>
-                        <span style={{ fontSize: '0.75rem', color: '#666', fontWeight: 600 }}>MESSAGES</span>
-                        <span style={{ fontSize: '0.7rem', color: '#999', marginLeft: 'auto' }}>now</span>
+                      <div style={{
+                        width: '38px',
+                        height: '38px',
+                        backgroundColor: '#34C759',
+                        borderRadius: '8px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0
+                      }}>
+                        <svg width="22" height="22" viewBox="0 0 32 32" fill="#fff">
+                          <path d="M16 3C8.82 3 3 8.82 3 16c0 2.96 1 5.69 2.67 7.88L3 29l5.5-2.4C10.56 28.14 13.16 29 16 29c7.18 0 13-5.82 13-13S23.18 3 16 3z"/>
+                        </svg>
                       </div>
-                      <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#1a1a1a', marginBottom: '0.35rem' }}>New Lead: John Smith</div>
-                      <div style={{ fontSize: '0.8rem', color: '#444', lineHeight: 1.4 }}>"AC not cooling, need someone ASAP" - (480) 555-1234</div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+                          <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#1a1a1a' }}>New Lead: John Smith</span>
+                          <span style={{ fontSize: '0.7rem', color: '#999' }}>now</span>
+                        </div>
+                        <div style={{ fontSize: '0.75rem', color: '#444', lineHeight: 1.4 }}>"AC not cooling, need someone ASAP" - (480) 555-1234</div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -506,20 +514,23 @@ const HVACLanding = () => {
                           width: '38px',
                           height: '38px',
                           backgroundColor: '#FF3B30',
-                          borderRadius: '10px',
+                          borderRadius: '8px',
                           display: 'flex',
                           alignItems: 'center',
-                          justifyContent: 'center'
+                          justifyContent: 'center',
+                          flexShrink: 0
                         }}>
-                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                          <svg width="22" height="22" viewBox="0 0 32 32" fill="#fff">
+                            <path d="M26.4 21.6c-1.2-1.2-2.7-1.8-4.2-1.8-.8 0-1.6.2-2.3.5l-2.1-2.1c2.4-2.1 3.9-5.1 3.9-8.5 0-1.5-.3-3-.8-4.3-.3-.6-.9-1-1.6-1h-6.6c-.7 0-1.3.4-1.6 1-.5 1.3-.8 2.8-.8 4.3 0 3.4 1.5 6.4 3.9 8.5l-2.1 2.1c-.7-.3-1.5-.5-2.3-.5-1.5 0-3 .6-4.2 1.8-2.3 2.3-2.3 6.1 0 8.4 1.2 1.2 2.7 1.8 4.2 1.8s3-.6 4.2-1.8l2.1-2.1 2.1 2.1c1.2 1.2 2.7 1.8 4.2 1.8s3-.6 4.2-1.8c2.3-2.3 2.3-6.1-.2-8.4z"/>
                           </svg>
                         </div>
-                        <div style={{ flex: 1 }}>
-                          <div style={{ fontSize: '0.9rem', fontWeight: 600, color: '#1a1a1a' }}>(480) 555-9876</div>
-                          <div style={{ fontSize: '0.8rem', color: '#FF3B30' }}>Missed call</div>
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+                            <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#1a1a1a' }}>(480) 555-9876</span>
+                            <span style={{ fontSize: '0.7rem', color: '#999' }}>now</span>
+                          </div>
+                          <div style={{ fontSize: '0.8rem', color: '#FF3B30', fontWeight: 500 }}>Missed call</div>
                         </div>
-                        <span style={{ fontSize: '0.75rem', color: '#999' }}>now</span>
                       </div>
                       {/* Auto text response */}
                       <div style={{
@@ -535,21 +546,22 @@ const HVACLanding = () => {
                           width: '38px',
                           height: '38px',
                           backgroundColor: '#34C759',
-                          borderRadius: '10px',
+                          borderRadius: '8px',
                           display: 'flex',
                           alignItems: 'center',
-                          justifyContent: 'center'
+                          justifyContent: 'center',
+                          flexShrink: 0
                         }}>
-                          <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff">
-                            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
+                          <svg width="22" height="22" viewBox="0 0 32 32" fill="#fff">
+                            <path d="M16 3C8.82 3 3 8.82 3 16c0 2.96 1 5.69 2.67 7.88L3 29l5.5-2.4C10.56 28.14 13.16 29 16 29c7.18 0 13-5.82 13-13S23.18 3 16 3z"/>
                           </svg>
                         </div>
-                        <div style={{ flex: 1 }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.2rem' }}>
-                            <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#1a1a1a' }}>Auto-Reply</span>
-                            <span style={{ fontSize: '0.65rem', color: '#34C759', fontWeight: 600 }}>SENT</span>
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+                            <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#1a1a1a' }}>Auto-Reply Sent</span>
+                            <span style={{ fontSize: '0.7rem', color: '#34C759', fontWeight: 600 }}>now</span>
                           </div>
-                          <div style={{ fontSize: '0.8rem', color: '#444', lineHeight: 1.3 }}>Hey! Sorry we missed your call. How can we help?</div>
+                          <div style={{ fontSize: '0.75rem', color: '#444', lineHeight: 1.4 }}>Hey! Sorry we missed your call. How can we help?</div>
                         </div>
                       </div>
                     </div>
