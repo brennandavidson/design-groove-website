@@ -297,11 +297,12 @@ const HVACLanding = () => {
               {/* Left Column: Video */}
               <div style={{
                 display: 'flex',
-                justifyContent: 'center'
+                justifyContent: 'center',
+                alignItems: 'center'
               }}>
                 <div style={{
                   width: '100%',
-                  maxWidth: '400px',
+                  maxWidth: '280px',
                   borderRadius: '16px',
                   boxShadow: '0 8px 30px rgba(0,0,0,0.12)',
                   overflow: 'hidden',
