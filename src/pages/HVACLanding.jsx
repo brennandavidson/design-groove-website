@@ -107,7 +107,7 @@ const HVACLanding = () => {
           </div>
 
           {/* BOOKER */}
-          <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+          <div id="booker" style={{ maxWidth: '1000px', margin: '0 auto' }}>
             <h2 style={{
               fontFamily: 'Instrument Serif, serif',
               fontSize: isMobile ? '2rem' : '2.75rem',
@@ -477,8 +477,53 @@ const HVACLanding = () => {
           </div>
         </section>
 
+        {/* FINAL CTA SECTION */}
+        <section style={{
+          padding: isMobile ? '3rem 5vw' : '4rem 5vw',
+          textAlign: 'center',
+          backgroundColor: '#f9f9f9'
+        }}>
+          <div style={{ maxWidth: '700px', margin: '0 auto' }}>
+            <h2 style={{
+              fontFamily: 'Instrument Serif, serif',
+              fontSize: isMobile ? '2rem' : '2.75rem',
+              lineHeight: 1.2,
+              marginBottom: '1rem',
+              color: '#1a1a1a'
+            }}>
+              Ready to get MORE calls and MORE reviews for just $297/mo?
+            </h2>
+            <p style={{
+              fontSize: isMobile ? '1rem' : '1.15rem',
+              color: '#555',
+              marginBottom: '1.5rem',
+              lineHeight: 1.6
+            }}>
+              Book a 15-minute call. We'll show you exactly how the system works and get you set up in 7-10 days.
+            </p>
+            <a
+              href="#booker"
+              style={{
+                display: 'inline-block',
+                backgroundColor: '#0073E6',
+                color: '#fff',
+                padding: '1rem 2.5rem',
+                borderRadius: '8px',
+                fontSize: '1.1rem',
+                fontWeight: 600,
+                textDecoration: 'none',
+                transition: 'background-color 0.2s ease'
+              }}
+              onMouseEnter={(e) => e.target.style.backgroundColor = '#005bb5'}
+              onMouseLeave={(e) => e.target.style.backgroundColor = '#0073E6'}
+            >
+              Book My Call
+            </a>
+          </div>
+        </section>
+
       </main>
-      
+
       <FooterSky />
     </>
   );
