@@ -50,8 +50,8 @@ const HVACLanding = () => {
       <main style={{ backgroundColor: '#ffffff', color: '#1a1a1a', fontFamily: 'Inter, sans-serif' }}>
         
         {/* HERO SECTION */}
-        <section style={{ 
-          padding: isMobile ? '8rem 5vw 4rem' : '10rem 5vw 6rem',
+        <section style={{
+          padding: isMobile ? '7rem 5vw 5rem' : '9rem 5vw 5rem',
           textAlign: 'center',
           maxWidth: '1200px',
           margin: '0 auto'
@@ -150,8 +150,8 @@ const HVACLanding = () => {
         </section>
 
         {/* HOW IT WORKS SECTION */}
-        <section style={{ 
-          padding: '4rem 5vw', 
+        <section style={{
+          padding: '5rem 5vw',
           backgroundColor: '#f9f9f9',
           borderTop: '1px solid #eee',
           borderBottom: '1px solid #eee'
@@ -283,14 +283,8 @@ const HVACLanding = () => {
         </section>
 
         {/* SOCIAL PROOF SECTION */}
-        <section style={{ padding: '6rem 5vw', backgroundColor: '#fafafa' }}>
+        <section style={{ padding: '5rem 5vw', backgroundColor: '#fafafa' }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-            <h2 style={{
-              fontFamily: 'Instrument Serif, serif',
-              fontSize: isMobile ? '2rem' : '3rem',
-              marginBottom: '3rem',
-              textAlign: 'center'
-            }}>Trusted by HVAC businesses nationwide</h2>
 
             {/* Featured Testimonial: Video (col 1) + Quote/Mockup stacked (col 2) */}
             <div style={{
@@ -298,7 +292,7 @@ const HVACLanding = () => {
               gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
               gap: '2rem',
               alignItems: 'stretch',
-              marginBottom: '4rem'
+              marginBottom: '5rem'
             }}>
               {/* Left Column: Video */}
               <div style={{
@@ -384,12 +378,20 @@ const HVACLanding = () => {
               </div>
             </div>
 
+            {/* Heading for testimonials */}
+            <h2 style={{
+              fontFamily: 'Instrument Serif, serif',
+              fontSize: isMobile ? '2rem' : '3rem',
+              marginBottom: '2.5rem',
+              textAlign: 'center'
+            }}>Trusted by HVAC businesses nationwide</h2>
+
             {/* Text Testimonials Grid */}
             <div style={{
               display: 'grid',
               gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
               gap: '1.5rem',
-              marginBottom: '4rem'
+              marginBottom: '3rem'
             }}>
               {/* Testimonial 1 */}
               <div style={{
