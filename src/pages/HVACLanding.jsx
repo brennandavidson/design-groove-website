@@ -116,7 +116,7 @@ const HVACLanding = () => {
             }}>Book a call below 👇</h2>
 
             <div style={{
-              height: isMobile ? '950px' : '750px',
+              height: isMobile ? '950px' : '950px',
               overflow: 'hidden'
             }}>
               <InlineWidget
