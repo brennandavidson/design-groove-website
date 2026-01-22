@@ -317,7 +317,6 @@ const HVACLanding = () => {
                       display: 'block'
                     }}
                   >
-                    <source src="/assets/IMG_9746.mov" type="video/quicktime" />
                     <source src="/assets/IMG_9746.mp4" type="video/mp4" />
                     Your browser does not support the video tag.
                   </video>
