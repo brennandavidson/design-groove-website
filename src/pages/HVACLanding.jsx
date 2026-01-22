@@ -488,42 +488,59 @@ const HVACLanding = () => {
                     padding: '1rem',
                     height: '280px',
                     display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    gap: '0.75rem'
+                    alignItems: 'center',
+                    justifyContent: 'center'
                   }}>
-                    {/* Missed call notification */}
-                    <div style={{
-                      backgroundColor: 'rgba(255,59,48,0.15)',
-                      borderRadius: '12px',
-                      padding: '0.6rem 0.75rem',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '0.5rem'
-                    }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', width: '100%' }}>
+                      {/* Missed call notification */}
                       <div style={{
-                        width: '28px',
-                        height: '28px',
-                        backgroundColor: '#FF3B30',
-                        borderRadius: '50%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '14px'
-                      }}>📞</div>
-                      <div>
-                        <div style={{ fontSize: '0.75rem', color: '#FF3B30', fontWeight: 600 }}>Missed Call</div>
-                        <div style={{ fontSize: '0.7rem', color: '#999' }}>(480) 555-9876</div>
+                        backgroundColor: 'rgba(255,255,255,0.97)',
+                        borderRadius: '14px',
+                        padding: '0.85rem',
+                        boxShadow: '0 2px 12px rgba(0,0,0,0.3)'
+                      }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                          <div style={{
+                            width: '22px',
+                            height: '22px',
+                            backgroundColor: '#FF3B30',
+                            borderRadius: '5px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: '#fff',
+                            fontSize: '12px',
+                            fontWeight: 700
+                          }}>✆</div>
+                          <span style={{ fontSize: '0.75rem', color: '#666', fontWeight: 600 }}>PHONE</span>
+                          <span style={{ fontSize: '0.7rem', color: '#999', marginLeft: 'auto' }}>now</span>
+                        </div>
+                        <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#FF3B30', marginBottom: '0.35rem' }}>Missed Call</div>
+                        <div style={{ fontSize: '0.8rem', color: '#444' }}>(480) 555-9876</div>
                       </div>
-                    </div>
-                    {/* Auto text response */}
-                    <div style={{
-                      backgroundColor: 'rgba(52,199,89,0.15)',
-                      borderRadius: '12px',
-                      padding: '0.6rem 0.75rem'
-                    }}>
-                      <div style={{ fontSize: '0.7rem', color: '#34C759', fontWeight: 600, marginBottom: '0.3rem' }}>AUTO-SENT</div>
-                      <div style={{ fontSize: '0.8rem', color: '#fff', lineHeight: 1.4 }}>"Hey! Sorry we missed your call. How can we help you today?"</div>
+                      {/* Auto text response */}
+                      <div style={{
+                        backgroundColor: 'rgba(255,255,255,0.97)',
+                        borderRadius: '14px',
+                        padding: '0.85rem',
+                        boxShadow: '0 2px 12px rgba(0,0,0,0.3)'
+                      }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                          <div style={{
+                            width: '22px',
+                            height: '22px',
+                            backgroundColor: '#34C759',
+                            borderRadius: '5px',
+                            fontSize: '12px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                          }}>💬</div>
+                          <span style={{ fontSize: '0.75rem', color: '#666', fontWeight: 600 }}>MESSAGES</span>
+                          <span style={{ fontSize: '0.7rem', color: '#34C759', marginLeft: 'auto', fontWeight: 600 }}>auto-sent</span>
+                        </div>
+                        <div style={{ fontSize: '0.8rem', color: '#444', lineHeight: 1.4 }}>"Hey! Sorry we missed your call. How can we help?"</div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -565,28 +582,29 @@ const HVACLanding = () => {
                       <div style={{
                         backgroundColor: '#0073E6',
                         color: '#fff',
-                        padding: '0.5rem 0.75rem',
+                        padding: '0.6rem 0.85rem',
                         borderRadius: '14px 14px 4px 14px',
                         fontSize: '0.8rem',
-                        maxWidth: '92%',
+                        maxWidth: '90%',
                         alignSelf: 'flex-end',
-                        lineHeight: 1.4
-                      }}>Thanks for choosing us! Mind leaving a quick review? ⭐ [Google Link]</div>
+                        lineHeight: 1.5
+                      }}>Thanks for choosing us! Mind leaving a quick review? ⭐</div>
                       <div style={{
                         backgroundColor: '#333',
                         color: '#fff',
-                        padding: '0.5rem 0.75rem',
+                        padding: '0.6rem 0.85rem',
                         borderRadius: '14px 14px 14px 4px',
                         fontSize: '0.8rem',
-                        maxWidth: '88%',
-                        alignSelf: 'flex-start'
+                        maxWidth: '85%',
+                        alignSelf: 'flex-start',
+                        lineHeight: 1.5
                       }}>Done! You guys are the best 👍</div>
                       <div style={{
                         display: 'flex',
                         justifyContent: 'center',
-                        gap: '0.15rem',
-                        fontSize: '1.2rem',
-                        marginTop: '0.5rem'
+                        gap: '0.2rem',
+                        fontSize: '1.3rem',
+                        marginTop: '0.75rem'
                       }}>⭐⭐⭐⭐⭐</div>
                     </div>
                   </div>
@@ -621,35 +639,36 @@ const HVACLanding = () => {
                       color: '#fff',
                       fontSize: '0.85rem',
                       fontWeight: 600,
-                      marginBottom: '0.75rem',
+                      marginBottom: '0.25rem',
                       paddingBottom: '0.5rem',
                       borderBottom: '1px solid #333'
                     }}>Sarah Johnson</div>
                     <div style={{
-                      fontSize: '0.65rem',
+                      fontSize: '0.7rem',
                       color: '#666',
                       textAlign: 'center',
-                      marginBottom: '0.5rem'
+                      padding: '0.5rem 0'
                     }}>6 months since last service</div>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flex: 1, justifyContent: 'center' }}>
                       <div style={{
                         backgroundColor: '#0073E6',
                         color: '#fff',
-                        padding: '0.5rem 0.75rem',
+                        padding: '0.6rem 0.85rem',
                         borderRadius: '14px 14px 4px 14px',
                         fontSize: '0.8rem',
-                        maxWidth: '92%',
+                        maxWidth: '90%',
                         alignSelf: 'flex-end',
-                        lineHeight: 1.4
+                        lineHeight: 1.5
                       }}>Hey Sarah! Time for your AC tune-up. Want to schedule?</div>
                       <div style={{
                         backgroundColor: '#333',
                         color: '#fff',
-                        padding: '0.5rem 0.75rem',
+                        padding: '0.6rem 0.85rem',
                         borderRadius: '14px 14px 14px 4px',
                         fontSize: '0.8rem',
-                        maxWidth: '88%',
-                        alignSelf: 'flex-start'
+                        maxWidth: '85%',
+                        alignSelf: 'flex-start',
+                        lineHeight: 1.5
                       }}>Perfect timing! Yes please 🙌</div>
                     </div>
                   </div>
