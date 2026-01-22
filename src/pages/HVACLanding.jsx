@@ -282,46 +282,136 @@ const HVACLanding = () => {
           </div>
         </section>
 
-        {/* TESTIMONIALS SECTION */}
-        <section style={{ padding: '6rem 5vw' }}>
-          <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
-             <h2 style={{ 
+        {/* SOCIAL PROOF SECTION */}
+        <section style={{ padding: '6rem 5vw', backgroundColor: '#fafafa' }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+            <h2 style={{
               fontFamily: 'Instrument Serif, serif',
               fontSize: isMobile ? '2rem' : '3rem',
-              marginBottom: '3rem'
-            }}>Trusted by HVAC Pros</h2>
+              marginBottom: '3rem',
+              textAlign: 'center'
+            }}>Trusted by HVAC businesses nationwide</h2>
 
-            {/* Logo Strip Slider */}
-            <HVACCredibility />
-
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', flexWrap: isMobile ? 'wrap' : 'nowrap' }}>
-               {/* Video Testimonial 1 - Mobile Portrait */}
-               <div style={{
-                width: isMobile ? '100%' : '300px',
-                aspectRatio: '9/16',
-                backgroundColor: '#f0f0f0',
-                borderRadius: '12px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                maxWidth: '300px'
-              }}>
-                <p style={{ color: '#666' }}>ASH Review Video (9:16)</p>
-              </div>
-              {/* Video Testimonial 2 - Mobile Portrait */}
+            {/* Featured Testimonial: Video + Quote + Mockup */}
+            <div style={{
+              display: 'flex',
+              flexDirection: isMobile ? 'column' : 'row',
+              gap: '3rem',
+              alignItems: 'center',
+              marginBottom: '4rem'
+            }}>
+              {/* Left: Video Testimonial */}
               <div style={{
-                width: isMobile ? '100%' : '300px',
-                aspectRatio: '9/16',
-                backgroundColor: '#f0f0f0',
-                borderRadius: '12px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                maxWidth: '300px'
+                flex: isMobile ? 'none' : '0 0 280px',
+                width: isMobile ? '100%' : '280px',
+                maxWidth: '280px'
               }}>
-                <p style={{ color: '#666' }}>Rob Review Video (9:16)</p>
+                <div style={{
+                  aspectRatio: '9/16',
+                  backgroundColor: '#e8e8e8',
+                  borderRadius: '16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  boxShadow: '0 8px 30px rgba(0,0,0,0.12)',
+                  overflow: 'hidden'
+                }}>
+                  <p style={{ color: '#888' }}>ASH Video</p>
+                </div>
+              </div>
+
+              {/* Right: Quote + Mockup */}
+              <div style={{ flex: 1 }}>
+                {/* Quote */}
+                <blockquote style={{
+                  fontSize: isMobile ? '1.25rem' : '1.5rem',
+                  fontStyle: 'italic',
+                  color: '#333',
+                  lineHeight: 1.6,
+                  marginBottom: '1.5rem',
+                  borderLeft: '4px solid #0073E6',
+                  paddingLeft: '1.5rem'
+                }}>
+                  "They built our website and set up the lead system in about a week. Now when someone fills out the form, I get a text immediately. It's been a game changer for our business."
+                </blockquote>
+                <p style={{
+                  fontWeight: 600,
+                  color: '#1a1a1a',
+                  marginBottom: '2rem'
+                }}>
+                  — Owner, ASH Cooling & Heating
+                </p>
+
+                {/* Mockup Image */}
+                <div style={{
+                  maxWidth: '500px',
+                  margin: isMobile ? '0 auto' : '0'
+                }}>
+                  <img
+                    src="/assets/hvac-logos/ash-site-mockup.png"
+                    alt="ASH Cooling & Heating Website"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '8px'
+                    }}
+                  />
+                </div>
               </div>
             </div>
+
+            {/* Text Testimonials Grid */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+              gap: '1.5rem',
+              marginBottom: '4rem'
+            }}>
+              {/* Testimonial 1 */}
+              <div style={{
+                backgroundColor: '#fff',
+                padding: '2rem',
+                borderRadius: '12px',
+                boxShadow: '0 2px 12px rgba(0,0,0,0.06)'
+              }}>
+                <div style={{ color: '#0073E6', fontSize: '1.5rem', marginBottom: '1rem' }}>★★★★★</div>
+                <p style={{ color: '#444', lineHeight: 1.6, marginBottom: '1rem' }}>
+                  "Finally, a marketing company that actually understands HVAC. No more chasing leads that go nowhere."
+                </p>
+                <p style={{ fontWeight: 600, fontSize: '0.9rem', color: '#666' }}>— HVAC Owner, Phoenix</p>
+              </div>
+
+              {/* Testimonial 2 */}
+              <div style={{
+                backgroundColor: '#fff',
+                padding: '2rem',
+                borderRadius: '12px',
+                boxShadow: '0 2px 12px rgba(0,0,0,0.06)'
+              }}>
+                <div style={{ color: '#0073E6', fontSize: '1.5rem', marginBottom: '1rem' }}>★★★★★</div>
+                <p style={{ color: '#444', lineHeight: 1.6, marginBottom: '1rem' }}>
+                  "The text notifications are instant. I've closed jobs while my competitors are still checking their email."
+                </p>
+                <p style={{ fontWeight: 600, fontSize: '0.9rem', color: '#666' }}>— HVAC Owner, Mesa</p>
+              </div>
+
+              {/* Testimonial 3 */}
+              <div style={{
+                backgroundColor: '#fff',
+                padding: '2rem',
+                borderRadius: '12px',
+                boxShadow: '0 2px 12px rgba(0,0,0,0.06)'
+              }}>
+                <div style={{ color: '#0073E6', fontSize: '1.5rem', marginBottom: '1rem' }}>★★★★★</div>
+                <p style={{ color: '#444', lineHeight: 1.6, marginBottom: '1rem' }}>
+                  "Worth every penny. The review automation alone has doubled our Google reviews in 2 months."
+                </p>
+                <p style={{ fontWeight: 600, fontSize: '0.9rem', color: '#666' }}>— HVAC Owner, Tempe</p>
+              </div>
+            </div>
+
+            {/* Logo Strip at Bottom */}
+            <HVACCredibility />
           </div>
         </section>
 
