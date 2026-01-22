@@ -82,7 +82,7 @@ const HVACLanding = () => {
             maxWidth: '700px',
             margin: '0 auto 2.5rem'
           }}>
-            Watch this 6 minute video to see EXACTLY how it works and why it makes you more money
+            👇 Watch this 6 minute video to see EXACTLY how it works and why it makes you more money
           </p>
 
           {/* VSL PLACEHOLDER */}
