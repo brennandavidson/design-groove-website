@@ -268,7 +268,7 @@ const HVACLanding = () => {
               color: '#666',
               fontSize: '1.1rem',
               marginBottom: '3rem'
-            }}>See EXACTLY what happens when a lead comes in</p>
+            }}>See EXACTLY how our system helps you make more money...</p>
 
             {/* 3-Panel Visual Flow */}
             <div style={{
