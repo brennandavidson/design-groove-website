@@ -300,55 +300,70 @@ const HVACLanding = () => {
               <div style={{ textAlign: 'center' }}>
                 <div style={{
                   backgroundColor: '#fff',
-                  borderRadius: '12px',
+                  borderRadius: '24px',
                   boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
-                  padding: '1.5rem',
-                  marginBottom: '1.5rem'
+                  padding: '0.5rem',
+                  marginBottom: '1.5rem',
+                  maxWidth: '280px',
+                  margin: '0 auto 1.5rem'
                 }}>
                   <div style={{
-                    backgroundColor: '#1a1a1a',
-                    color: '#fff',
-                    padding: '0.75rem 1rem',
-                    borderRadius: '8px 8px 0 0',
-                    margin: '-1.5rem -1.5rem 1rem',
-                    fontSize: '0.85rem',
-                    fontWeight: 600
-                  }}>Get a Free Quote</div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                    backgroundColor: '#f8f8f8',
+                    borderRadius: '20px',
+                    padding: '1rem',
+                    height: '280px',
+                    display: 'flex',
+                    flexDirection: 'column'
+                  }}>
                     <div style={{
-                      backgroundColor: '#f5f5f5',
-                      padding: '0.65rem 0.75rem',
-                      borderRadius: '6px',
-                      fontSize: '0.85rem',
-                      color: '#333',
-                      textAlign: 'left'
-                    }}>John Smith</div>
-                    <div style={{
-                      backgroundColor: '#f5f5f5',
-                      padding: '0.65rem 0.75rem',
-                      borderRadius: '6px',
-                      fontSize: '0.85rem',
-                      color: '#333',
-                      textAlign: 'left'
-                    }}>(480) 555-1234</div>
-                    <div style={{
-                      backgroundColor: '#f5f5f5',
-                      padding: '0.65rem 0.75rem',
-                      borderRadius: '6px',
-                      fontSize: '0.85rem',
-                      color: '#333',
-                      textAlign: 'left',
-                      minHeight: '60px'
-                    }}>AC not cooling, need someone ASAP</div>
-                    <div style={{
-                      backgroundColor: '#0073E6',
+                      backgroundColor: '#1a1a1a',
                       color: '#fff',
-                      padding: '0.75rem',
-                      borderRadius: '6px',
-                      fontSize: '0.9rem',
+                      padding: '0.6rem 0.75rem',
+                      borderRadius: '8px',
+                      fontSize: '0.8rem',
                       fontWeight: 600,
-                      cursor: 'default'
-                    }}>Submit</div>
+                      marginBottom: '0.75rem',
+                      textAlign: 'center'
+                    }}>Get a Free Quote</div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flex: 1 }}>
+                      <div style={{
+                        backgroundColor: '#fff',
+                        padding: '0.5rem 0.65rem',
+                        borderRadius: '6px',
+                        fontSize: '0.8rem',
+                        color: '#333',
+                        textAlign: 'left',
+                        border: '1px solid #e0e0e0'
+                      }}>John Smith</div>
+                      <div style={{
+                        backgroundColor: '#fff',
+                        padding: '0.5rem 0.65rem',
+                        borderRadius: '6px',
+                        fontSize: '0.8rem',
+                        color: '#333',
+                        textAlign: 'left',
+                        border: '1px solid #e0e0e0'
+                      }}>(480) 555-1234</div>
+                      <div style={{
+                        backgroundColor: '#fff',
+                        padding: '0.5rem 0.65rem',
+                        borderRadius: '6px',
+                        fontSize: '0.8rem',
+                        color: '#333',
+                        textAlign: 'left',
+                        border: '1px solid #e0e0e0',
+                        flex: 1
+                      }}>AC not cooling, need someone ASAP</div>
+                      <div style={{
+                        backgroundColor: '#0073E6',
+                        color: '#fff',
+                        padding: '0.6rem',
+                        borderRadius: '6px',
+                        fontSize: '0.85rem',
+                        fontWeight: 600,
+                        textAlign: 'center'
+                      }}>Submit</div>
+                    </div>
                   </div>
                 </div>
                 <div style={{
@@ -356,7 +371,7 @@ const HVACLanding = () => {
                   fontWeight: 600,
                   marginBottom: '0.5rem'
                 }}>1. Lead fills out form</div>
-                <p style={{ color: '#666', fontSize: '0.95rem' }}>Customer submits a quote request on your site</p>
+                <p style={{ color: '#666', fontSize: '0.95rem', margin: 0 }}>Customer submits a quote request</p>
               </div>
 
               {/* Panel 2: Phone Notification Mockup */}
@@ -365,27 +380,29 @@ const HVACLanding = () => {
                   backgroundColor: '#1a1a1a',
                   borderRadius: '24px',
                   padding: '0.5rem',
-                  marginBottom: '1.5rem',
                   maxWidth: '280px',
                   margin: '0 auto 1.5rem'
                 }}>
                   <div style={{
                     backgroundColor: '#000',
                     borderRadius: '20px',
-                    padding: '2rem 1rem',
-                    minHeight: '200px'
+                    padding: '1rem',
+                    height: '280px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
                   }}>
-                    {/* Notification */}
                     <div style={{
-                      backgroundColor: 'rgba(255,255,255,0.95)',
-                      borderRadius: '12px',
-                      padding: '0.75rem',
-                      boxShadow: '0 2px 12px rgba(0,0,0,0.3)'
+                      backgroundColor: 'rgba(255,255,255,0.97)',
+                      borderRadius: '14px',
+                      padding: '0.85rem',
+                      boxShadow: '0 2px 12px rgba(0,0,0,0.3)',
+                      width: '100%'
                     }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
                         <div style={{
-                          width: '20px',
-                          height: '20px',
+                          width: '22px',
+                          height: '22px',
                           backgroundColor: '#34C759',
                           borderRadius: '5px',
                           fontSize: '12px',
@@ -393,11 +410,11 @@ const HVACLanding = () => {
                           alignItems: 'center',
                           justifyContent: 'center'
                         }}>💬</div>
-                        <span style={{ fontSize: '0.75rem', color: '#666', fontWeight: 500 }}>MESSAGES</span>
+                        <span style={{ fontSize: '0.75rem', color: '#666', fontWeight: 600 }}>MESSAGES</span>
                         <span style={{ fontSize: '0.7rem', color: '#999', marginLeft: 'auto' }}>now</span>
                       </div>
-                      <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#1a1a1a', marginBottom: '0.25rem' }}>New Lead: John Smith</div>
-                      <div style={{ fontSize: '0.8rem', color: '#444' }}>"AC not cooling, need someone ASAP" - (480) 555-1234</div>
+                      <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#1a1a1a', marginBottom: '0.35rem' }}>New Lead: John Smith</div>
+                      <div style={{ fontSize: '0.8rem', color: '#444', lineHeight: 1.4 }}>"AC not cooling, need someone ASAP" - (480) 555-1234</div>
                     </div>
                   </div>
                 </div>
@@ -406,7 +423,7 @@ const HVACLanding = () => {
                   fontWeight: 600,
                   marginBottom: '0.5rem'
                 }}>2. You get a text instantly</div>
-                <p style={{ color: '#666', fontSize: '0.95rem' }}>Lead details hit your phone in seconds</p>
+                <p style={{ color: '#666', fontSize: '0.95rem', margin: 0 }}>Lead details hit your phone in seconds</p>
               </div>
 
               {/* Panel 3: Text Conversation Mockup */}
@@ -415,7 +432,6 @@ const HVACLanding = () => {
                   backgroundColor: '#1a1a1a',
                   borderRadius: '24px',
                   padding: '0.5rem',
-                  marginBottom: '1.5rem',
                   maxWidth: '280px',
                   margin: '0 auto 1.5rem'
                 }}>
@@ -423,45 +439,45 @@ const HVACLanding = () => {
                     backgroundColor: '#000',
                     borderRadius: '20px',
                     padding: '1rem 0.75rem',
-                    minHeight: '200px'
+                    height: '280px',
+                    display: 'flex',
+                    flexDirection: 'column'
                   }}>
-                    {/* Header */}
                     <div style={{
                       textAlign: 'center',
                       color: '#fff',
                       fontSize: '0.85rem',
                       fontWeight: 600,
-                      marginBottom: '1rem',
+                      marginBottom: '0.75rem',
                       paddingBottom: '0.5rem',
                       borderBottom: '1px solid #333'
                     }}>John Smith</div>
-                    {/* Messages */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flex: 1, justifyContent: 'center' }}>
                       <div style={{
                         backgroundColor: '#333',
                         color: '#fff',
                         padding: '0.5rem 0.75rem',
-                        borderRadius: '12px 12px 12px 4px',
+                        borderRadius: '14px 14px 14px 4px',
                         fontSize: '0.8rem',
-                        maxWidth: '85%',
+                        maxWidth: '88%',
                         alignSelf: 'flex-start'
                       }}>AC not cooling, need someone ASAP</div>
                       <div style={{
                         backgroundColor: '#0073E6',
                         color: '#fff',
                         padding: '0.5rem 0.75rem',
-                        borderRadius: '12px 12px 4px 12px',
+                        borderRadius: '14px 14px 4px 14px',
                         fontSize: '0.8rem',
-                        maxWidth: '85%',
+                        maxWidth: '88%',
                         alignSelf: 'flex-end'
-                      }}>Hey John! This is Mike from ABC HVAC. I can be there in 45 min. Work for you?</div>
+                      }}>Hey John! I can be there in 45 min. Work for you?</div>
                       <div style={{
                         backgroundColor: '#333',
                         color: '#fff',
                         padding: '0.5rem 0.75rem',
-                        borderRadius: '12px 12px 12px 4px',
+                        borderRadius: '14px 14px 14px 4px',
                         fontSize: '0.8rem',
-                        maxWidth: '85%',
+                        maxWidth: '88%',
                         alignSelf: 'flex-start'
                       }}>Yes! Thank you 🙏</div>
                     </div>
@@ -472,7 +488,7 @@ const HVACLanding = () => {
                   fontWeight: 600,
                   marginBottom: '0.5rem'
                 }}>3. Close the job</div>
-                <p style={{ color: '#666', fontSize: '0.95rem' }}>Reply directly and book the appointment</p>
+                <p style={{ color: '#666', fontSize: '0.95rem', margin: 0 }}>Reply directly and book the appointment</p>
               </div>
 
             </div>
