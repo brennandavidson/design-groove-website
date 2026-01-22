@@ -304,17 +304,23 @@ const HVACLanding = () => {
                   maxWidth: '400px',
                   borderRadius: '16px',
                   boxShadow: '0 8px 30px rgba(0,0,0,0.12)',
-                  overflow: 'hidden'
+                  overflow: 'hidden',
+                  backgroundColor: '#000'
                 }}>
-                  <div style={{ padding: '177.78% 0 0 0', position: 'relative' }}>
-                    <iframe
-                      src="https://player.vimeo.com/video/1157084342?badge=0&autopause=0&player_id=0&app_id=58479"
-                      frameBorder="0"
-                      allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
-                      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
-                      title="ASH Cooling & Heating Testimonial"
-                    />
-                  </div>
+                  <video
+                    controls
+                    preload="metadata"
+                    playsInline
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      display: 'block'
+                    }}
+                  >
+                    <source src="/assets/IMG_9746.mov" type="video/quicktime" />
+                    <source src="/assets/IMG_9746.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
                 </div>
               </div>
 
