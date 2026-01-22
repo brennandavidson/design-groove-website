@@ -302,11 +302,10 @@ const HVACLanding = () => {
               }}>
                 <div style={{
                   width: '100%',
-                  maxWidth: '280px',
+                  maxWidth: '400px',
                   borderRadius: '16px',
                   boxShadow: '0 8px 30px rgba(0,0,0,0.12)',
-                  overflow: 'hidden',
-                  backgroundColor: '#000'
+                  overflow: 'hidden'
                 }}>
                   <video
                     controls
@@ -314,8 +313,8 @@ const HVACLanding = () => {
                     playsInline
                     style={{
                       width: '100%',
-                      height: 'auto',
-                      display: 'block'
+                      display: 'block',
+                      objectFit: 'cover'
                     }}
                   >
                     <source src="/assets/IMG_9746.mp4" type="video/mp4" />
