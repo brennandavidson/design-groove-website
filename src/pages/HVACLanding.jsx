@@ -292,21 +292,22 @@ const HVACLanding = () => {
               textAlign: 'center'
             }}>Trusted by HVAC businesses nationwide</h2>
 
-            {/* Featured Testimonial: Video + Quote + Mockup */}
+            {/* Featured Testimonial: Video (col 1) + Quote/Mockup stacked (col 2) */}
             <div style={{
-              display: 'flex',
-              flexDirection: isMobile ? 'column' : 'row',
-              gap: '3rem',
-              alignItems: 'center',
+              display: 'grid',
+              gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+              gap: '2rem',
+              alignItems: 'stretch',
               marginBottom: '4rem'
             }}>
-              {/* Left: Video Testimonial */}
+              {/* Left Column: Video */}
               <div style={{
-                flex: isMobile ? 'none' : '0 0 280px',
-                width: isMobile ? '100%' : '280px',
-                maxWidth: '280px'
+                display: 'flex',
+                justifyContent: 'center'
               }}>
                 <div style={{
+                  width: '100%',
+                  maxWidth: '400px',
                   aspectRatio: '9/16',
                   backgroundColor: '#e8e8e8',
                   borderRadius: '16px',
@@ -320,40 +321,58 @@ const HVACLanding = () => {
                 </div>
               </div>
 
-              {/* Right: Quote + Mockup */}
-              <div style={{ flex: 1 }}>
-                {/* Quote */}
-                <blockquote style={{
-                  fontSize: isMobile ? '1.25rem' : '1.5rem',
-                  fontStyle: 'italic',
-                  color: '#333',
-                  lineHeight: 1.6,
-                  marginBottom: '1.5rem',
-                  borderLeft: '4px solid #0073E6',
-                  paddingLeft: '1.5rem'
-                }}>
-                  "They built our website and set up the lead system in about a week. Now when someone fills out the form, I get a text immediately. It's been a game changer for our business."
-                </blockquote>
-                <p style={{
-                  fontWeight: 600,
-                  color: '#1a1a1a',
-                  marginBottom: '2rem'
-                }}>
-                  — Owner, ASH Cooling & Heating
-                </p>
-
-                {/* Mockup Image */}
+              {/* Right Column: Quote (top 50%) + Mockup (bottom 50%) */}
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                gap: '2rem'
+              }}>
+                {/* Quote Section */}
                 <div style={{
-                  maxWidth: '500px',
-                  margin: isMobile ? '0 auto' : '0'
+                  flex: 1,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center'
+                }}>
+                  <blockquote style={{
+                    fontSize: isMobile ? '1.1rem' : '1.35rem',
+                    fontStyle: 'italic',
+                    color: '#333',
+                    lineHeight: 1.6,
+                    marginBottom: '1rem',
+                    borderLeft: '4px solid #0073E6',
+                    paddingLeft: '1.5rem',
+                    margin: 0
+                  }}>
+                    "They built our website and set up the lead system in about a week. Now when someone fills out the form, I get a text immediately. It's been a game changer for our business."
+                  </blockquote>
+                  <p style={{
+                    fontWeight: 600,
+                    color: '#1a1a1a',
+                    marginTop: '1rem',
+                    paddingLeft: '1.5rem'
+                  }}>
+                    — Owner, ASH Cooling & Heating
+                  </p>
+                </div>
+
+                {/* Mockup Section */}
+                <div style={{
+                  flex: 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
                 }}>
                   <img
                     src="/assets/hvac-logos/ash-site-mockup.png"
                     alt="ASH Cooling & Heating Website"
                     style={{
-                      width: '100%',
+                      maxWidth: '100%',
+                      maxHeight: '300px',
+                      width: 'auto',
                       height: 'auto',
-                      borderRadius: '8px'
+                      objectFit: 'contain'
                     }}
                   />
                 </div>
