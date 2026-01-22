@@ -138,13 +138,20 @@ const HVACLanding = () => {
               Book a 15-min call. We'll show you how it works.
             </p>
             
-            <InlineWidget
-              url="https://calendly.com/designgroove/discovery-call?primary_color=0073e6&hide_gdpr_banner=1"
-              styles={{
-                height: '700px',
-                width: '100%'
-              }}
-            />
+            <div style={{
+              position: 'relative',
+              overflow: 'hidden',
+              isolation: 'isolate'
+            }}>
+              <InlineWidget
+                url="https://calendly.com/designgroove/discovery-call?primary_color=0073e6&hide_gdpr_banner=1"
+                styles={{
+                  height: '700px',
+                  width: '100%',
+                  overflow: 'hidden'
+                }}
+              />
+            </div>
           </div>
 
         </section>
