@@ -118,8 +118,9 @@ const HVACLanding = () => {
             <InlineWidget
               url="https://calendly.com/designgroove/hvac-marketing-system-demo?primary_color=0073e6&hide_gdpr_banner=1"
               styles={{
-                height: '700px',
-                width: '100%'
+                height: '1000px',
+                width: '100%',
+                overflow: 'hidden'
               }}
             />
 
