@@ -51,7 +51,7 @@ const HVACLanding = () => {
         
         {/* HERO SECTION */}
         <section style={{
-          padding: isMobile ? '7rem 5vw 2rem' : '9rem 5vw 2rem',
+          padding: isMobile ? '7rem 5vw 0' : '9rem 5vw 0',
           textAlign: 'center',
           maxWidth: '1200px',
           margin: '0 auto'
@@ -132,7 +132,7 @@ const HVACLanding = () => {
         </section>
 
         {/* SOCIAL PROOF SECTION */}
-        <section style={{ padding: isMobile ? '2rem 5vw' : '3rem 5vw' }}>
+        <section style={{ padding: isMobile ? '0 5vw 2rem' : '0 5vw 3rem' }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
 
             {/* Section Header */}
