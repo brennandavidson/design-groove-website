@@ -268,7 +268,7 @@ const HVACLanding = () => {
               color: '#666',
               fontSize: '1.1rem',
               marginBottom: '3rem'
-            }}>From form submission to closed deal in seconds</p>
+            }}>See EXACTLY what happens when a lead comes in</p>
 
             {/* 3-Panel Visual Flow */}
             <div style={{
