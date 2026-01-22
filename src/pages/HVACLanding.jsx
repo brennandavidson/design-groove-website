@@ -299,7 +299,7 @@ const HVACLanding = () => {
               display: 'grid',
               gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
               gap: '2rem',
-              alignItems: 'stretch',
+              alignItems: 'start',
               marginBottom: '5rem'
             }}>
               {/* Left Column: Video */}
@@ -376,16 +376,15 @@ const HVACLanding = () => {
 
                 {/* Mockup Section */}
                 <div style={{
-                  flex: 1,
                   display: 'flex',
-                  alignItems: 'center',
+                  alignItems: 'flex-start',
                   justifyContent: 'center'
                 }}>
                   <img
                     src="/assets/hvac-logos/ash-site-mockup.png"
                     alt="ASH Cooling & Heating Website"
                     style={{
-                      width: '100%',
+                      maxWidth: '85%',
                       height: 'auto',
                       objectFit: 'contain'
                     }}
