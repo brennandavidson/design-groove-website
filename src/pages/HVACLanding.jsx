@@ -51,7 +51,7 @@ const HVACLanding = () => {
         
         {/* HERO SECTION */}
         <section style={{
-          padding: isMobile ? '7rem 5vw 5rem' : '9rem 5vw 5rem',
+          padding: isMobile ? '7rem 5vw 2rem' : '9rem 5vw 2rem',
           textAlign: 'center',
           maxWidth: '1200px',
           margin: '0 auto'
