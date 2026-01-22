@@ -118,40 +118,11 @@ const HVACLanding = () => {
             <InlineWidget
               url="https://calendly.com/designgroove/hvac-marketing-system-demo?primary_color=0073e6&hide_gdpr_banner=1"
               styles={{
-                height: '1000px',
+                height: '660px',
                 width: '100%',
                 overflow: 'hidden'
               }}
             />
-
-            {/* Checkmarks - below Calendly */}
-            <div style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              justifyContent: 'center',
-              gap: isMobile ? '1rem' : '1.5rem',
-              maxWidth: '900px',
-              margin: '2rem auto 0',
-              fontSize: '1rem',
-              fontWeight: 500
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <span style={{ color: '#0073E6', fontSize: '1.2em' }}>✓</span>
-                <span>Leads Text Your Phone in Seconds</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <span style={{ color: '#0073E6', fontSize: '1.2em' }}>✓</span>
-                <span>Reviews Request Themselves</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <span style={{ color: '#0073E6', fontSize: '1.2em' }}>✓</span>
-                <span>Past Customers Reactivated</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <span style={{ color: '#0073E6', fontSize: '1.2em' }}>✓</span>
-                <span>Website Included</span>
-              </div>
-            </div>
           </div>
 
         </section>
