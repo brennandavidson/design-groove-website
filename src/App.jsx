@@ -1,6 +1,6 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { ReactLenis } from 'lenis/react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import './App.css';
 import Navbar from './components/Navbar';
@@ -157,11 +157,12 @@ function App() {
     </div>
   );
 
-  return !isMobile ? (
+  const location = useLocation();
+  const isLandingPage = location.pathname === '/hvac-system';
+
+  // Disable Lenis on mobile and on landing pages (conflicts with Calendly embed)
+  return (!isMobile && !isLandingPage) ? (
     <ReactLenis root options={{
-      // Standard configuration. 
-      // We removed 'prevent' callback to avoid interference.
-      // autoResize is true by default but we can keep it explicitly if needed.
       lerp: 0.1,
       duration: 1.5,
       smoothTouch: false,
