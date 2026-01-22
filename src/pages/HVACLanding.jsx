@@ -135,18 +135,15 @@ const HVACLanding = () => {
             </div>
           </div>
 
-          {/* BOOKER - MOVED HERE */}
+          {/* BOOKER */}
           <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
-            <h2 style={{ 
+            <h2 style={{
               fontFamily: 'Instrument Serif, serif',
-              fontSize: isMobile ? '2rem' : '3rem',
-              marginBottom: '1rem',
+              fontSize: isMobile ? '1.5rem' : '2rem',
+              marginBottom: '0.5rem',
               marginTop: '0'
-            }}>Ready to fix your leads?</h2>
-            <p style={{ fontSize: '1.2rem', color: '#666', marginBottom: '1rem' }}>
-              Book a 15-min call. We'll show you how it works.
-            </p>
-            
+            }}>Book a call below 👇</h2>
+
             <InlineWidget
               url="https://calendly.com/designgroove/discovery-call?primary_color=0073e6&hide_gdpr_banner=1"
               styles={{
