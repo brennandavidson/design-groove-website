@@ -286,6 +286,14 @@ const HVACLanding = () => {
         <section style={{ padding: '5rem 5vw', backgroundColor: '#fafafa' }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
 
+            {/* Section Header */}
+            <h2 style={{
+              fontFamily: 'Instrument Serif, serif',
+              fontSize: isMobile ? '1.75rem' : '2.5rem',
+              marginBottom: '2rem',
+              textAlign: 'center'
+            }}>Hear from an HVAC owner like you</h2>
+
             {/* Featured Testimonial: Video (col 1) + Quote/Mockup stacked (col 2) */}
             <div style={{
               display: 'grid',
@@ -342,7 +350,7 @@ const HVACLanding = () => {
                     lineHeight: 1.7,
                     marginBottom: '1.25rem'
                   }}>
-                    "They built our website and set up the lead system in about a week. Now when someone fills out the form, I get a text immediately. It's been a game changer for our business."
+                    "We went from a <strong>$2,900 investment</strong> to a <strong>$22,000 profit margin</strong>. From the website to the marketing strategies, it's top notch. If you're thinking about giving them a shot, don't hesitate."
                   </p>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                     <div style={{
@@ -360,7 +368,7 @@ const HVACLanding = () => {
                       A
                     </div>
                     <div>
-                      <p style={{ fontWeight: 600, color: '#1a1a1a', margin: 0 }}>ASH Cooling & Heating</p>
+                      <p style={{ fontWeight: 600, color: '#1a1a1a', margin: 0 }}>Ashton, ASH Cooling & Heating</p>
                       <p style={{ color: '#666', fontSize: '0.9rem', margin: 0 }}>Mesa, AZ</p>
                     </div>
                   </div>
