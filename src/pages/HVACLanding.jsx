@@ -106,51 +106,51 @@ const HVACLanding = () => {
             </div>
           </div>
 
-          {/* Checkmarks - moved below video */}
-          <div style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-            gap: isMobile ? '1rem' : '1.5rem',
-            maxWidth: '900px',
-            margin: '0 auto 4rem',
-            fontSize: '1rem',
-            fontWeight: 500
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <span style={{ color: '#0073E6', fontSize: '1.2em' }}>✓</span>
-              <span>Leads Text Your Phone in Seconds</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <span style={{ color: '#0073E6', fontSize: '1.2em' }}>✓</span>
-              <span>Reviews Request Themselves</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <span style={{ color: '#0073E6', fontSize: '1.2em' }}>✓</span>
-              <span>Past Customers Reactivated</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <span style={{ color: '#0073E6', fontSize: '1.2em' }}>✓</span>
-              <span>Website Included</span>
-            </div>
-          </div>
-
           {/* BOOKER */}
           <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
             <h2 style={{
               fontFamily: 'Instrument Serif, serif',
-              fontSize: isMobile ? '1.5rem' : '2rem',
+              fontSize: isMobile ? '2rem' : '2.75rem',
               marginBottom: '0.5rem',
               marginTop: '0'
             }}>Book a call below 👇</h2>
 
             <InlineWidget
-              url="https://calendly.com/designgroove/discovery-call?primary_color=0073e6&hide_gdpr_banner=1"
+              url="https://calendly.com/designgroove/hvac-marketing-system-demo?primary_color=0073e6&hide_gdpr_banner=1"
               styles={{
                 height: '700px',
                 width: '100%'
               }}
             />
+
+            {/* Checkmarks - below Calendly */}
+            <div style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+              gap: isMobile ? '1rem' : '1.5rem',
+              maxWidth: '900px',
+              margin: '2rem auto 0',
+              fontSize: '1rem',
+              fontWeight: 500
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <span style={{ color: '#0073E6', fontSize: '1.2em' }}>✓</span>
+                <span>Leads Text Your Phone in Seconds</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <span style={{ color: '#0073E6', fontSize: '1.2em' }}>✓</span>
+                <span>Reviews Request Themselves</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <span style={{ color: '#0073E6', fontSize: '1.2em' }}>✓</span>
+                <span>Past Customers Reactivated</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <span style={{ color: '#0073E6', fontSize: '1.2em' }}>✓</span>
+                <span>Website Included</span>
+              </div>
+            </div>
           </div>
 
         </section>
