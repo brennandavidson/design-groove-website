@@ -157,14 +157,14 @@ const HVACLanding = () => {
         </section>
 
         {/* SOCIAL PROOF SECTION */}
-        <section style={{ padding: '5rem 5vw' }}>
+        <section style={{ padding: isMobile ? '2rem 5vw' : '3rem 5vw' }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
 
             {/* Section Header */}
             <h2 style={{
               fontFamily: 'Instrument Serif, serif',
-              fontSize: isMobile ? '1.75rem' : '2.5rem',
-              marginBottom: '3rem',
+              fontSize: isMobile ? '2rem' : '2.75rem',
+              marginBottom: '2rem',
               textAlign: 'center'
             }}>Hear from an HVAC owner like you</h2>
 
@@ -174,7 +174,7 @@ const HVACLanding = () => {
               gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
               gap: '2rem',
               alignItems: 'start',
-              marginBottom: '5rem'
+              marginBottom: '3rem'
             }}>
               {/* Left Column: Video */}
               <div style={{
@@ -269,8 +269,8 @@ const HVACLanding = () => {
             {/* Heading for logo strip */}
             <h2 style={{
               fontFamily: 'Instrument Serif, serif',
-              fontSize: isMobile ? '1.75rem' : '2.25rem',
-              marginBottom: '2.5rem',
+              fontSize: isMobile ? '2rem' : '2.75rem',
+              marginBottom: '1.5rem',
               textAlign: 'center'
             }}>Trusted by HVAC businesses nationwide</h2>
 
@@ -280,7 +280,7 @@ const HVACLanding = () => {
         </section>
 
         {/* HOW IT WORKS SECTION */}
-        <section style={{ padding: '5rem 5vw' }}>
+        <section style={{ padding: isMobile ? '2rem 5vw' : '3rem 5vw' }}>
           <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
             <h2 style={{
               fontFamily: 'Instrument Serif, serif',
