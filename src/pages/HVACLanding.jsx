@@ -134,7 +134,7 @@ const HVACLanding = () => {
               marginBottom: '1rem',
               marginTop: '0'
             }}>Ready to fix your leads?</h2>
-            <p style={{ fontSize: '1.2rem', color: '#666', marginBottom: '2rem' }}>
+            <p style={{ fontSize: '1.2rem', color: '#666', marginBottom: '1rem' }}>
               Book a 15-min call. We'll show you how it works.
             </p>
             
@@ -157,7 +157,7 @@ const HVACLanding = () => {
             <h2 style={{
               fontFamily: 'Instrument Serif, serif',
               fontSize: isMobile ? '1.75rem' : '2.5rem',
-              marginBottom: '2rem',
+              marginBottom: '3rem',
               textAlign: 'center'
             }}>Hear from an HVAC owner like you</h2>
 
@@ -263,7 +263,7 @@ const HVACLanding = () => {
             <h2 style={{
               fontFamily: 'Instrument Serif, serif',
               fontSize: isMobile ? '1.75rem' : '2.25rem',
-              marginBottom: '1.5rem',
+              marginBottom: '2.5rem',
               textAlign: 'center'
             }}>Trusted by HVAC businesses nationwide</h2>
 
