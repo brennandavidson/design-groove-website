@@ -141,7 +141,7 @@ const HVACLanding = () => {
               fontSize: isMobile ? '2rem' : '2.75rem',
               marginBottom: '2rem',
               textAlign: 'center'
-            }}>Hear from an HVAC owner like you</h2>
+            }}>See what our client Ashton had to say...</h2>
 
             {/* Featured Testimonial: Video (col 1) + Quote/Mockup stacked (col 2) */}
             <div style={{
