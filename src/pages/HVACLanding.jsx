@@ -393,65 +393,15 @@ const HVACLanding = () => {
               </div>
             </div>
 
-            {/* Heading for testimonials */}
+            {/* Heading for logo strip */}
             <h2 style={{
               fontFamily: 'Instrument Serif, serif',
-              fontSize: isMobile ? '2rem' : '3rem',
-              marginBottom: '2.5rem',
+              fontSize: isMobile ? '1.75rem' : '2.25rem',
+              marginBottom: '1.5rem',
               textAlign: 'center'
             }}>Trusted by HVAC businesses nationwide</h2>
 
-            {/* Text Testimonials Grid */}
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
-              gap: '1.5rem',
-              marginBottom: '3rem'
-            }}>
-              {/* Testimonial 1 */}
-              <div style={{
-                backgroundColor: '#fff',
-                padding: '2rem',
-                borderRadius: '12px',
-                boxShadow: '0 2px 12px rgba(0,0,0,0.06)'
-              }}>
-                <div style={{ color: '#0073E6', fontSize: '1.5rem', marginBottom: '1rem' }}>★★★★★</div>
-                <p style={{ color: '#444', lineHeight: 1.6, marginBottom: '1rem' }}>
-                  "Finally, a marketing company that actually understands HVAC. No more chasing leads that go nowhere."
-                </p>
-                <p style={{ fontWeight: 600, fontSize: '0.9rem', color: '#666' }}>— HVAC Owner, Phoenix</p>
-              </div>
-
-              {/* Testimonial 2 */}
-              <div style={{
-                backgroundColor: '#fff',
-                padding: '2rem',
-                borderRadius: '12px',
-                boxShadow: '0 2px 12px rgba(0,0,0,0.06)'
-              }}>
-                <div style={{ color: '#0073E6', fontSize: '1.5rem', marginBottom: '1rem' }}>★★★★★</div>
-                <p style={{ color: '#444', lineHeight: 1.6, marginBottom: '1rem' }}>
-                  "The text notifications are instant. I've closed jobs while my competitors are still checking their email."
-                </p>
-                <p style={{ fontWeight: 600, fontSize: '0.9rem', color: '#666' }}>— HVAC Owner, Mesa</p>
-              </div>
-
-              {/* Testimonial 3 */}
-              <div style={{
-                backgroundColor: '#fff',
-                padding: '2rem',
-                borderRadius: '12px',
-                boxShadow: '0 2px 12px rgba(0,0,0,0.06)'
-              }}>
-                <div style={{ color: '#0073E6', fontSize: '1.5rem', marginBottom: '1rem' }}>★★★★★</div>
-                <p style={{ color: '#444', lineHeight: 1.6, marginBottom: '1rem' }}>
-                  "Worth every penny. The review automation alone has doubled our Google reviews in 2 months."
-                </p>
-                <p style={{ fontWeight: 600, fontSize: '0.9rem', color: '#666' }}>— HVAC Owner, Tempe</p>
-              </div>
-            </div>
-
-            {/* Logo Strip at Bottom */}
+            {/* Logo Strip */}
             <HVACCredibility />
           </div>
         </section>
