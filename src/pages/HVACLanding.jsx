@@ -613,8 +613,8 @@ const HVACLanding = () => {
                   fontSize: '1.1rem',
                   fontWeight: 600,
                   marginBottom: '0.5rem'
-                }}>5. Reviews on autopilot</div>
-                <p style={{ color: '#666', fontSize: '0.95rem', margin: 0 }}>One-click sends them to leave a 5-star review</p>
+                }}>5. 5-STAR reviews on autopilot</div>
+                <p style={{ color: '#666', fontSize: '0.95rem', margin: 0 }}>One-click auto-reminds customers till they review. Bad reviews don't hit your Google.</p>
               </div>
 
               {/* Panel 6: 12-Month Follow-up */}
