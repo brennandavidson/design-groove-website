@@ -115,14 +115,18 @@ const HVACLanding = () => {
               marginTop: '0'
             }}>Book a call below 👇</h2>
 
-            <InlineWidget
-              url="https://calendly.com/designgroove/hvac-marketing-system-demo?primary_color=0073e6&hide_gdpr_banner=1"
-              styles={{
-                height: '660px',
-                width: '100%',
-                overflow: 'hidden'
-              }}
-            />
+            <div style={{
+              height: isMobile ? '580px' : '700px',
+              overflow: 'hidden'
+            }}>
+              <InlineWidget
+                url="https://calendly.com/designgroove/hvac-marketing-system-demo?primary_color=0073e6&hide_gdpr_banner=1"
+                styles={{
+                  height: '1200px',
+                  width: '100%'
+                }}
+              />
+            </div>
           </div>
 
         </section>
