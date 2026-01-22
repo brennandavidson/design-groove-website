@@ -473,6 +473,195 @@ const HVACLanding = () => {
                 <p style={{ color: '#666', fontSize: '0.95rem', margin: 0 }}>Reply directly and book the appointment</p>
               </div>
 
+              {/* Panel 4: Missed Call Auto-Response */}
+              <div style={{ textAlign: 'center' }}>
+                <div style={{
+                  backgroundColor: '#1a1a1a',
+                  borderRadius: '24px',
+                  padding: '0.5rem',
+                  maxWidth: '280px',
+                  margin: '0 auto 1.5rem'
+                }}>
+                  <div style={{
+                    backgroundColor: '#000',
+                    borderRadius: '20px',
+                    padding: '1rem',
+                    height: '280px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    gap: '0.75rem'
+                  }}>
+                    {/* Missed call notification */}
+                    <div style={{
+                      backgroundColor: 'rgba(255,59,48,0.15)',
+                      borderRadius: '12px',
+                      padding: '0.6rem 0.75rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem'
+                    }}>
+                      <div style={{
+                        width: '28px',
+                        height: '28px',
+                        backgroundColor: '#FF3B30',
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '14px'
+                      }}>📞</div>
+                      <div>
+                        <div style={{ fontSize: '0.75rem', color: '#FF3B30', fontWeight: 600 }}>Missed Call</div>
+                        <div style={{ fontSize: '0.7rem', color: '#999' }}>(480) 555-9876</div>
+                      </div>
+                    </div>
+                    {/* Auto text response */}
+                    <div style={{
+                      backgroundColor: 'rgba(52,199,89,0.15)',
+                      borderRadius: '12px',
+                      padding: '0.6rem 0.75rem'
+                    }}>
+                      <div style={{ fontSize: '0.7rem', color: '#34C759', fontWeight: 600, marginBottom: '0.3rem' }}>AUTO-SENT</div>
+                      <div style={{ fontSize: '0.8rem', color: '#fff', lineHeight: 1.4 }}>"Hey! Sorry we missed your call. How can we help you today?"</div>
+                    </div>
+                  </div>
+                </div>
+                <div style={{
+                  fontSize: '1.1rem',
+                  fontWeight: 600,
+                  marginBottom: '0.5rem'
+                }}>4. Miss a call? No problem.</div>
+                <p style={{ color: '#666', fontSize: '0.95rem', margin: 0 }}>System texts them back automatically</p>
+              </div>
+
+              {/* Panel 5: Review Request */}
+              <div style={{ textAlign: 'center' }}>
+                <div style={{
+                  backgroundColor: '#1a1a1a',
+                  borderRadius: '24px',
+                  padding: '0.5rem',
+                  maxWidth: '280px',
+                  margin: '0 auto 1.5rem'
+                }}>
+                  <div style={{
+                    backgroundColor: '#000',
+                    borderRadius: '20px',
+                    padding: '1rem 0.75rem',
+                    height: '280px',
+                    display: 'flex',
+                    flexDirection: 'column'
+                  }}>
+                    <div style={{
+                      textAlign: 'center',
+                      color: '#fff',
+                      fontSize: '0.85rem',
+                      fontWeight: 600,
+                      marginBottom: '0.75rem',
+                      paddingBottom: '0.5rem',
+                      borderBottom: '1px solid #333'
+                    }}>John Smith</div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flex: 1, justifyContent: 'center' }}>
+                      <div style={{
+                        backgroundColor: '#0073E6',
+                        color: '#fff',
+                        padding: '0.5rem 0.75rem',
+                        borderRadius: '14px 14px 4px 14px',
+                        fontSize: '0.8rem',
+                        maxWidth: '92%',
+                        alignSelf: 'flex-end',
+                        lineHeight: 1.4
+                      }}>Thanks for choosing us! Mind leaving a quick review? ⭐ [Google Link]</div>
+                      <div style={{
+                        backgroundColor: '#333',
+                        color: '#fff',
+                        padding: '0.5rem 0.75rem',
+                        borderRadius: '14px 14px 14px 4px',
+                        fontSize: '0.8rem',
+                        maxWidth: '88%',
+                        alignSelf: 'flex-start'
+                      }}>Done! You guys are the best 👍</div>
+                      <div style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        gap: '0.15rem',
+                        fontSize: '1.2rem',
+                        marginTop: '0.5rem'
+                      }}>⭐⭐⭐⭐⭐</div>
+                    </div>
+                  </div>
+                </div>
+                <div style={{
+                  fontSize: '1.1rem',
+                  fontWeight: 600,
+                  marginBottom: '0.5rem'
+                }}>5. Reviews on autopilot</div>
+                <p style={{ color: '#666', fontSize: '0.95rem', margin: 0 }}>One-click sends them to leave a 5-star review</p>
+              </div>
+
+              {/* Panel 6: 12-Month Follow-up */}
+              <div style={{ textAlign: 'center' }}>
+                <div style={{
+                  backgroundColor: '#1a1a1a',
+                  borderRadius: '24px',
+                  padding: '0.5rem',
+                  maxWidth: '280px',
+                  margin: '0 auto 1.5rem'
+                }}>
+                  <div style={{
+                    backgroundColor: '#000',
+                    borderRadius: '20px',
+                    padding: '1rem 0.75rem',
+                    height: '280px',
+                    display: 'flex',
+                    flexDirection: 'column'
+                  }}>
+                    <div style={{
+                      textAlign: 'center',
+                      color: '#fff',
+                      fontSize: '0.85rem',
+                      fontWeight: 600,
+                      marginBottom: '0.75rem',
+                      paddingBottom: '0.5rem',
+                      borderBottom: '1px solid #333'
+                    }}>Sarah Johnson</div>
+                    <div style={{
+                      fontSize: '0.65rem',
+                      color: '#666',
+                      textAlign: 'center',
+                      marginBottom: '0.5rem'
+                    }}>6 months since last service</div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flex: 1, justifyContent: 'center' }}>
+                      <div style={{
+                        backgroundColor: '#0073E6',
+                        color: '#fff',
+                        padding: '0.5rem 0.75rem',
+                        borderRadius: '14px 14px 4px 14px',
+                        fontSize: '0.8rem',
+                        maxWidth: '92%',
+                        alignSelf: 'flex-end',
+                        lineHeight: 1.4
+                      }}>Hey Sarah! Time for your AC tune-up. Want to schedule?</div>
+                      <div style={{
+                        backgroundColor: '#333',
+                        color: '#fff',
+                        padding: '0.5rem 0.75rem',
+                        borderRadius: '14px 14px 14px 4px',
+                        fontSize: '0.8rem',
+                        maxWidth: '88%',
+                        alignSelf: 'flex-start'
+                      }}>Perfect timing! Yes please 🙌</div>
+                    </div>
+                  </div>
+                </div>
+                <div style={{
+                  fontSize: '1.1rem',
+                  fontWeight: 600,
+                  marginBottom: '0.5rem'
+                }}>6. Past customers reactivated</div>
+                <p style={{ color: '#666', fontSize: '0.95rem', margin: 0 }}>12-month follow-ups for referrals + repeat business</p>
+              </div>
+
             </div>
           </div>
         </section>
