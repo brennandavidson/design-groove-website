@@ -274,125 +274,207 @@ const HVACLanding = () => {
 
         {/* HOW IT WORKS SECTION */}
         <section style={{ padding: '5rem 5vw' }}>
-          <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
             <h2 style={{
               fontFamily: 'Instrument Serif, serif',
               fontSize: isMobile ? '2rem' : '3rem',
               textAlign: 'center',
-              marginBottom: '3rem'
+              marginBottom: '1rem'
             }}>How It Works</h2>
+            <p style={{
+              textAlign: 'center',
+              color: '#666',
+              fontSize: '1.1rem',
+              marginBottom: '3rem'
+            }}>From form submission to closed deal in seconds</p>
 
-            {/* Redesigned Layout: Mockup Visual + Steps */}
+            {/* 3-Panel Visual Flow */}
             <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '3rem',
-                alignItems: 'center'
+              display: 'grid',
+              gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr 1fr',
+              gap: isMobile ? '2rem' : '1.5rem',
+              alignItems: 'start'
             }}>
 
-                {/* 1. The System Visual (Mockup) */}
+              {/* Panel 1: Form Mockup */}
+              <div style={{ textAlign: 'center' }}>
                 <div style={{
-                    width: '100%',
-                    maxWidth: '1000px',
-                    position: 'relative'
+                  backgroundColor: '#fff',
+                  borderRadius: '12px',
+                  boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
+                  padding: '1.5rem',
+                  marginBottom: '1.5rem'
                 }}>
-                    <img
-                        src="/assets/demo-site-mockup.png"
-                        alt="HVAC Lead System Dashboard"
-                        style={{
-                            width: '100%',
-                            height: 'auto',
-                            borderRadius: '12px',
-                            boxShadow: '0 10px 40px rgba(0,0,0,0.1)'
-                        }}
-                    />
-                </div>
-
-                {/* 2. The 3 Steps Grid */}
-                <div style={{
-                  display: 'grid',
-                  gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr 1fr',
-                  gap: '2rem',
-                  width: '100%'
-                }}>
-                  {/* Step 1 */}
                   <div style={{
-                    padding: '2rem',
-                    borderRadius: '12px',
-                    boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
-                    textAlign: 'center'
-                  }}>
+                    backgroundColor: '#1a1a1a',
+                    color: '#fff',
+                    padding: '0.75rem 1rem',
+                    borderRadius: '8px 8px 0 0',
+                    margin: '-1.5rem -1.5rem 1rem',
+                    fontSize: '0.85rem',
+                    fontWeight: 600
+                  }}>Get a Free Quote</div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                     <div style={{
-                      height: '60px',
-                      width: '60px',
-                      backgroundColor: '#e6f2ff',
-                      borderRadius: '50%',
-                      marginBottom: '1.5rem',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: '#0073E6',
-                      fontSize: '1.5rem',
-                      fontWeight: 'bold'
-                    }}>
-                      1
-                    </div>
-                    <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>Lead fills out form</h3>
-                    <p style={{ color: '#666' }}>Customer requests a quote on your new site.</p>
-                  </div>
-
-                  {/* Step 2 */}
-                  <div style={{
-                    padding: '2rem',
-                    borderRadius: '12px',
-                    boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
-                    textAlign: 'center'
-                  }}>
+                      backgroundColor: '#f5f5f5',
+                      padding: '0.65rem 0.75rem',
+                      borderRadius: '6px',
+                      fontSize: '0.85rem',
+                      color: '#333',
+                      textAlign: 'left'
+                    }}>John Smith</div>
                     <div style={{
-                      height: '60px',
-                      width: '60px',
-                      backgroundColor: '#e6f2ff',
-                      borderRadius: '50%',
-                      marginBottom: '1.5rem',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: '#0073E6',
-                      fontSize: '1.5rem',
-                      fontWeight: 'bold'
-                    }}>
-                      2
-                    </div>
-                    <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>You get a text</h3>
-                    <p style={{ color: '#666' }}>Notification hits your phone in seconds.</p>
-                  </div>
-
-                  {/* Step 3 */}
-                  <div style={{
-                    padding: '2rem',
-                    borderRadius: '12px',
-                    boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
-                    textAlign: 'center'
-                  }}>
+                      backgroundColor: '#f5f5f5',
+                      padding: '0.65rem 0.75rem',
+                      borderRadius: '6px',
+                      fontSize: '0.85rem',
+                      color: '#333',
+                      textAlign: 'left'
+                    }}>(480) 555-1234</div>
                     <div style={{
-                      height: '60px',
-                      width: '60px',
-                      backgroundColor: '#e6f2ff',
-                      borderRadius: '50%',
-                      marginBottom: '1.5rem',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: '#0073E6',
-                      fontSize: '1.5rem',
-                      fontWeight: 'bold'
-                    }}>
-                      3
-                    </div>
-                    <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>Close the job</h3>
-                    <p style={{ color: '#666' }}>Reply directly to the text to start the conversation.</p>
+                      backgroundColor: '#f5f5f5',
+                      padding: '0.65rem 0.75rem',
+                      borderRadius: '6px',
+                      fontSize: '0.85rem',
+                      color: '#333',
+                      textAlign: 'left',
+                      minHeight: '60px'
+                    }}>AC not cooling, need someone ASAP</div>
+                    <div style={{
+                      backgroundColor: '#0073E6',
+                      color: '#fff',
+                      padding: '0.75rem',
+                      borderRadius: '6px',
+                      fontSize: '0.9rem',
+                      fontWeight: 600,
+                      cursor: 'default'
+                    }}>Submit</div>
                   </div>
                 </div>
+                <div style={{
+                  fontSize: '1.1rem',
+                  fontWeight: 600,
+                  marginBottom: '0.5rem'
+                }}>1. Lead fills out form</div>
+                <p style={{ color: '#666', fontSize: '0.95rem' }}>Customer submits a quote request on your site</p>
+              </div>
+
+              {/* Panel 2: Phone Notification Mockup */}
+              <div style={{ textAlign: 'center' }}>
+                <div style={{
+                  backgroundColor: '#1a1a1a',
+                  borderRadius: '24px',
+                  padding: '0.5rem',
+                  marginBottom: '1.5rem',
+                  maxWidth: '280px',
+                  margin: '0 auto 1.5rem'
+                }}>
+                  <div style={{
+                    backgroundColor: '#000',
+                    borderRadius: '20px',
+                    padding: '2rem 1rem',
+                    minHeight: '200px'
+                  }}>
+                    {/* Notification */}
+                    <div style={{
+                      backgroundColor: 'rgba(255,255,255,0.95)',
+                      borderRadius: '12px',
+                      padding: '0.75rem',
+                      boxShadow: '0 2px 12px rgba(0,0,0,0.3)'
+                    }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                        <div style={{
+                          width: '20px',
+                          height: '20px',
+                          backgroundColor: '#34C759',
+                          borderRadius: '5px',
+                          fontSize: '12px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center'
+                        }}>💬</div>
+                        <span style={{ fontSize: '0.75rem', color: '#666', fontWeight: 500 }}>MESSAGES</span>
+                        <span style={{ fontSize: '0.7rem', color: '#999', marginLeft: 'auto' }}>now</span>
+                      </div>
+                      <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#1a1a1a', marginBottom: '0.25rem' }}>New Lead: John Smith</div>
+                      <div style={{ fontSize: '0.8rem', color: '#444' }}>"AC not cooling, need someone ASAP" - (480) 555-1234</div>
+                    </div>
+                  </div>
+                </div>
+                <div style={{
+                  fontSize: '1.1rem',
+                  fontWeight: 600,
+                  marginBottom: '0.5rem'
+                }}>2. You get a text instantly</div>
+                <p style={{ color: '#666', fontSize: '0.95rem' }}>Lead details hit your phone in seconds</p>
+              </div>
+
+              {/* Panel 3: Text Conversation Mockup */}
+              <div style={{ textAlign: 'center' }}>
+                <div style={{
+                  backgroundColor: '#1a1a1a',
+                  borderRadius: '24px',
+                  padding: '0.5rem',
+                  marginBottom: '1.5rem',
+                  maxWidth: '280px',
+                  margin: '0 auto 1.5rem'
+                }}>
+                  <div style={{
+                    backgroundColor: '#000',
+                    borderRadius: '20px',
+                    padding: '1rem 0.75rem',
+                    minHeight: '200px'
+                  }}>
+                    {/* Header */}
+                    <div style={{
+                      textAlign: 'center',
+                      color: '#fff',
+                      fontSize: '0.85rem',
+                      fontWeight: 600,
+                      marginBottom: '1rem',
+                      paddingBottom: '0.5rem',
+                      borderBottom: '1px solid #333'
+                    }}>John Smith</div>
+                    {/* Messages */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                      <div style={{
+                        backgroundColor: '#333',
+                        color: '#fff',
+                        padding: '0.5rem 0.75rem',
+                        borderRadius: '12px 12px 12px 4px',
+                        fontSize: '0.8rem',
+                        maxWidth: '85%',
+                        alignSelf: 'flex-start'
+                      }}>AC not cooling, need someone ASAP</div>
+                      <div style={{
+                        backgroundColor: '#0073E6',
+                        color: '#fff',
+                        padding: '0.5rem 0.75rem',
+                        borderRadius: '12px 12px 4px 12px',
+                        fontSize: '0.8rem',
+                        maxWidth: '85%',
+                        alignSelf: 'flex-end'
+                      }}>Hey John! This is Mike from ABC HVAC. I can be there in 45 min. Work for you?</div>
+                      <div style={{
+                        backgroundColor: '#333',
+                        color: '#fff',
+                        padding: '0.5rem 0.75rem',
+                        borderRadius: '12px 12px 12px 4px',
+                        fontSize: '0.8rem',
+                        maxWidth: '85%',
+                        alignSelf: 'flex-start'
+                      }}>Yes! Thank you 🙏</div>
+                    </div>
+                  </div>
+                </div>
+                <div style={{
+                  fontSize: '1.1rem',
+                  fontWeight: 600,
+                  marginBottom: '0.5rem'
+                }}>3. Close the job</div>
+                <p style={{ color: '#666', fontSize: '0.95rem' }}>Reply directly and book the appointment</p>
+              </div>
+
             </div>
           </div>
         </section>
