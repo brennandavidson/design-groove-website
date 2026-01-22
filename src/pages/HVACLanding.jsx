@@ -63,7 +63,7 @@ const HVACLanding = () => {
             marginBottom: '1.25rem',
             color: '#1a1a1a'
           }}>
-            See how HVAC owners are using this system to <span style={{ color: '#0073E6' }}>GROW</span> their business for only $297/mo (Without paying an agency $3k/mo)
+            See how HVAC owners are using this system to <span style={{ color: '#0073E6' }}>GROW</span> their business for only $297/mo (No agency fees. No ad budgets. No bullsh*t.)
           </h1>
 
           <p style={{
