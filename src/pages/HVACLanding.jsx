@@ -56,54 +56,34 @@ const HVACLanding = () => {
           maxWidth: '1200px',
           margin: '0 auto'
         }}>
-          <h1 style={{ 
-            fontFamily: 'Instrument Serif, serif', 
-            fontSize: isMobile ? '2.5rem' : '4rem', 
-            lineHeight: 1.1,
-            marginBottom: '1.5rem',
+          <h1 style={{
+            fontFamily: 'Instrument Serif, serif',
+            fontSize: isMobile ? '2.2rem' : '3.5rem',
+            lineHeight: 1.15,
+            marginBottom: '1.25rem',
             color: '#1a1a1a'
           }}>
-            HVAC Owners: Get a Free Website<br />With This $297/mo Lead System
+            See how HVAC owners are using this system to <span style={{ color: '#0073E6' }}>GROW</span> their business for only $297/mo
           </h1>
-          
-          <p style={{ 
-            fontSize: isMobile ? '1.1rem' : '1.3rem', 
-            lineHeight: 1.5,
-            color: '#4a4a4a',
-            maxWidth: '800px',
-            margin: '0 auto 2.5rem',
-            padding: '0 1rem'
+
+          <p style={{
+            fontSize: isMobile ? '1.2rem' : '1.5rem',
+            fontWeight: 600,
+            color: '#1a1a1a',
+            margin: '0 auto 1rem'
           }}>
-            Leads hit your phone by text. Reviews stack automatically. Old customers come back. We build it in 7-10 days. You just answer your phone.
+            🎁 PLUS... it comes with a free website
           </p>
 
-          <div style={{ 
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-            gap: isMobile ? '1rem' : '1.5rem',
-            maxWidth: '1200px',
-            margin: '0 auto 4rem',
-            fontSize: '1rem',
-            fontWeight: 500
+          <p style={{
+            fontSize: isMobile ? '1rem' : '1.15rem',
+            lineHeight: 1.5,
+            color: '#555',
+            maxWidth: '700px',
+            margin: '0 auto 2.5rem'
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textAlign: 'left' }}>
-              <span style={{ color: '#0073E6', flexShrink: 0, fontSize: '1.2em' }}>✓</span> 
-              <span>Leads Text Your Phone in Seconds</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textAlign: 'left' }}>
-              <span style={{ color: '#0073E6', flexShrink: 0, fontSize: '1.2em' }}>✓</span> 
-              <span>Reviews Request Themselves</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textAlign: 'left' }}>
-              <span style={{ color: '#0073E6', flexShrink: 0, fontSize: '1.2em' }}>✓</span> 
-              <span>Past Customers Reactivated</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textAlign: 'left' }}>
-              <span style={{ color: '#0073E6', flexShrink: 0, fontSize: '1.2em' }}>✓</span> 
-              <span>Website Included</span>
-            </div>
-          </div>
+            Watch this 6 minute video to see EXACTLY how it works and why it makes you more money
+          </p>
 
           {/* VSL PLACEHOLDER */}
           <div style={{
@@ -112,7 +92,7 @@ const HVACLanding = () => {
             aspectRatio: '16/9',
             backgroundColor: '#000',
             borderRadius: '12px',
-            margin: '0 auto 4rem',
+            margin: '0 auto 2rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -123,6 +103,35 @@ const HVACLanding = () => {
             <div style={{ textAlign: 'center', color: '#fff' }}>
               <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>▶</div>
               <p>Video Sales Letter Placeholder</p>
+            </div>
+          </div>
+
+          {/* Checkmarks - moved below video */}
+          <div style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            gap: isMobile ? '1rem' : '1.5rem',
+            maxWidth: '900px',
+            margin: '0 auto 4rem',
+            fontSize: '1rem',
+            fontWeight: 500
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <span style={{ color: '#0073E6', fontSize: '1.2em' }}>✓</span>
+              <span>Leads Text Your Phone in Seconds</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <span style={{ color: '#0073E6', fontSize: '1.2em' }}>✓</span>
+              <span>Reviews Request Themselves</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <span style={{ color: '#0073E6', fontSize: '1.2em' }}>✓</span>
+              <span>Past Customers Reactivated</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <span style={{ color: '#0073E6', fontSize: '1.2em' }}>✓</span>
+              <span>Website Included</span>
             </div>
           </div>
 
