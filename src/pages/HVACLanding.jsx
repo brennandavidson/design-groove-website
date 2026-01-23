@@ -85,24 +85,29 @@ const HVACLanding = () => {
             👇 Watch this 6 minute video to see EXACTLY how it works and why it makes you more money
           </p>
 
-          {/* VSL PLACEHOLDER */}
+          {/* VSL */}
           <div style={{
             width: '100%',
             maxWidth: '900px',
-            aspectRatio: '16/9',
-            backgroundColor: '#000',
-            borderRadius: '12px',
             margin: '0 auto 2rem',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            border: '1px solid #333',
-            position: 'relative',
+            borderRadius: '12px',
             overflow: 'hidden'
           }}>
-            <div style={{ textAlign: 'center', color: '#fff' }}>
-              <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>▶</div>
-              <p>Video Sales Letter Placeholder</p>
+            <div style={{ position: 'relative', paddingTop: '56.25%' }}>
+              <iframe
+                src="https://iframe.mediadelivery.net/embed/585643/8d69dd44-26dd-4efe-9ab2-6ee26272d60e?autoplay=false&loop=false&muted=false&preload=true&responsive=true"
+                loading="lazy"
+                style={{
+                  border: 0,
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  height: '100%',
+                  width: '100%'
+                }}
+                allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
+                allowFullScreen
+              />
             </div>
           </div>
 
