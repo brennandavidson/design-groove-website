@@ -87,10 +87,11 @@ const HVACLanding = () => {
 
           {/* VSL */}
           <div style={{
-            width: isMobile ? '100%' : 'calc(100% + 100px)',
-            maxWidth: '1300px',
+            width: isMobile ? '100%' : 'calc(100vw - 4rem)',
+            maxWidth: '1800px',
             margin: '0 auto 2rem',
-            marginLeft: isMobile ? 'auto' : '-50px',
+            marginLeft: isMobile ? 'auto' : '50%',
+            transform: isMobile ? 'none' : 'translateX(-50%)',
             borderRadius: '12px',
             overflow: 'hidden'
           }}>
