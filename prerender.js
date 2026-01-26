@@ -22,7 +22,11 @@ let routes = [
   '/about',
   '/contact',
   '/book',
+  '/hvac-system', // Landing page (noindex)
 ]
+
+// Routes to exclude from sitemap (noindex pages)
+const excludeFromSitemap = ['/hvac-system']
 
 // Store LCP image URLs for homepage preload
 let lcpPreloads = []
@@ -61,10 +65,11 @@ let lcpPreloads = []
     console.error('Failed to fetch project routes:', error)
   }
 
-  // Generate Sitemap
+  // Generate Sitemap (excluding noindex pages)
+  const sitemapRoutes = routes.filter(route => !excludeFromSitemap.includes(route))
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  ${routes.map(route => `
+  ${sitemapRoutes.map(route => `
   <url>
     <loc>https://designgroove.io${route}</loc>
     <changefreq>${route === '/' ? 'daily' : 'weekly'}</changefreq>
