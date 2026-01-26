@@ -172,12 +172,20 @@ const HVACLanding = () => {
                   left: 0,
                   width: '100%',
                   height: '100%',
-                  background: 'linear-gradient(135deg, #1a1a1a 0%, #333 100%)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  backgroundColor: '#0a0a0a'
                 }}>
+                  {/* Replace with actual thumbnail: /assets/hvac-vsl-thumbnail.jpg */}
+                  <img
+                    src="/assets/hvac-vsl-thumbnail.webp"
+                    alt="Watch video"
+                    onError={(e) => { e.target.style.display = 'none'; }}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover'
+                    }}
+                  />
                   <PlayButton />
                 </div>
               )}
@@ -295,12 +303,21 @@ const HVACLanding = () => {
                         left: 0,
                         width: '100%',
                         height: '100%',
-                        background: 'linear-gradient(135deg, #1a1a1a 0%, #333 100%)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer'
+                        cursor: 'pointer',
+                        backgroundColor: '#0a0a0a'
                       }}>
+                        {/* Replace with actual thumbnail: /assets/hvac-testimonial-thumbnail.jpg */}
+                        <img
+                          src="/assets/hvac-testimonial-thumbnail.webp"
+                          alt="Watch testimonial"
+                          loading="lazy"
+                          onError={(e) => { e.target.style.display = 'none'; }}
+                          style={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover'
+                          }}
+                        />
                         <PlayButton />
                       </div>
                     )}
