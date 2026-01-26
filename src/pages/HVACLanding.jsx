@@ -169,19 +169,22 @@ const HVACLanding = () => {
                   boxShadow: '0 8px 30px rgba(0,0,0,0.12)',
                   overflow: 'hidden'
                 }}>
-                  <video
-                    controls
-                    preload="metadata"
-                    playsInline
-                    style={{
-                      width: '100%',
-                      display: 'block',
-                      objectFit: 'cover'
-                    }}
-                  >
-                    <source src="/assets/IMG_9746.mp4" type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
+                  <div style={{ position: 'relative', paddingTop: '177.78%' }}>
+                    <iframe
+                      src="https://iframe.mediadelivery.net/embed/585643/eb803435-50c6-47bb-b214-8ee4b6e80a18?autoplay=false&loop=false&muted=false&preload=true&responsive=true"
+                      loading="lazy"
+                      style={{
+                        border: 0,
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        height: '100%',
+                        width: '100%'
+                      }}
+                      allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
+                      allowFullScreen
+                    />
+                  </div>
                 </div>
               </div>
 
@@ -203,7 +206,7 @@ const HVACLanding = () => {
                     lineHeight: 1.7,
                     marginBottom: '1.25rem'
                   }}>
-                    "We went from a <strong>$2,900 investment</strong> to a <strong>$22,000 profit margin</strong>. From the website to the marketing strategies, it's top notch. If you're thinking about giving them a shot, don't hesitate."
+                    "We went from <strong>10 Google reviews to over 70</strong> in less than a year. Did over <strong>$480,000 in sales</strong>. It's simple to use—I don't have to think about it. Everything comes to your phone, you hit the button and you go."
                   </p>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                     <div style={{
