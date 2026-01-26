@@ -1,9 +1,6 @@
-import React, { useEffect, useState, useRef, lazy, Suspense } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import HVACCredibility from '../components/HVACCredibility';
-
-// Lazy load Calendly to prevent 850KB+ third-party scripts from loading on page load
-const CalendlyWidget = lazy(() => import('react-calendly').then(mod => ({ default: mod.InlineWidget })));
 
 // Simple Navbar for Landing Page
 const LandingNavbar = () => (
@@ -72,7 +69,7 @@ const HVACLanding = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Only load Calendly when user scrolls it into view (threshold ensures it's actually visible)
+  // Only load Calendly when user scrolls it into view
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -86,6 +83,19 @@ const HVACLanding = () => {
     if (calendlyRef.current) observer.observe(calendlyRef.current);
     return () => observer.disconnect();
   }, []);
+
+  // Inject Calendly script only when triggered
+  useEffect(() => {
+    if (!loadCalendly) return;
+
+    // Check if script already exists
+    if (document.querySelector('script[src*="calendly.com"]')) return;
+
+    const script = document.createElement('script');
+    script.src = 'https://assets.calendly.com/assets/external/widget.js';
+    script.async = true;
+    document.body.appendChild(script);
+  }, [loadCalendly]);
 
   return (
     <>
@@ -205,26 +215,11 @@ const HVACLanding = () => {
               overflow: 'hidden'
             }}>
               {loadCalendly ? (
-                <Suspense fallback={
-                  <div style={{
-                    height: '100%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    backgroundColor: '#f9f9f9',
-                    borderRadius: '8px'
-                  }}>
-                    <p style={{ color: '#666' }}>Loading scheduler...</p>
-                  </div>
-                }>
-                  <CalendlyWidget
-                    url="https://calendly.com/designgroove/hvac-marketing-system-demo?primary_color=0073e6&hide_gdpr_banner=1"
-                    styles={{
-                      height: '1200px',
-                      width: '100%'
-                    }}
-                  />
-                </Suspense>
+                <div
+                  className="calendly-inline-widget"
+                  data-url="https://calendly.com/designgroove/hvac-marketing-system-demo?primary_color=0073e6&hide_gdpr_banner=1"
+                  style={{ minWidth: '320px', height: '1200px', width: '100%' }}
+                />
               ) : (
                 <div style={{
                   height: '100%',
