@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { InlineWidget } from 'react-calendly';
-import FooterSky from '../components/FooterSky';
 import HVACCredibility from '../components/HVACCredibility';
 
 // Simple Navbar for Landing Page
@@ -783,8 +782,6 @@ const HVACLanding = () => {
         </section>
 
       </main>
-
-      <FooterSky />
     </>
   );
 };
