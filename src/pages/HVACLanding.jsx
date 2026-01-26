@@ -95,7 +95,7 @@ const HVACLanding = () => {
           }}>
             <div style={{ position: 'relative', paddingTop: '56.25%' }}>
               <iframe
-                src="https://iframe.mediadelivery.net/embed/585643/8d69dd44-26dd-4efe-9ab2-6ee26272d60e?autoplay=false&loop=false&muted=false&preload=true&responsive=true"
+                src="https://iframe.mediadelivery.net/embed/585643/40b82242-a8f5-4be5-8dc1-2115ab37dd7a?autoplay=false&loop=false&muted=false&preload=true&responsive=true"
                 loading="lazy"
                 style={{
                   border: 0,
@@ -733,7 +733,7 @@ const HVACLanding = () => {
               marginBottom: '1.5rem',
               lineHeight: 1.6
             }}>
-              Book a 15-minute call. We'll show you exactly how the system works and get you set up in 7-10 days.
+              Book a 30-minute call. We'll show you exactly how the system works and get you set up in 7-10 days.
             </p>
             <a
               href="#booker"
