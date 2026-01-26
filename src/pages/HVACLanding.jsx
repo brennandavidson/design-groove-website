@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useRef, lazy, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
-import FooterSky from '../components/FooterSky';
 import HVACCredibility from '../components/HVACCredibility';
+
+// Lazy load heavy components
+const FooterSky = lazy(() => import('../components/FooterSky'));
 
 // Lazy load Calendly to reduce initial bundle
 const InlineWidget = lazy(() => import('react-calendly').then(mod => ({ default: mod.InlineWidget })));
@@ -837,7 +839,9 @@ const HVACLanding = () => {
 
       </main>
 
-      <FooterSky />
+      <Suspense fallback={<div style={{ height: '400px', background: 'linear-gradient(to bottom, #f9f9f9, #e0f0ff)' }} />}>
+        <FooterSky />
+      </Suspense>
     </>
   );
 };
