@@ -1,7 +1,9 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, lazy, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { InlineWidget } from 'react-calendly';
 import HVACCredibility from '../components/HVACCredibility';
+
+// Lazy load Calendly to prevent 850KB+ third-party scripts from loading on page load
+const CalendlyWidget = lazy(() => import('react-calendly').then(mod => ({ default: mod.InlineWidget })));
 
 // Simple Navbar for Landing Page
 const LandingNavbar = () => (
@@ -196,13 +198,26 @@ const HVACLanding = () => {
               overflow: 'hidden'
             }}>
               {loadCalendly ? (
-                <InlineWidget
-                  url="https://calendly.com/designgroove/hvac-marketing-system-demo?primary_color=0073e6&hide_gdpr_banner=1"
-                  styles={{
-                    height: '1200px',
-                    width: '100%'
-                  }}
-                />
+                <Suspense fallback={
+                  <div style={{
+                    height: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: '#f9f9f9',
+                    borderRadius: '8px'
+                  }}>
+                    <p style={{ color: '#666' }}>Loading scheduler...</p>
+                  </div>
+                }>
+                  <CalendlyWidget
+                    url="https://calendly.com/designgroove/hvac-marketing-system-demo?primary_color=0073e6&hide_gdpr_banner=1"
+                    styles={{
+                      height: '1200px',
+                      width: '100%'
+                    }}
+                  />
+                </Suspense>
               ) : (
                 <div style={{
                   height: '100%',
@@ -212,7 +227,7 @@ const HVACLanding = () => {
                   backgroundColor: '#f9f9f9',
                   borderRadius: '8px'
                 }}>
-                  <p style={{ color: '#666' }}>Loading scheduler...</p>
+                  <p style={{ color: '#666' }}>Scroll down to load scheduler...</p>
                 </div>
               )}
             </div>
