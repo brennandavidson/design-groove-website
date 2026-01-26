@@ -81,7 +81,7 @@ const HVACLanding = () => {
           observer.disconnect();
         }
       },
-      { rootMargin: '-100px', threshold: 0.1 }
+      { rootMargin: '-10px', threshold: 0 }
     );
     if (calendlyRef.current) observer.observe(calendlyRef.current);
     return () => observer.disconnect();
