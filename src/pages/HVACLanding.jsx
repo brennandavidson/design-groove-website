@@ -29,9 +29,38 @@ const LandingNavbar = () => (
   </nav>
 );
 
+// Play button overlay for video facades
+const PlayButton = () => (
+  <div style={{
+    position: 'absolute',
+    inset: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    cursor: 'pointer',
+    backgroundColor: 'rgba(0,0,0,0.3)'
+  }}>
+    <div style={{
+      width: '80px',
+      height: '80px',
+      borderRadius: '50%',
+      backgroundColor: '#0073E6',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    }}>
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="#fff">
+        <path d="M8 5v14l11-7z"/>
+      </svg>
+    </div>
+  </div>
+);
+
 const HVACLanding = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [loadCalendly, setLoadCalendly] = useState(false);
+  const [loadVSL, setLoadVSL] = useState(false);
+  const [loadTestimonial, setLoadTestimonial] = useState(false);
   const calendlyRef = useRef(null);
 
   useEffect(() => {
@@ -107,7 +136,7 @@ const HVACLanding = () => {
             👇 Watch this 4 minute video to see EXACTLY how it works and why it makes you more money
           </p>
 
-          {/* VSL */}
+          {/* VSL - Click to load */}
           <div style={{
             width: '100%',
             maxWidth: '900px',
@@ -118,23 +147,38 @@ const HVACLanding = () => {
           }}>
             <div style={{
               position: 'relative',
-              paddingTop: '56.25%',
-              minHeight: isMobile ? '200px' : '400px'
+              paddingTop: '56.25%'
             }}>
-              <iframe
-                src="https://iframe.mediadelivery.net/embed/585643/40b82242-a8f5-4be5-8dc1-2115ab37dd7a?autoplay=false&loop=false&muted=false&preload=true&responsive=true"
-                loading="lazy"
-                style={{
-                  border: 0,
+              {loadVSL ? (
+                <iframe
+                  src="https://iframe.mediadelivery.net/embed/585643/40b82242-a8f5-4be5-8dc1-2115ab37dd7a?autoplay=true&loop=false&muted=false&preload=true&responsive=true"
+                  style={{
+                    border: 0,
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    height: '100%',
+                    width: '100%'
+                  }}
+                  allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
+                  allowFullScreen
+                />
+              ) : (
+                <div onClick={() => setLoadVSL(true)} style={{
                   position: 'absolute',
                   top: 0,
                   left: 0,
+                  width: '100%',
                   height: '100%',
-                  width: '100%'
-                }}
-                allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
-                allowFullScreen
-              />
+                  background: 'linear-gradient(135deg, #1a1a1a 0%, #333 100%)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer'
+                }}>
+                  <PlayButton />
+                </div>
+              )}
             </div>
           </div>
 
@@ -215,20 +259,36 @@ const HVACLanding = () => {
                     paddingTop: '177.78%',
                     minHeight: isMobile ? '500px' : '600px'
                   }}>
-                    <iframe
-                      src="https://iframe.mediadelivery.net/embed/585643/eb803435-50c6-47bb-b214-8ee4b6e80a18?autoplay=false&loop=false&muted=false&preload=true&responsive=true"
-                      loading="lazy"
-                      style={{
-                        border: 0,
+                    {loadTestimonial ? (
+                      <iframe
+                        src="https://iframe.mediadelivery.net/embed/585643/eb803435-50c6-47bb-b214-8ee4b6e80a18?autoplay=true&loop=false&muted=false&preload=true&responsive=true"
+                        style={{
+                          border: 0,
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          height: '100%',
+                          width: '100%'
+                        }}
+                        allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
+                        allowFullScreen
+                      />
+                    ) : (
+                      <div onClick={() => setLoadTestimonial(true)} style={{
                         position: 'absolute',
                         top: 0,
                         left: 0,
+                        width: '100%',
                         height: '100%',
-                        width: '100%'
-                      }}
-                      allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
-                      allowFullScreen
-                    />
+                        background: 'linear-gradient(135deg, #1a1a1a 0%, #333 100%)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer'
+                      }}>
+                        <PlayButton />
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
