@@ -6,6 +6,9 @@
   font-display: swap;
   src: url('/fonts/InstrumentSerif-Regular.woff2') format('woff2'),
        url('/fonts/InstrumentSerif-Regular.ttf') format('truetype');
+  /* Adjust fallback font metrics to minimize CLS */
+  size-adjust: 102%;
+  ascent-override: 95%;
 }
 
 @font-face {

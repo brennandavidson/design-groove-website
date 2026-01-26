@@ -193,11 +193,7 @@ const HVACLanding = () => {
         </section>
 
         {/* SOCIAL PROOF SECTION */}
-        <section style={{
-          padding: isMobile ? '0 5vw 2rem' : '0 5vw 3rem',
-          contentVisibility: 'auto',
-          containIntrinsicSize: '0 800px'
-        }}>
+        <section style={{ padding: isMobile ? '0 5vw 2rem' : '0 5vw 3rem' }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
 
             {/* Section Header */}
@@ -335,11 +331,7 @@ const HVACLanding = () => {
         </section>
 
         {/* HOW IT WORKS SECTION */}
-        <section style={{
-          padding: isMobile ? '2rem 5vw' : '3rem 5vw',
-          contentVisibility: 'auto',
-          containIntrinsicSize: '0 1500px'
-        }}>
+        <section style={{ padding: isMobile ? '2rem 5vw' : '3rem 5vw' }}>
           <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
             <h2 style={{
               fontFamily: 'Instrument Serif, serif',
@@ -794,9 +786,7 @@ const HVACLanding = () => {
         <section style={{
           padding: isMobile ? '3rem 5vw' : '4rem 5vw',
           textAlign: 'center',
-          backgroundColor: '#f9f9f9',
-          contentVisibility: 'auto',
-          containIntrinsicSize: '0 300px'
+          backgroundColor: '#f9f9f9'
         }}>
           <div style={{ maxWidth: '700px', margin: '0 auto' }}>
             <h2 style={{
