@@ -72,7 +72,7 @@ const HVACLanding = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Only load Calendly when user scrolls near it
+  // Only load Calendly when user scrolls it into view (threshold ensures it's actually visible)
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -81,7 +81,7 @@ const HVACLanding = () => {
           observer.disconnect();
         }
       },
-      { rootMargin: '100px' }
+      { rootMargin: '-100px', threshold: 0.1 }
     );
     if (calendlyRef.current) observer.observe(calendlyRef.current);
     return () => observer.disconnect();
