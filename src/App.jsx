@@ -27,6 +27,7 @@ function App() {
   const [showPreloader, setShowPreloader] = useState(() => {
     if (typeof window !== 'undefined') {
       if (window.__IS_404__) return false; // Skip preloader on 404
+      if (window.location.pathname === '/hvac-system') return false; // Skip on landing page
       return !sessionStorage.getItem('hasVisited');
     }
     return true; // Enable preloader on server/initial HTML to cover content
@@ -35,6 +36,7 @@ function App() {
   // If hasVisited is set, isLoaded starts as true (content ready)
   const [isLoaded, setIsLoaded] = useState(() => {
     if (typeof window !== 'undefined') {
+      if (window.location.pathname === '/hvac-system') return true; // Skip on landing page
       return !!sessionStorage.getItem('hasVisited');
     }
     return false; // Content is not loaded on server/initial HTML
@@ -55,6 +57,7 @@ function App() {
   // This mask covers the screen for a split second on refresh to hide that jump.
   const [isScrollRestoring, setIsScrollRestoring] = useState(() => {
     if (typeof window !== 'undefined') {
+      if (window.location.pathname === '/hvac-system') return false; // Skip on landing page
       // If we've visited, we might be restoring scroll.
       // If preloader is showing (first visit), mask is redundant but harmless.
       // If preloader is skipped (refresh), mask is CRITICAL.
