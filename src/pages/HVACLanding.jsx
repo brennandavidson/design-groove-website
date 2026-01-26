@@ -175,9 +175,8 @@ const HVACLanding = () => {
                   cursor: 'pointer',
                   backgroundColor: '#0a0a0a'
                 }}>
-                  {/* Replace with actual thumbnail: /assets/hvac-vsl-thumbnail.jpg */}
                   <img
-                    src="/assets/hvac-vsl-thumbnail.webp"
+                    src="/assets/hvac-vsl-thumbnail.jpg"
                     alt="Watch video"
                     onError={(e) => { e.target.style.display = 'none'; }}
                     style={{
@@ -306,9 +305,8 @@ const HVACLanding = () => {
                         cursor: 'pointer',
                         backgroundColor: '#0a0a0a'
                       }}>
-                        {/* Replace with actual thumbnail: /assets/hvac-testimonial-thumbnail.jpg */}
                         <img
-                          src="/assets/hvac-testimonial-thumbnail.webp"
+                          src="/assets/hvac-testimonial-thumbnail.jpg"
                           alt="Watch testimonial"
                           loading="lazy"
                           onError={(e) => { e.target.style.display = 'none'; }}
