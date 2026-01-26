@@ -134,11 +134,16 @@ const HVACLanding = () => {
             maxWidth: '900px',
             margin: '0 auto 2rem',
             borderRadius: '12px',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            backgroundColor: '#000'
           }}>
-            <div style={{ position: 'relative', paddingTop: '56.25%' }}>
+            <div style={{
+              position: 'relative',
+              paddingTop: '56.25%',
+              minHeight: isMobile ? '200px' : '400px'
+            }}>
               <iframe
-                src="https://iframe.mediadelivery.net/embed/585643/40b82242-a8f5-4be5-8dc1-2115ab37dd7a?autoplay=false&loop=false&muted=false&preload=true&responsive=true"
+                src="https://iframe.mediadelivery.net/embed/585643/40b82242-a8f5-4be5-8dc1-2115ab37dd7a?autoplay=false&loop=false&muted=false&preload=metadata&responsive=true"
                 loading="lazy"
                 style={{
                   border: 0,
@@ -216,11 +221,16 @@ const HVACLanding = () => {
                   maxWidth: '400px',
                   borderRadius: '16px',
                   boxShadow: '0 8px 30px rgba(0,0,0,0.12)',
-                  overflow: 'hidden'
+                  overflow: 'hidden',
+                  backgroundColor: '#000'
                 }}>
-                  <div style={{ position: 'relative', paddingTop: '177.78%' }}>
+                  <div style={{
+                    position: 'relative',
+                    paddingTop: '177.78%',
+                    minHeight: isMobile ? '500px' : '600px'
+                  }}>
                     <iframe
-                      src="https://iframe.mediadelivery.net/embed/585643/eb803435-50c6-47bb-b214-8ee4b6e80a18?autoplay=false&loop=false&muted=false&preload=true&responsive=true"
+                      src="https://iframe.mediadelivery.net/embed/585643/eb803435-50c6-47bb-b214-8ee4b6e80a18?autoplay=false&loop=false&muted=false&preload=metadata&responsive=true"
                       loading="lazy"
                       style={{
                         border: 0,
