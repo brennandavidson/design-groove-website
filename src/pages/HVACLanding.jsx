@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { InlineWidget } from 'react-calendly';
 import HVACCredibility from '../components/HVACCredibility';
@@ -31,12 +31,29 @@ const LandingNavbar = () => (
 
 const HVACLanding = () => {
   const [isMobile, setIsMobile] = useState(false);
+  const [loadCalendly, setLoadCalendly] = useState(false);
+  const calendlyRef = useRef(null);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 900);
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Only load Calendly when user scrolls near it
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setLoadCalendly(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '100px' }
+    );
+    if (calendlyRef.current) observer.observe(calendlyRef.current);
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -122,7 +139,7 @@ const HVACLanding = () => {
           </div>
 
           {/* BOOKER */}
-          <div id="booker" style={{ maxWidth: '1000px', margin: '0 auto' }}>
+          <div id="booker" ref={calendlyRef} style={{ maxWidth: '1000px', margin: '0 auto' }}>
             <h2 style={{
               fontFamily: 'Instrument Serif, serif',
               fontSize: isMobile ? '2rem' : '2.75rem',
@@ -134,13 +151,26 @@ const HVACLanding = () => {
               height: isMobile ? '900px' : '950px',
               overflow: 'hidden'
             }}>
-              <InlineWidget
-                url="https://calendly.com/designgroove/hvac-marketing-system-demo?primary_color=0073e6&hide_gdpr_banner=1"
-                styles={{
-                  height: '1200px',
-                  width: '100%'
-                }}
-              />
+              {loadCalendly ? (
+                <InlineWidget
+                  url="https://calendly.com/designgroove/hvac-marketing-system-demo?primary_color=0073e6&hide_gdpr_banner=1"
+                  styles={{
+                    height: '1200px',
+                    width: '100%'
+                  }}
+                />
+              ) : (
+                <div style={{
+                  height: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: '#f9f9f9',
+                  borderRadius: '8px'
+                }}>
+                  <p style={{ color: '#666' }}>Loading scheduler...</p>
+                </div>
+              )}
             </div>
           </div>
 
