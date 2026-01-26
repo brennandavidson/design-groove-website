@@ -1,12 +1,8 @@
-import React, { useEffect, useState, useRef, lazy, Suspense } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { InlineWidget } from 'react-calendly';
+import FooterSky from '../components/FooterSky';
 import HVACCredibility from '../components/HVACCredibility';
-
-// Lazy load heavy components
-const FooterSky = lazy(() => import('../components/FooterSky'));
-
-// Lazy load Calendly to reduce initial bundle
-const InlineWidget = lazy(() => import('react-calendly').then(mod => ({ default: mod.InlineWidget })));
 
 // Simple Navbar for Landing Page
 const LandingNavbar = () => (
@@ -34,49 +30,14 @@ const LandingNavbar = () => (
   </nav>
 );
 
-// Placeholder for lazy-loaded Calendly
-const CalendlyPlaceholder = ({ height }) => (
-  <div style={{
-    height,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#f9f9f9',
-    borderRadius: '8px'
-  }}>
-    <p style={{ color: '#666' }}>Loading scheduler...</p>
-  </div>
-);
-
 const HVACLanding = () => {
   const [isMobile, setIsMobile] = useState(false);
-  const [showCalendly, setShowCalendly] = useState(false);
-  const calendlyRef = useRef(null);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 900);
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  // Lazy load Calendly when it comes into view
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setShowCalendly(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: '200px' }
-    );
-
-    if (calendlyRef.current) {
-      observer.observe(calendlyRef.current);
-    }
-
-    return () => observer.disconnect();
   }, []);
 
   return (
@@ -145,7 +106,7 @@ const HVACLanding = () => {
               minHeight: isMobile ? '200px' : '400px'
             }}>
               <iframe
-                src="https://iframe.mediadelivery.net/embed/585643/40b82242-a8f5-4be5-8dc1-2115ab37dd7a?autoplay=false&loop=false&muted=false&preload=metadata&responsive=true"
+                src="https://iframe.mediadelivery.net/embed/585643/40b82242-a8f5-4be5-8dc1-2115ab37dd7a?autoplay=false&loop=false&muted=false&preload=true&responsive=true"
                 loading="lazy"
                 style={{
                   border: 0,
@@ -162,7 +123,7 @@ const HVACLanding = () => {
           </div>
 
           {/* BOOKER */}
-          <div id="booker" ref={calendlyRef} style={{ maxWidth: '1000px', margin: '0 auto' }}>
+          <div id="booker" style={{ maxWidth: '1000px', margin: '0 auto' }}>
             <h2 style={{
               fontFamily: 'Instrument Serif, serif',
               fontSize: isMobile ? '2rem' : '2.75rem',
@@ -174,19 +135,13 @@ const HVACLanding = () => {
               height: isMobile ? '900px' : '950px',
               overflow: 'hidden'
             }}>
-              {showCalendly ? (
-                <Suspense fallback={<CalendlyPlaceholder height={isMobile ? '900px' : '950px'} />}>
-                  <InlineWidget
-                    url="https://calendly.com/designgroove/hvac-marketing-system-demo?primary_color=0073e6&hide_gdpr_banner=1"
-                    styles={{
-                      height: '1200px',
-                      width: '100%'
-                    }}
-                  />
-                </Suspense>
-              ) : (
-                <CalendlyPlaceholder height={isMobile ? '900px' : '950px'} />
-              )}
+              <InlineWidget
+                url="https://calendly.com/designgroove/hvac-marketing-system-demo?primary_color=0073e6&hide_gdpr_banner=1"
+                styles={{
+                  height: '1200px',
+                  width: '100%'
+                }}
+              />
             </div>
           </div>
 
@@ -232,7 +187,7 @@ const HVACLanding = () => {
                     minHeight: isMobile ? '500px' : '600px'
                   }}>
                     <iframe
-                      src="https://iframe.mediadelivery.net/embed/585643/eb803435-50c6-47bb-b214-8ee4b6e80a18?autoplay=false&loop=false&muted=false&preload=metadata&responsive=true"
+                      src="https://iframe.mediadelivery.net/embed/585643/eb803435-50c6-47bb-b214-8ee4b6e80a18?autoplay=false&loop=false&muted=false&preload=true&responsive=true"
                       loading="lazy"
                       style={{
                         border: 0,
@@ -829,9 +784,7 @@ const HVACLanding = () => {
 
       </main>
 
-      <Suspense fallback={<div style={{ height: '400px', background: 'linear-gradient(to bottom, #f9f9f9, #e0f0ff)' }} />}>
-        <FooterSky />
-      </Suspense>
+      <FooterSky />
     </>
   );
 };
