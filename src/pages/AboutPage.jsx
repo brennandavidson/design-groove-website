@@ -193,11 +193,18 @@ const AboutPage = () => {
                     boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
                     flexShrink: 0
                 }}>
-                    <img 
-                        src="/assets/headshot.png" 
-                        alt="Brennan Davidson" 
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    />
+                    <picture>
+                        <source srcSet="/assets/headshot.webp" type="image/webp" />
+                        <img
+                            src="/assets/headshot.png"
+                            alt="Brennan Davidson"
+                            width="400"
+                            height="400"
+                            loading="lazy"
+                            decoding="async"
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        />
+                    </picture>
                 </div>
 
                 {/* Content */}

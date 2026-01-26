@@ -4,12 +4,12 @@ import React, { useState, useEffect } from 'react';
 
 // HVAC-specific logos - separate from main site's client-logos
 const logoFiles = [
-  'arizona-family-air.png',
-  'trustworthy-air.png',
-  'ash-heating-cooling.png',
-  'top-tech-air.png',
-  'air-assurance.png',
-  'az-cooling-specialists.png'
+  'arizona-family-air',
+  'trustworthy-air',
+  'ash-heating-cooling',
+  'top-tech-air',
+  'air-assurance',
+  'az-cooling-specialists'
 ];
 
 const HVACCredibility = () => {
@@ -28,21 +28,27 @@ const HVACCredibility = () => {
   const LogoSet = () => (
     <>
       {logoFiles.map((file, index) => (
-        <img
-          key={index}
-          src={`/assets/hvac-logos/${file}`}
-          alt="HVAC Client"
-          style={{
-            height: logoHeight,
-            width: 'auto',
-            objectFit: 'contain',
-            filter: 'grayscale(100%) opacity(0.6)',
-            transition: 'filter 0.3s ease',
-            flexShrink: 0
-          }}
-          onMouseEnter={(e) => e.target.style.filter = 'grayscale(0%) opacity(1)'}
-          onMouseLeave={(e) => e.target.style.filter = 'grayscale(100%) opacity(0.6)'}
-        />
+        <picture key={index}>
+          <source srcSet={`/assets/hvac-logos/${file}.webp`} type="image/webp" />
+          <img
+            src={`/assets/hvac-logos/${file}.png`}
+            alt="HVAC Client"
+            width="100"
+            height="50"
+            loading="lazy"
+            decoding="async"
+            style={{
+              height: logoHeight,
+              width: 'auto',
+              objectFit: 'contain',
+              filter: 'grayscale(100%) opacity(0.6)',
+              transition: 'filter 0.3s ease',
+              flexShrink: 0
+            }}
+            onMouseEnter={(e) => e.target.style.filter = 'grayscale(0%) opacity(1)'}
+            onMouseLeave={(e) => e.target.style.filter = 'grayscale(100%) opacity(0.6)'}
+          />
+        </picture>
       ))}
     </>
   );

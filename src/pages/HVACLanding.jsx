@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, lazy, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { InlineWidget } from "react-calendly";
 import FooterSky from '../components/FooterSky';
 import HVACCredibility from '../components/HVACCredibility';
+
+// Lazy load Calendly to reduce initial bundle
+const InlineWidget = lazy(() => import('react-calendly').then(mod => ({ default: mod.InlineWidget })));
 
 // Simple Navbar for Landing Page
 const LandingNavbar = () => (
@@ -19,17 +21,35 @@ const LandingNavbar = () => (
     backgroundColor: 'transparent'
   }}>
     <div style={{ display: 'block' }}>
-      <img 
-        src="/assets/dg-logo-dark.svg" 
-        alt="Design Groove" 
-        style={{ height: '32px', width: 'auto' }} 
+      <img
+        src="/assets/dg-logo-dark.svg"
+        alt="Design Groove"
+        width="120"
+        height="32"
+        style={{ height: '32px', width: 'auto' }}
       />
     </div>
   </nav>
 );
 
+// Placeholder for lazy-loaded Calendly
+const CalendlyPlaceholder = ({ height }) => (
+  <div style={{
+    height,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#f9f9f9',
+    borderRadius: '8px'
+  }}>
+    <p style={{ color: '#666' }}>Loading scheduler...</p>
+  </div>
+);
+
 const HVACLanding = () => {
   const [isMobile, setIsMobile] = useState(false);
+  const [showCalendly, setShowCalendly] = useState(false);
+  const calendlyRef = useRef(null);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 900);
@@ -38,11 +58,34 @@ const HVACLanding = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  // Lazy load Calendly when it comes into view
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setShowCalendly(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '200px' }
+    );
+
+    if (calendlyRef.current) {
+      observer.observe(calendlyRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <>
       <Helmet>
         <title>HVAC Lead System | Design Groove</title>
         <meta name="robots" content="noindex, nofollow" />
+        <meta name="description" content="See how HVAC owners are using this system to grow their business for only $297/mo. No agency fees. No ad budgets." />
+        <link rel="preload" href="/assets/dg-logo-dark.svg" as="image" type="image/svg+xml" />
+        <link rel="preconnect" href="https://iframe.mediadelivery.net" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://assets.calendly.com" crossOrigin="anonymous" />
       </Helmet>
 
       <LandingNavbar />
@@ -112,7 +155,7 @@ const HVACLanding = () => {
           </div>
 
           {/* BOOKER */}
-          <div id="booker" style={{ maxWidth: '1000px', margin: '0 auto' }}>
+          <div id="booker" ref={calendlyRef} style={{ maxWidth: '1000px', margin: '0 auto' }}>
             <h2 style={{
               fontFamily: 'Instrument Serif, serif',
               fontSize: isMobile ? '2rem' : '2.75rem',
@@ -124,13 +167,19 @@ const HVACLanding = () => {
               height: isMobile ? '900px' : '950px',
               overflow: 'hidden'
             }}>
-              <InlineWidget
-                url="https://calendly.com/designgroove/hvac-marketing-system-demo?primary_color=0073e6&hide_gdpr_banner=1"
-                styles={{
-                  height: '1200px',
-                  width: '100%'
-                }}
-              />
+              {showCalendly ? (
+                <Suspense fallback={<CalendlyPlaceholder height={isMobile ? '900px' : '950px'} />}>
+                  <InlineWidget
+                    url="https://calendly.com/designgroove/hvac-marketing-system-demo?primary_color=0073e6&hide_gdpr_banner=1"
+                    styles={{
+                      height: '1200px',
+                      width: '100%'
+                    }}
+                  />
+                </Suspense>
+              ) : (
+                <CalendlyPlaceholder height={isMobile ? '900px' : '950px'} />
+              )}
             </div>
           </div>
 
@@ -236,15 +285,22 @@ const HVACLanding = () => {
                   alignItems: 'flex-start',
                   justifyContent: 'center'
                 }}>
-                  <img
-                    src="/assets/hvac-logos/ash-site-mockup.png"
-                    alt="ASH Cooling & Heating Website"
-                    style={{
-                      maxWidth: '85%',
-                      height: 'auto',
-                      objectFit: 'contain'
-                    }}
-                  />
+                  <picture>
+                    <source srcSet="/assets/hvac-logos/ash-site-mockup.webp" type="image/webp" />
+                    <img
+                      src="/assets/hvac-logos/ash-site-mockup.png"
+                      alt="ASH Cooling & Heating Website"
+                      width="600"
+                      height="450"
+                      loading="lazy"
+                      decoding="async"
+                      style={{
+                        maxWidth: '85%',
+                        height: 'auto',
+                        objectFit: 'contain'
+                      }}
+                    />
+                  </picture>
                 </div>
               </div>
             </div>
