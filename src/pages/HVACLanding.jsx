@@ -67,23 +67,6 @@ const HVACLanding = () => {
   const howItWorksRef = useRef(null);
   const calRef = useRef(null);
 
-  // Auto-play video using Player.js
-  const loadPlayerJsAndPlay = (iframeId) => {
-    const initPlayer = () => {
-      const iframe = document.getElementById(iframeId);
-      if (iframe && window.playerjs) {
-        const player = new window.playerjs.Player(iframe);
-        player.on('ready', () => {
-          player.play();
-        });
-      } else if (iframe && !window.playerjs) {
-        setTimeout(initPlayer, 100);
-      }
-    };
-
-    setTimeout(initPlayer, 100);
-  };
-
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 900);
     checkMobile();
@@ -130,7 +113,6 @@ const HVACLanding = () => {
         <meta name="robots" content="noindex, nofollow" />
         <meta name="description" content="See how HVAC owners are using this system to grow their business for only $297/mo. No agency fees. No ad budgets." />
         <link rel="preload" href="/assets/hvac-vsl-thumbnail.jpg" as="image" fetchpriority="high" />
-        <script src="https://assets.mediadelivery.net/playerjs/playerjs-latest.min.js" async></script>
       </Helmet>
 
       <LandingNavbar />
@@ -188,7 +170,6 @@ const HVACLanding = () => {
             }}>
               {loadVSL ? (
                 <iframe
-                  id="vsl-player"
                   src="https://iframe.mediadelivery.net/embed/585643/40b82242-a8f5-4be5-8dc1-2115ab37dd7a?autoplay=true&muted=false&preload=false&responsive=true"
                   style={{
                     border: 0,
@@ -200,7 +181,6 @@ const HVACLanding = () => {
                   }}
                   allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
                   allowFullScreen
-                  onLoad={() => loadPlayerJsAndPlay('vsl-player')}
                 />
               ) : (
                 <div onClick={() => setLoadVSL(true)} style={{
@@ -320,7 +300,6 @@ const HVACLanding = () => {
                   }}>
                     {loadTestimonial ? (
                       <iframe
-                        id="testimonial-player"
                         src="https://iframe.mediadelivery.net/embed/585643/eb803435-50c6-47bb-b214-8ee4b6e80a18?autoplay=true&muted=false&preload=false&responsive=true"
                         style={{
                           border: 0,
@@ -332,7 +311,6 @@ const HVACLanding = () => {
                         }}
                         allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
                         allowFullScreen
-                        onLoad={() => loadPlayerJsAndPlay('testimonial-player')}
                       />
                     ) : (
                       <div onClick={() => setLoadTestimonial(true)} style={{
