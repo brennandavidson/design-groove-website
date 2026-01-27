@@ -60,7 +60,6 @@ const HVACLanding = () => {
   const [loadCalendly, setLoadCalendly] = useState(false);
   const [loadVSL, setLoadVSL] = useState(false);
   const [loadTestimonial, setLoadTestimonial] = useState(false);
-  const calendlyRef = useRef(null);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 900);
@@ -69,22 +68,7 @@ const HVACLanding = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Only load Calendly when user scrolls it into view
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setLoadCalendly(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: '-10px', threshold: 0 }
-    );
-    if (calendlyRef.current) observer.observe(calendlyRef.current);
-    return () => observer.disconnect();
-  }, []);
-
-  // Inject Calendly script only when triggered
+  // Inject Calendly script only when user clicks button
   useEffect(() => {
     if (!loadCalendly) return;
 
@@ -202,7 +186,7 @@ const HVACLanding = () => {
           </div>
 
           {/* BOOKER */}
-          <div id="booker" ref={calendlyRef} style={{ maxWidth: '1000px', margin: '0 auto' }}>
+          <div id="booker" style={{ maxWidth: '1000px', margin: '0 auto' }}>
             <h2 style={{
               fontFamily: 'Instrument Serif, serif',
               fontSize: isMobile ? '2rem' : '2.75rem',
@@ -210,29 +194,47 @@ const HVACLanding = () => {
               marginTop: '0'
             }}>Book a call below 👇</h2>
 
-            <div style={{
-              height: isMobile ? '900px' : '950px',
-              overflow: 'hidden'
-            }}>
-              {loadCalendly ? (
+            {loadCalendly ? (
+              <div style={{
+                height: isMobile ? '900px' : '950px',
+                overflow: 'hidden'
+              }}>
                 <div
                   className="calendly-inline-widget"
                   data-url="https://calendly.com/designgroove/hvac-marketing-system-demo?primary_color=0073e6&hide_gdpr_banner=1"
                   style={{ minWidth: '320px', height: '1200px', width: '100%' }}
                 />
-              ) : (
-                <div style={{
-                  height: '100%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  backgroundColor: '#f9f9f9',
-                  borderRadius: '8px'
-                }}>
-                  <p style={{ color: '#666' }}>Scroll down to load scheduler...</p>
-                </div>
-              )}
-            </div>
+              </div>
+            ) : (
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '3rem 2rem',
+                backgroundColor: '#f9f9f9',
+                borderRadius: '12px'
+              }}>
+                <p style={{ color: '#555', marginBottom: '1.5rem', fontSize: '1.1rem' }}>
+                  Click below to open the scheduler
+                </p>
+                <button
+                  onClick={() => setLoadCalendly(true)}
+                  style={{
+                    backgroundColor: '#0073E6',
+                    color: '#fff',
+                    padding: '1rem 2.5rem',
+                    borderRadius: '8px',
+                    fontSize: '1.1rem',
+                    fontWeight: 600,
+                    border: 'none',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Book My Call
+                </button>
+              </div>
+            )}
           </div>
 
         </section>
