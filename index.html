@@ -42,35 +42,32 @@
       // Fallback: remove after 1.5s if React doesn't signal (safety net)
       setTimeout(window.__removeMask, 1500);
     </script>
+    <div id="root"><!--app-html--></div>
+    <script type="module" src="/src/entry-client.jsx"></script>
     <script>
-      // Video thumbnail click handler (works without React)
-      function handleVideoClick(e) {
-        var btn = e.target.closest('[data-video-id]');
-        if (btn && !btn.dataset.clicked) {
+      // Video click handler - at end of body so DOM is ready
+      (function() {
+        function loadVideo(e) {
+          var btn = e.target;
+          while (btn && !btn.getAttribute('data-video-id')) {
+            btn = btn.parentElement;
+          }
+          if (!btn || btn.getAttribute('data-clicked')) return;
+
           e.preventDefault();
           e.stopPropagation();
-          e.stopImmediatePropagation();
-          btn.dataset.clicked = 'true';
+          btn.setAttribute('data-clicked', 'true');
+
           var id = btn.getAttribute('data-video-id');
           var container = btn.parentElement;
           if (container) {
-            var iframe = document.createElement('iframe');
-            iframe.src = 'https://iframe.mediadelivery.net/embed/585643/' + id + '?autoplay=true&muted=false&preload=true&responsive=true';
-            iframe.style.cssText = 'border:0;position:absolute;top:0;left:0;height:100%;width:100%';
-            iframe.setAttribute('allow', 'accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;fullscreen');
-            iframe.setAttribute('allowfullscreen', 'true');
-            iframe.setAttribute('playsinline', 'true');
-            iframe.setAttribute('webkit-playsinline', 'true');
-            container.innerHTML = '';
-            container.appendChild(iframe);
+            container.innerHTML = '<iframe src="https://iframe.mediadelivery.net/embed/585643/' + id + '?autoplay=true&muted=false&preload=true&responsive=true" style="border:0;position:absolute;top:0;left:0;height:100%;width:100%" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;fullscreen" allowfullscreen playsinline webkit-playsinline></iframe>';
           }
         }
-      }
-      // Listen for both click and touchend for iOS Safari
-      document.addEventListener('click', handleVideoClick, true);
-      document.addEventListener('touchend', handleVideoClick, true);
+
+        document.body.addEventListener('click', loadVideo, true);
+        document.body.addEventListener('touchstart', loadVideo, true);
+      })();
     </script>
-    <div id="root"><!--app-html--></div>
-    <script type="module" src="/src/entry-client.jsx"></script>
   </body>
 </html>

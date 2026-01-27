@@ -192,7 +192,7 @@ const HVACLanding = () => {
                 <button
                   type="button"
                   data-video-id="40b82242-a8f5-4be5-8dc1-2115ab37dd7a"
-                  onClick={() => setLoadVSL(true)}
+                  onClick={() => { if(window.loadVideo) window.loadVideo(event.currentTarget); setLoadVSL(true); }}
                   style={{
                     position: 'absolute',
                     top: 0,
