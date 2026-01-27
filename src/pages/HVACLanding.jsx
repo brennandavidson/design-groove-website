@@ -232,7 +232,7 @@ const HVACLanding = () => {
                 <>
                   <iframe
                     key={vslMuted ? 'muted' : 'unmuted'}
-                    src={`https://iframe.mediadelivery.net/embed/585643/40b82242-a8f5-4be5-8dc1-2115ab37dd7a?autoplay=true&muted=${vslMuted}&preload=true&responsive=true`}
+                    src={`https://iframe.mediadelivery.net/embed/585643/40b82242-a8f5-4be5-8dc1-2115ab37dd7a?autoplay=true&muted=${vslMuted}&preload=true&responsive=true&playsinline=true`}
                     style={{
                       border: 0,
                       position: 'absolute',
@@ -243,6 +243,7 @@ const HVACLanding = () => {
                     }}
                     allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen"
                     allowFullScreen
+                    playsInline
                   />
                   {vslMuted && <UnmuteOverlay onUnmute={() => setVslMuted(false)} />}
                 </>
@@ -374,7 +375,7 @@ const HVACLanding = () => {
                       <>
                         <iframe
                           key={testimonialMuted ? 'muted' : 'unmuted'}
-                          src={`https://iframe.mediadelivery.net/embed/585643/eb803435-50c6-47bb-b214-8ee4b6e80a18?autoplay=true&muted=${testimonialMuted}&preload=true&responsive=true`}
+                          src={`https://iframe.mediadelivery.net/embed/585643/eb803435-50c6-47bb-b214-8ee4b6e80a18?autoplay=true&muted=${testimonialMuted}&preload=true&responsive=true&playsinline=true`}
                           style={{
                             border: 0,
                             position: 'absolute',
@@ -385,6 +386,7 @@ const HVACLanding = () => {
                           }}
                           allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen"
                           allowFullScreen
+                          playsInline
                         />
                         {testimonialMuted && <UnmuteOverlay onUnmute={() => setTestimonialMuted(false)} />}
                       </>
