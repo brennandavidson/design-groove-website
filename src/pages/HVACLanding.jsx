@@ -60,7 +60,6 @@ const PlayButton = () => (
 
 const HVACLanding = () => {
   const [isMobile, setIsMobile] = useState(false);
-  const [loadCal, setLoadCal] = useState(false);
   const [loadVSL, setLoadVSL] = useState(false);
   const [loadTestimonial, setLoadTestimonial] = useState(false);
 
@@ -71,10 +70,8 @@ const HVACLanding = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Initialize Cal.com when loaded
+  // Initialize Cal.com UI
   useEffect(() => {
-    if (!loadCal) return;
-
     (async function () {
       const { getCalApi } = await import('@calcom/embed-react');
       const cal = await getCalApi({ namespace: 'one-stop-hvac-system-demo' });
@@ -85,7 +82,7 @@ const HVACLanding = () => {
         layout: 'week_view'
       });
     })();
-  }, [loadCal]);
+  }, []);
 
   return (
     <>
@@ -200,61 +197,30 @@ const HVACLanding = () => {
               marginTop: '0'
             }}>Book a call below 👇</h2>
 
-            {loadCal ? (
-              <div style={{
-                height: isMobile ? '700px' : '750px',
-                overflow: 'scroll'
-              }}>
-                <Suspense fallback={
-                  <div style={{
-                    height: '100%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    backgroundColor: '#f9f9f9',
-                    borderRadius: '8px'
-                  }}>
-                    <p style={{ color: '#666' }}>Loading scheduler...</p>
-                  </div>
-                }>
-                  <Cal
-                    namespace="one-stop-hvac-system-demo"
-                    calLink="team/design-groove/one-stop-hvac-system-demo"
-                    style={{ width: '100%', height: '100%', overflow: 'scroll' }}
-                    config={{ layout: 'week_view', theme: 'light' }}
-                  />
-                </Suspense>
-              </div>
-            ) : (
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '3rem 2rem',
-                backgroundColor: '#f9f9f9',
-                borderRadius: '12px'
-              }}>
-                <p style={{ color: '#555', marginBottom: '1.5rem', fontSize: '1.1rem' }}>
-                  Click below to open the scheduler
-                </p>
-                <button
-                  onClick={() => setLoadCal(true)}
-                  style={{
-                    backgroundColor: '#0073E6',
-                    color: '#fff',
-                    padding: '1rem 2.5rem',
-                    borderRadius: '8px',
-                    fontSize: '1.1rem',
-                    fontWeight: 600,
-                    border: 'none',
-                    cursor: 'pointer'
-                  }}
-                >
-                  Book My Call
-                </button>
-              </div>
-            )}
+            <div style={{
+              height: isMobile ? '700px' : '750px',
+              overflow: 'scroll'
+            }}>
+              <Suspense fallback={
+                <div style={{
+                  height: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: '#f9f9f9',
+                  borderRadius: '8px'
+                }}>
+                  <p style={{ color: '#666' }}>Loading scheduler...</p>
+                </div>
+              }>
+                <Cal
+                  namespace="one-stop-hvac-system-demo"
+                  calLink="team/design-groove/one-stop-hvac-system-demo"
+                  style={{ width: '100%', height: '100%', overflow: 'scroll' }}
+                  config={{ layout: 'week_view', theme: 'light' }}
+                />
+              </Suspense>
+            </div>
           </div>
 
         </section>
