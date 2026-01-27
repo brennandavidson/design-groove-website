@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ReactLenis } from 'lenis/react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import './App.css';
 import Navbar from './components/Navbar';
@@ -16,14 +16,27 @@ import ContactPage from './pages/ContactPage';
 import BookPage from './pages/BookPage';
 import ProcessPage from './pages/ProcessPage';
 import AboutPage from './pages/AboutPage';
+import HVACLanding from './pages/HVACLanding';
 import NotFound from './pages/NotFound';
 
 function AppServer() {
+  const location = useLocation();
+  const isLandingPage = location.pathname === '/hvac-system';
+
   // Static state for server rendering
-  const showPreloader = true;
+  const showPreloader = !isLandingPage;
   const isLoaded = false;
-  const isMobile = false;
-  const isScrollRestoring = false;
+
+  // HVAC Landing page - minimal shell
+  if (isLandingPage) {
+    return (
+      <div className="App">
+        <Routes>
+          <Route path="/hvac-system" element={<HVACLanding />} />
+        </Routes>
+      </div>
+    );
+  }
 
   const content = (
     <div className="App">
@@ -36,10 +49,10 @@ function AppServer() {
       <ScrollToTop />
       {/* Only render Preloader if it should be shown */}
       {showPreloader && <Preloader onComplete={() => {}} />}
-      
+
       {/* Fixed Navigation (Always on top) */}
       <Navbar />
-      
+
       <Routes>
         <Route path="/" element={<Home isLoaded={isLoaded} />} />
         <Route path="/work" element={<WorkCollection />} />
