@@ -1,6 +1,9 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, lazy, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
 import HVACCredibility from '../components/HVACCredibility';
+
+// Lazy load Cal.com to prevent loading on page load
+const Cal = lazy(() => import('@calcom/embed-react').then(mod => ({ default: mod.default })));
 
 // Simple Navbar for Landing Page
 const LandingNavbar = () => (
@@ -57,7 +60,7 @@ const PlayButton = () => (
 
 const HVACLanding = () => {
   const [isMobile, setIsMobile] = useState(false);
-  const [loadCalendly, setLoadCalendly] = useState(false);
+  const [loadCal, setLoadCal] = useState(false);
   const [loadVSL, setLoadVSL] = useState(false);
   const [loadTestimonial, setLoadTestimonial] = useState(false);
 
@@ -68,18 +71,21 @@ const HVACLanding = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Inject Calendly script only when user clicks button
+  // Initialize Cal.com when loaded
   useEffect(() => {
-    if (!loadCalendly) return;
+    if (!loadCal) return;
 
-    // Check if script already exists
-    if (document.querySelector('script[src*="calendly.com"]')) return;
-
-    const script = document.createElement('script');
-    script.src = 'https://assets.calendly.com/assets/external/widget.js';
-    script.async = true;
-    document.body.appendChild(script);
-  }, [loadCalendly]);
+    (async function () {
+      const { getCalApi } = await import('@calcom/embed-react');
+      const cal = await getCalApi({ namespace: 'one-stop-hvac-system-demo' });
+      cal('ui', {
+        theme: 'light',
+        cssVarsPerTheme: { light: { 'cal-brand': '#0073e6' } },
+        hideEventTypeDetails: false,
+        layout: 'week_view'
+      });
+    })();
+  }, [loadCal]);
 
   return (
     <>
@@ -89,7 +95,7 @@ const HVACLanding = () => {
         <meta name="description" content="See how HVAC owners are using this system to grow their business for only $297/mo. No agency fees. No ad budgets." />
         <link rel="preload" href="/assets/dg-logo-dark.svg" as="image" type="image/svg+xml" />
         <link rel="preconnect" href="https://iframe.mediadelivery.net" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://assets.calendly.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://cal.com" crossOrigin="anonymous" />
       </Helmet>
 
       <LandingNavbar />
@@ -194,16 +200,30 @@ const HVACLanding = () => {
               marginTop: '0'
             }}>Book a call below 👇</h2>
 
-            {loadCalendly ? (
+            {loadCal ? (
               <div style={{
-                height: isMobile ? '900px' : '950px',
-                overflow: 'hidden'
+                height: isMobile ? '700px' : '750px',
+                overflow: 'scroll'
               }}>
-                <div
-                  className="calendly-inline-widget"
-                  data-url="https://calendly.com/designgroove/hvac-marketing-system-demo?primary_color=0073e6&hide_gdpr_banner=1"
-                  style={{ minWidth: '320px', height: '1200px', width: '100%' }}
-                />
+                <Suspense fallback={
+                  <div style={{
+                    height: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: '#f9f9f9',
+                    borderRadius: '8px'
+                  }}>
+                    <p style={{ color: '#666' }}>Loading scheduler...</p>
+                  </div>
+                }>
+                  <Cal
+                    namespace="one-stop-hvac-system-demo"
+                    calLink="team/design-groove/one-stop-hvac-system-demo"
+                    style={{ width: '100%', height: '100%', overflow: 'scroll' }}
+                    config={{ layout: 'week_view', theme: 'light' }}
+                  />
+                </Suspense>
               </div>
             ) : (
               <div style={{
@@ -219,7 +239,7 @@ const HVACLanding = () => {
                   Click below to open the scheduler
                 </p>
                 <button
-                  onClick={() => setLoadCalendly(true)}
+                  onClick={() => setLoadCal(true)}
                   style={{
                     backgroundColor: '#0073E6',
                     color: '#fff',
