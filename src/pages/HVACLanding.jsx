@@ -66,6 +66,16 @@ const HVACLanding = () => {
   const [showHowItWorks, setShowHowItWorks] = useState(false);
   const howItWorksRef = useRef(null);
   const calRef = useRef(null);
+  const vslIframeRef = useRef(null);
+  const testimonialIframeRef = useRef(null);
+
+  // Send play command to Bunny iframe after it loads
+  const handleIframeLoad = (iframeRef) => {
+    if (iframeRef.current) {
+      // Bunny Stream uses playerjs protocol
+      iframeRef.current.contentWindow.postMessage('{"event":"command","func":"play","args":""}', '*');
+    }
+  };
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 900);
@@ -169,6 +179,7 @@ const HVACLanding = () => {
             }}>
               {loadVSL ? (
                 <iframe
+                  ref={vslIframeRef}
                   src="https://iframe.mediadelivery.net/embed/585643/40b82242-a8f5-4be5-8dc1-2115ab37dd7a?autoplay=true&muted=false&preload=false&responsive=true"
                   style={{
                     border: 0,
@@ -180,6 +191,7 @@ const HVACLanding = () => {
                   }}
                   allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
                   allowFullScreen
+                  onLoad={() => handleIframeLoad(vslIframeRef)}
                 />
               ) : (
                 <div onClick={() => setLoadVSL(true)} style={{
@@ -299,6 +311,7 @@ const HVACLanding = () => {
                   }}>
                     {loadTestimonial ? (
                       <iframe
+                        ref={testimonialIframeRef}
                         src="https://iframe.mediadelivery.net/embed/585643/eb803435-50c6-47bb-b214-8ee4b6e80a18?autoplay=true&muted=false&preload=false&responsive=true"
                         style={{
                           border: 0,
@@ -310,6 +323,7 @@ const HVACLanding = () => {
                         }}
                         allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
                         allowFullScreen
+                        onLoad={() => handleIframeLoad(testimonialIframeRef)}
                       />
                     ) : (
                       <div onClick={() => setLoadTestimonial(true)} style={{
