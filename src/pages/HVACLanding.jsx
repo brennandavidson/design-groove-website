@@ -62,6 +62,7 @@ const HVACLanding = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [loadVSL, setLoadVSL] = useState(false);
   const [loadTestimonial, setLoadTestimonial] = useState(false);
+  const [loadCal, setLoadCal] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 900);
@@ -187,30 +188,50 @@ const HVACLanding = () => {
               marginTop: '0'
             }}>Book a call below 👇</h2>
 
-            <div style={{
-              height: isMobile ? '700px' : '750px',
-              overflow: 'scroll'
-            }}>
-              <Suspense fallback={
-                <div style={{
-                  height: '100%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  backgroundColor: '#f9f9f9',
-                  borderRadius: '8px'
-                }}>
-                  <p style={{ color: '#666' }}>Loading scheduler...</p>
-                </div>
-              }>
-                <Cal
-                  namespace="one-stop-hvac-system-demo"
-                  calLink="team/design-groove/one-stop-hvac-system-demo"
-                  style={{ width: '100%', height: '100%', overflow: 'scroll' }}
-                  config={{ layout: 'month_view', theme: 'light' }}
-                />
-              </Suspense>
-            </div>
+            {loadCal ? (
+              <div style={{
+                height: isMobile ? '700px' : '750px',
+                overflow: 'scroll'
+              }}>
+                <Suspense fallback={
+                  <div style={{
+                    height: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: '#f9f9f9',
+                    borderRadius: '8px'
+                  }}>
+                    <p style={{ color: '#666' }}>Loading scheduler...</p>
+                  </div>
+                }>
+                  <Cal
+                    namespace="one-stop-hvac-system-demo"
+                    calLink="team/design-groove/one-stop-hvac-system-demo"
+                    style={{ width: '100%', height: '100%', overflow: 'scroll' }}
+                    config={{ layout: 'month_view', theme: 'light' }}
+                  />
+                </Suspense>
+              </div>
+            ) : (
+              <button
+                onClick={() => setLoadCal(true)}
+                style={{
+                  display: 'block',
+                  width: '100%',
+                  backgroundColor: '#0073E6',
+                  color: '#fff',
+                  padding: '1.25rem 2rem',
+                  borderRadius: '8px',
+                  fontSize: '1.2rem',
+                  fontWeight: 600,
+                  border: 'none',
+                  cursor: 'pointer'
+                }}
+              >
+                Click to See Available Times
+              </button>
+            )}
           </div>
 
         </section>
