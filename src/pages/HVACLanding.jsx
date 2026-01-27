@@ -119,6 +119,16 @@ const HVACLanding = () => {
         <meta name="robots" content="noindex, nofollow" />
         <meta name="description" content="See how HVAC owners are using this system to grow their business for only $297/mo. No agency fees. No ad budgets." />
         <link rel="preload" href="/assets/hvac-vsl-thumbnail.jpg" as="image" fetchpriority="high" />
+        <script dangerouslySetInnerHTML={{ __html: `
+          document.addEventListener('click', function(e) {
+            var btn = e.target.closest('[data-video-id]');
+            if (btn) {
+              var id = btn.getAttribute('data-video-id');
+              var container = btn.parentElement;
+              container.innerHTML = '<iframe src="https://iframe.mediadelivery.net/embed/585643/' + id + '?autoplay=true&muted=false&preload=true&responsive=true" style="border:0;position:absolute;top:0;left:0;height:100%;width:100%" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;fullscreen" allowfullscreen></iframe>';
+            }
+          });
+        `}} />
       </Helmet>
 
       <LandingNavbar />
@@ -191,6 +201,7 @@ const HVACLanding = () => {
               ) : (
                 <button
                   type="button"
+                  data-video-id="40b82242-a8f5-4be5-8dc1-2115ab37dd7a"
                   onClick={() => setLoadVSL(true)}
                   style={{
                     position: 'absolute',
@@ -329,6 +340,7 @@ const HVACLanding = () => {
                     ) : (
                       <button
                         type="button"
+                        data-video-id="eb803435-50c6-47bb-b214-8ee4b6e80a18"
                         onClick={() => setLoadTestimonial(true)}
                         style={{
                           position: 'absolute',
