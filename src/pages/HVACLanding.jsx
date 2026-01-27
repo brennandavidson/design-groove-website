@@ -69,18 +69,13 @@ const HVACLanding = () => {
   const vslIframeRef = useRef(null);
   const testimonialIframeRef = useRef(null);
 
-  // Send play command to Bunny iframe after it loads
+  // Load Player.js and auto-play Bunny iframe when ready
   const handleIframeLoad = (iframeRef) => {
-    if (iframeRef.current) {
-      const iframe = iframeRef.current;
-      // Try multiple message formats for Bunny Stream
-      iframe.contentWindow.postMessage({ event: 'play' }, '*');
-      iframe.contentWindow.postMessage('play', '*');
-      // Also try clicking the iframe programmatically after a short delay
-      setTimeout(() => {
-        iframe.focus();
-        iframe.contentWindow.postMessage({ event: 'play' }, '*');
-      }, 500);
+    if (iframeRef.current && window.playerjs) {
+      const player = new window.playerjs.Player(iframeRef.current);
+      player.on('ready', () => {
+        player.play();
+      });
     }
   };
 
@@ -129,6 +124,7 @@ const HVACLanding = () => {
         <meta name="robots" content="noindex, nofollow" />
         <meta name="description" content="See how HVAC owners are using this system to grow their business for only $297/mo. No agency fees. No ad budgets." />
         <link rel="preload" href="/assets/hvac-vsl-thumbnail.jpg" as="image" fetchpriority="high" />
+        <script src="//assets.mediadelivery.net/playerjs/playerjs-0.0.12.min.js"></script>
       </Helmet>
 
       <LandingNavbar />
