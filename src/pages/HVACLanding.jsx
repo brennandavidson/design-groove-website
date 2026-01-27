@@ -169,7 +169,7 @@ const HVACLanding = () => {
             }}>
               {loadVSL ? (
                 <iframe
-                  src="https://iframe.mediadelivery.net/embed/585643/40b82242-a8f5-4be5-8dc1-2115ab37dd7a?autoplay=true&loop=false&muted=false&preload=true&responsive=true"
+                  src="https://iframe.mediadelivery.net/embed/585643/40b82242-a8f5-4be5-8dc1-2115ab37dd7a?autoplay=true&muted=false&preload=false&responsive=true"
                   style={{
                     border: 0,
                     position: 'absolute',
@@ -299,7 +299,7 @@ const HVACLanding = () => {
                   }}>
                     {loadTestimonial ? (
                       <iframe
-                        src="https://iframe.mediadelivery.net/embed/585643/eb803435-50c6-47bb-b214-8ee4b6e80a18?autoplay=true&loop=false&muted=false&preload=true&responsive=true"
+                        src="https://iframe.mediadelivery.net/embed/585643/eb803435-50c6-47bb-b214-8ee4b6e80a18?autoplay=true&muted=false&preload=false&responsive=true"
                         style={{
                           border: 0,
                           position: 'absolute',
