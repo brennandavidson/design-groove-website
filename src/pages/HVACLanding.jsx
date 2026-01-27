@@ -70,20 +70,7 @@ const HVACLanding = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Initialize Cal.com UI
-  useEffect(() => {
-    (async function () {
-      const { getCalApi } = await import('@calcom/embed-react');
-      const cal = await getCalApi({ namespace: 'one-stop-hvac-system-demo' });
-      cal('ui', {
-        theme: 'light',
-        cssVarsPerTheme: { light: { 'cal-brand': '#0073e6' } },
-        hideEventTypeDetails: false,
-        layout: 'week_view'
-      });
-    })();
-  }, []);
-
+  
   return (
     <>
       <Helmet>
@@ -217,7 +204,7 @@ const HVACLanding = () => {
                   namespace="one-stop-hvac-system-demo"
                   calLink="team/design-groove/one-stop-hvac-system-demo"
                   style={{ width: '100%', height: '100%', overflow: 'scroll' }}
-                  config={{ layout: 'week_view', theme: 'light' }}
+                  config={{ layout: 'month_view', theme: 'light' }}
                 />
               </Suspense>
             </div>
