@@ -84,7 +84,7 @@ const HVACLanding = () => {
       setTimeout(initPlayer, 100);
     } else {
       const script = document.createElement('script');
-      script.src = 'https://assets.mediadelivery.net/playerjs/playerjs-0.0.12.min.js';
+      script.src = 'https://assets.mediadelivery.net/playerjs/playerjs-latest.min.js';
       script.onload = () => setTimeout(initPlayer, 100);
       script.onerror = () => console.error('Failed to load playerjs');
       document.head.appendChild(script);
