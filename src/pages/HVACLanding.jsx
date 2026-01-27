@@ -69,7 +69,7 @@ const HVACLanding = () => {
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 900);
-    checkMobile();
+    checkMobile(); // Set correct value after hydration
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
@@ -107,7 +107,7 @@ const HVACLanding = () => {
 
   
   return (
-    <>
+    <div suppressHydrationWarning>
       <Helmet>
         <title>HVAC Lead System | Design Groove</title>
         <meta name="robots" content="noindex, nofollow" />
@@ -925,7 +925,7 @@ const HVACLanding = () => {
         </section>
 
       </main>
-    </>
+    </div>
   );
 };
 
