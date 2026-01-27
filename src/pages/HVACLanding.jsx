@@ -59,11 +59,44 @@ const PlayButton = () => (
   </div>
 );
 
+// Unmute overlay for muted autoplay videos
+const UnmuteOverlay = ({ onUnmute }) => (
+  <div
+    onClick={onUnmute}
+    style={{
+      position: 'absolute',
+      top: '16px',
+      right: '16px',
+      backgroundColor: 'rgba(0,0,0,0.8)',
+      color: '#fff',
+      padding: '12px 20px',
+      borderRadius: '8px',
+      cursor: 'pointer',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      fontSize: '14px',
+      fontWeight: 600,
+      zIndex: 10,
+      animation: 'pulse 2s infinite'
+    }}
+  >
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+      <line x1="23" y1="9" x2="17" y2="15"/>
+      <line x1="17" y1="9" x2="23" y2="15"/>
+    </svg>
+    TAP TO UNMUTE
+  </div>
+);
+
 const HVACLanding = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [loadVSL, setLoadVSL] = useState(false);
+  const [vslMuted, setVslMuted] = useState(true);
   const [loadTestimonial, setLoadTestimonial] = useState(false);
+  const [testimonialMuted, setTestimonialMuted] = useState(true);
   const [loadCal, setLoadCal] = useState(false);
   const [showHowItWorks, setShowHowItWorks] = useState(false);
   const howItWorksRef = useRef(null);
@@ -122,6 +155,12 @@ const HVACLanding = () => {
         <meta name="robots" content="noindex, nofollow" />
         <meta name="description" content="See how HVAC owners are using this system to grow their business for only $297/mo. No agency fees. No ad budgets." />
         <link rel="preload" href="/assets/hvac-vsl-thumbnail.jpg" as="image" fetchpriority="high" />
+        <style>{`
+          @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+          }
+        `}</style>
       </Helmet>
 
       <LandingNavbar />
@@ -178,19 +217,23 @@ const HVACLanding = () => {
               paddingTop: '56.25%'
             }}>
               {loadVSL ? (
-                <iframe
-                  src="https://iframe.mediadelivery.net/embed/585643/40b82242-a8f5-4be5-8dc1-2115ab37dd7a?autoplay=true&muted=false&preload=true&responsive=true"
-                  style={{
-                    border: 0,
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    height: '100%',
-                    width: '100%'
-                  }}
-                  allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen"
-                  allowFullScreen
-                />
+                <>
+                  <iframe
+                    key={vslMuted ? 'muted' : 'unmuted'}
+                    src={`https://iframe.mediadelivery.net/embed/585643/40b82242-a8f5-4be5-8dc1-2115ab37dd7a?autoplay=true&muted=${vslMuted}&preload=true&responsive=true`}
+                    style={{
+                      border: 0,
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      height: '100%',
+                      width: '100%'
+                    }}
+                    allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen"
+                    allowFullScreen
+                  />
+                  {vslMuted && <UnmuteOverlay onUnmute={() => setVslMuted(false)} />}
+                </>
               ) : (
                 <button
                   type="button"
@@ -316,19 +359,23 @@ const HVACLanding = () => {
                     minHeight: isMobile ? '500px' : '600px'
                   }}>
                     {loadTestimonial ? (
-                      <iframe
-                        src="https://iframe.mediadelivery.net/embed/585643/eb803435-50c6-47bb-b214-8ee4b6e80a18?autoplay=true&muted=false&preload=true&responsive=true"
-                        style={{
-                          border: 0,
-                          position: 'absolute',
-                          top: 0,
-                          left: 0,
-                          height: '100%',
-                          width: '100%'
-                        }}
-                        allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen"
-                        allowFullScreen
-                      />
+                      <>
+                        <iframe
+                          key={testimonialMuted ? 'muted' : 'unmuted'}
+                          src={`https://iframe.mediadelivery.net/embed/585643/eb803435-50c6-47bb-b214-8ee4b6e80a18?autoplay=true&muted=${testimonialMuted}&preload=true&responsive=true`}
+                          style={{
+                            border: 0,
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            height: '100%',
+                            width: '100%'
+                          }}
+                          allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen"
+                          allowFullScreen
+                        />
+                        {testimonialMuted && <UnmuteOverlay onUnmute={() => setTestimonialMuted(false)} />}
+                      </>
                     ) : (
                       <button
                         type="button"
