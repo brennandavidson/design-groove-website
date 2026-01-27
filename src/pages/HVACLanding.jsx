@@ -68,6 +68,8 @@ const HVACLanding = () => {
   const [showHowItWorks, setShowHowItWorks] = useState(false);
   const howItWorksRef = useRef(null);
   const calRef = useRef(null);
+  const vslButtonRef = useRef(null);
+  const testimonialButtonRef = useRef(null);
 
   useEffect(() => {
     setMounted(true);
@@ -76,6 +78,44 @@ const HVACLanding = () => {
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  // Native event listeners for video buttons (bypasses React synthetic events for iOS Safari)
+  useEffect(() => {
+    const vslBtn = vslButtonRef.current;
+    const testimonialBtn = testimonialButtonRef.current;
+
+    const handleVSLClick = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setLoadVSL(true);
+    };
+
+    const handleTestimonialClick = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setLoadTestimonial(true);
+    };
+
+    if (vslBtn && !loadVSL) {
+      vslBtn.addEventListener('click', handleVSLClick, { passive: false });
+      vslBtn.addEventListener('touchend', handleVSLClick, { passive: false });
+    }
+    if (testimonialBtn && !loadTestimonial) {
+      testimonialBtn.addEventListener('click', handleTestimonialClick, { passive: false });
+      testimonialBtn.addEventListener('touchend', handleTestimonialClick, { passive: false });
+    }
+
+    return () => {
+      if (vslBtn) {
+        vslBtn.removeEventListener('click', handleVSLClick);
+        vslBtn.removeEventListener('touchend', handleVSLClick);
+      }
+      if (testimonialBtn) {
+        testimonialBtn.removeEventListener('click', handleTestimonialClick);
+        testimonialBtn.removeEventListener('touchend', handleTestimonialClick);
+      }
+    };
+  }, [loadVSL, loadTestimonial]);
 
   // Use desktop styles until mounted to prevent flash
   const mobile = mounted ? isMobile : false;
@@ -190,9 +230,9 @@ const HVACLanding = () => {
                 />
               ) : (
                 <button
+                  ref={vslButtonRef}
                   type="button"
                   data-video-id="40b82242-a8f5-4be5-8dc1-2115ab37dd7a"
-                  onClick={() => { if(window.loadVideo) window.loadVideo(event.currentTarget); setLoadVSL(true); }}
                   style={{
                     position: 'absolute',
                     top: 0,
@@ -329,9 +369,9 @@ const HVACLanding = () => {
                       />
                     ) : (
                       <button
+                        ref={testimonialButtonRef}
                         type="button"
                         data-video-id="eb803435-50c6-47bb-b214-8ee4b6e80a18"
-                        onClick={() => setLoadTestimonial(true)}
                         style={{
                           position: 'absolute',
                           top: 0,

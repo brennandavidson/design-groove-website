@@ -117,6 +117,13 @@ let lcpPreloads = []
         .replace(/<link rel="preconnect" href="https:\/\/assets\.calendly\.com"[^>]*>/, '') // Remove Calendly
         .replace(/<link rel="dns-prefetch" href="https:\/\/assets\.calendly\.com"[^>]*>/, '')
         .replace(/<link rel="preload" href="\/fonts\/Inter-SemiBold\.woff2"[^>]*>/, '') // Remove extra font preload
+        // Remove the event delegation video script (we use inline onclick instead)
+        .replace(/<script>\s*\/\/ Video click handler[\s\S]*?<\/script>/, '')
+        // Add inline onclick to video buttons (most basic JS - works everywhere)
+        .replace(
+          /<button([^>]*data-video-id="([^"]+)"[^>]*)>/g,
+          '<button$1 onclick="this.parentElement.innerHTML=\'<iframe src=&quot;https://iframe.mediadelivery.net/embed/585643/$2?autoplay=true&muted=false&preload=true&responsive=true&quot; style=&quot;border:0;position:absolute;top:0;left:0;height:100%;width:100%&quot; allow=&quot;accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;fullscreen&quot; allowfullscreen></iframe>\'">'
+        )
     }
 
     const filePath = `dist${url === '/' ? '/index.html' : `${url}/index.html`}`
