@@ -101,10 +101,23 @@ let lcpPreloads = []
       ${cssContent ? `<style>${cssContent}</style>` : ''}
     `
 
-    const htmlFile = template
+    let htmlFile = template
       .replace(`<!--app-head-->`, helmetHtml)
       .replace(`<!--app-html-->`, appHtml)
       .replace(/<link rel="stylesheet"[^>]*href="\/assets\/[^"]+\.css"[^>]*>/, '') // Remove external CSS link
+
+    // Remove static mask and unnecessary preloads for HVAC landing page
+    if (url === '/hvac-system') {
+      htmlFile = htmlFile
+        .replace(/<div id="static-mask"[^>]*><\/div>/, '') // Remove mask div
+        .replace(/<script>[\s\S]*?window\.__removeMask[\s\S]*?<\/script>/, '') // Remove mask script
+        .replace(/<link rel="preconnect" href="https:\/\/cdn\.sanity\.io"[^>]*>/, '') // Remove Sanity preconnects
+        .replace(/<link rel="preconnect" href="https:\/\/8jhw3vic\.apicdn\.sanity\.io"[^>]*>/, '')
+        .replace(/<link rel="dns-prefetch" href="https:\/\/cdn\.sanity\.io"[^>]*>/, '')
+        .replace(/<link rel="preconnect" href="https:\/\/assets\.calendly\.com"[^>]*>/, '') // Remove Calendly
+        .replace(/<link rel="dns-prefetch" href="https:\/\/assets\.calendly\.com"[^>]*>/, '')
+        .replace(/<link rel="preload" href="\/fonts\/Inter-SemiBold\.woff2"[^>]*>/, '') // Remove extra font preload
+    }
 
     const filePath = `dist${url === '/' ? '/index.html' : `${url}/index.html`}`
     const dirPath = path.dirname(filePath)
