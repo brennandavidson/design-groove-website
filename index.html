@@ -42,6 +42,18 @@
       // Fallback: remove after 1.5s if React doesn't signal (safety net)
       setTimeout(window.__removeMask, 1500);
     </script>
+    <script>
+      // Video thumbnail click handler (works without React)
+      document.addEventListener('click', function(e) {
+        var btn = e.target.closest('[data-video-id]');
+        if (btn && !btn.dataset.clicked) {
+          btn.dataset.clicked = 'true';
+          var id = btn.getAttribute('data-video-id');
+          var container = btn.parentElement;
+          container.innerHTML = '<iframe src="https://iframe.mediadelivery.net/embed/585643/' + id + '?autoplay=true&muted=false&preload=true&responsive=true" style="border:0;position:absolute;top:0;left:0;height:100%;width:100%" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;fullscreen" allowfullscreen></iframe>';
+        }
+      });
+    </script>
     <div id="root"><!--app-html--></div>
     <script type="module" src="/src/entry-client.jsx"></script>
   </body>
