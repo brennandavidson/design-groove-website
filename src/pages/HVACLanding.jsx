@@ -69,13 +69,24 @@ const HVACLanding = () => {
   const vslIframeRef = useRef(null);
   const testimonialIframeRef = useRef(null);
 
-  // Load Player.js and auto-play Bunny iframe when ready
-  const handleIframeLoad = (iframeRef) => {
-    if (iframeRef.current && window.playerjs) {
-      const player = new window.playerjs.Player(iframeRef.current);
-      player.on('ready', () => {
-        player.play();
-      });
+  // Load Player.js script dynamically and auto-play
+  const loadPlayerJsAndPlay = (iframeRef) => {
+    const initPlayer = () => {
+      if (iframeRef.current && window.playerjs) {
+        const player = new window.playerjs.Player(iframeRef.current);
+        player.on('ready', () => {
+          player.play();
+        });
+      }
+    };
+
+    if (window.playerjs) {
+      initPlayer();
+    } else {
+      const script = document.createElement('script');
+      script.src = '//assets.mediadelivery.net/playerjs/playerjs-0.0.12.min.js';
+      script.onload = initPlayer;
+      document.head.appendChild(script);
     }
   };
 
@@ -124,7 +135,6 @@ const HVACLanding = () => {
         <meta name="robots" content="noindex, nofollow" />
         <meta name="description" content="See how HVAC owners are using this system to grow their business for only $297/mo. No agency fees. No ad budgets." />
         <link rel="preload" href="/assets/hvac-vsl-thumbnail.jpg" as="image" fetchpriority="high" />
-        <script src="//assets.mediadelivery.net/playerjs/playerjs-0.0.12.min.js"></script>
       </Helmet>
 
       <LandingNavbar />
@@ -194,7 +204,7 @@ const HVACLanding = () => {
                   }}
                   allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
                   allowFullScreen
-                  onLoad={() => handleIframeLoad(vslIframeRef)}
+                  onLoad={() => loadPlayerJsAndPlay(vslIframeRef)}
                 />
               ) : (
                 <div onClick={() => setLoadVSL(true)} style={{
@@ -326,7 +336,7 @@ const HVACLanding = () => {
                         }}
                         allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
                         allowFullScreen
-                        onLoad={() => handleIframeLoad(testimonialIframeRef)}
+                        onLoad={() => loadPlayerJsAndPlay(testimonialIframeRef)}
                       />
                     ) : (
                       <div onClick={() => setLoadTestimonial(true)} style={{
