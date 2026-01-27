@@ -93,15 +93,6 @@ const HVACLanding = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Preload playerjs script on mount
-  useEffect(() => {
-    if (!window.playerjs && !document.getElementById('playerjs-script')) {
-      const script = document.createElement('script');
-      script.id = 'playerjs-script';
-      script.src = 'https://assets.mediadelivery.net/playerjs/playerjs-latest.min.js';
-      document.head.appendChild(script);
-    }
-  }, []);
 
   // Lazy load Cal.com when booker section comes into view
   useEffect(() => {
@@ -141,6 +132,7 @@ const HVACLanding = () => {
         <meta name="robots" content="noindex, nofollow" />
         <meta name="description" content="See how HVAC owners are using this system to grow their business for only $297/mo. No agency fees. No ad budgets." />
         <link rel="preload" href="/assets/hvac-vsl-thumbnail.jpg" as="image" fetchpriority="high" />
+        <script src="https://assets.mediadelivery.net/playerjs/playerjs-latest.min.js" async></script>
       </Helmet>
 
       <LandingNavbar />
