@@ -40,7 +40,8 @@ const PlayButton = () => (
     alignItems: 'center',
     justifyContent: 'center',
     cursor: 'pointer',
-    backgroundColor: 'rgba(0,0,0,0.3)'
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    pointerEvents: 'none'
   }}>
     <div style={{
       width: '80px',
@@ -183,15 +184,20 @@ const HVACLanding = () => {
                   allowFullScreen
                 />
               ) : (
-                <div onClick={() => setLoadVSL(true)} style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: '100%',
-                  cursor: 'pointer',
-                  backgroundColor: '#0a0a0a'
-                }}>
+                <div
+                  onClick={() => setLoadVSL(true)}
+                  onTouchEnd={(e) => { e.preventDefault(); setLoadVSL(true); }}
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    cursor: 'pointer',
+                    backgroundColor: '#0a0a0a',
+                    touchAction: 'manipulation'
+                  }}
+                >
                   <img
                     src="/assets/hvac-vsl-thumbnail.jpg"
                     alt="Watch video"
@@ -200,7 +206,8 @@ const HVACLanding = () => {
                     style={{
                       width: '100%',
                       height: '100%',
-                      objectFit: 'cover'
+                      objectFit: 'cover',
+                      pointerEvents: 'none'
                     }}
                   />
                   <PlayButton />
@@ -313,15 +320,20 @@ const HVACLanding = () => {
                         allowFullScreen
                       />
                     ) : (
-                      <div onClick={() => setLoadTestimonial(true)} style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        width: '100%',
-                        height: '100%',
-                        cursor: 'pointer',
-                        backgroundColor: '#0a0a0a'
-                      }}>
+                      <div
+                        onClick={() => setLoadTestimonial(true)}
+                        onTouchEnd={(e) => { e.preventDefault(); setLoadTestimonial(true); }}
+                        style={{
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          width: '100%',
+                          height: '100%',
+                          cursor: 'pointer',
+                          backgroundColor: '#0a0a0a',
+                          touchAction: 'manipulation'
+                        }}
+                      >
                         <img
                           src="/assets/hvac-testimonial-thumbnail.jpg"
                           alt="Watch testimonial"
@@ -330,7 +342,8 @@ const HVACLanding = () => {
                           style={{
                             width: '100%',
                             height: '100%',
-                            objectFit: 'cover'
+                            objectFit: 'cover',
+                            pointerEvents: 'none'
                           }}
                         />
                         <PlayButton />
