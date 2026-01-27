@@ -65,12 +65,28 @@ const HVACLanding = () => {
   const [loadCal, setLoadCal] = useState(false);
   const [showHowItWorks, setShowHowItWorks] = useState(false);
   const howItWorksRef = useRef(null);
+  const calRef = useRef(null);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 900);
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Lazy load Cal.com when booker section comes into view
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setLoadCal(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '300px' }
+    );
+    if (calRef.current) observer.observe(calRef.current);
+    return () => observer.disconnect();
   }, []);
 
   // Lazy load How It Works section
@@ -193,7 +209,7 @@ const HVACLanding = () => {
           </div>
 
           {/* BOOKER */}
-          <div id="booker" style={{ maxWidth: '1000px', margin: '0 auto' }}>
+          <div id="booker" ref={calRef} style={{ maxWidth: '1000px', margin: '0 auto' }}>
             <h2 style={{
               fontFamily: 'Instrument Serif, serif',
               fontSize: isMobile ? '2rem' : '2.75rem',
@@ -201,11 +217,11 @@ const HVACLanding = () => {
               marginTop: '0'
             }}>Book a call below 👇</h2>
 
-            {loadCal ? (
-              <div style={{
-                height: isMobile ? '700px' : '750px',
-                overflow: 'scroll'
-              }}>
+            <div style={{
+              height: isMobile ? '700px' : '750px',
+              overflow: 'scroll'
+            }}>
+              {loadCal ? (
                 <Suspense fallback={
                   <div style={{
                     height: '100%',
@@ -225,26 +241,19 @@ const HVACLanding = () => {
                     config={{ layout: 'month_view', theme: 'light' }}
                   />
                 </Suspense>
-              </div>
-            ) : (
-              <button
-                onClick={() => setLoadCal(true)}
-                style={{
-                  display: 'block',
-                  width: '100%',
-                  backgroundColor: '#0073E6',
-                  color: '#fff',
-                  padding: '1.25rem 2rem',
-                  borderRadius: '8px',
-                  fontSize: '1.2rem',
-                  fontWeight: 600,
-                  border: 'none',
-                  cursor: 'pointer'
-                }}
-              >
-                Click to See Available Times
-              </button>
-            )}
+              ) : (
+                <div style={{
+                  height: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: '#f9f9f9',
+                  borderRadius: '8px'
+                }}>
+                  <p style={{ color: '#666' }}>Loading scheduler...</p>
+                </div>
+              )}
+            </div>
           </div>
 
         </section>
