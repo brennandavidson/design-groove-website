@@ -67,7 +67,7 @@ const HVACLanding = () => {
   const howItWorksRef = useRef(null);
   const calRef = useRef(null);
 
-  // Load Player.js script dynamically and auto-play
+  // Auto-play video using Player.js
   const loadPlayerJsAndPlay = (iframeId) => {
     const initPlayer = () => {
       const iframe = document.getElementById(iframeId);
@@ -76,19 +76,14 @@ const HVACLanding = () => {
         player.on('ready', () => {
           player.play();
         });
+      } else if (iframe && !window.playerjs) {
+        // Script still loading, retry in 100ms
+        setTimeout(initPlayer, 100);
       }
     };
 
-    if (window.playerjs) {
-      // Small delay to ensure iframe is fully loaded
-      setTimeout(initPlayer, 100);
-    } else {
-      const script = document.createElement('script');
-      script.src = 'https://assets.mediadelivery.net/playerjs/playerjs-latest.min.js';
-      script.onload = () => setTimeout(initPlayer, 100);
-      script.onerror = () => console.error('Failed to load playerjs');
-      document.head.appendChild(script);
-    }
+    // Small delay then init (script preloaded on mount)
+    setTimeout(initPlayer, 100);
   };
 
   useEffect(() => {
@@ -96,6 +91,16 @@ const HVACLanding = () => {
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Preload playerjs script on mount
+  useEffect(() => {
+    if (!window.playerjs && !document.getElementById('playerjs-script')) {
+      const script = document.createElement('script');
+      script.id = 'playerjs-script';
+      script.src = 'https://assets.mediadelivery.net/playerjs/playerjs-latest.min.js';
+      document.head.appendChild(script);
+    }
   }, []);
 
   // Lazy load Cal.com when booker section comes into view
