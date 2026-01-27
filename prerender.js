@@ -133,10 +133,7 @@ let lcpPreloads = []
         done[vid] = 1;
         var p = t.parentElement;
         if (p) {
-          p.innerHTML = '<iframe src="https://iframe.mediadelivery.net/embed/585643/' + vid + '?autoplay=true&muted=false&preload=true&responsive=true" style="border:0;position:absolute;top:0;left:0;height:100%;width:100%" loading="eager" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;fullscreen" allowfullscreen></iframe>';
-          alert('IFRAME INSERTED - check if you see video player');
-        } else {
-          alert('ERROR: no parent element');
+          p.innerHTML = '<iframe src="https://iframe.mediadelivery.net/embed/585643/' + vid + '?autoplay=true&muted=false&preload=true&responsive=true" style="border:0;position:absolute;top:0;left:0;height:100%;width:100%" loading="eager" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;fullscreen" allowfullscreen playsinline webkit-playsinline></iframe>';
         }
         e.preventDefault();
         e.stopPropagation();
