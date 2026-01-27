@@ -77,37 +77,8 @@ const HVACLanding = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Document-level event delegation for video buttons (iOS Safari compatible)
-  useEffect(() => {
-    const handleVideoClick = (e) => {
-      // Find the button with data-video-id (could be target or ancestor)
-      let target = e.target;
-      while (target && target !== document.body) {
-        const videoId = target.getAttribute('data-video-id');
-        if (videoId) {
-          e.preventDefault();
-          e.stopPropagation();
-
-          if (videoId === '40b82242-a8f5-4be5-8dc1-2115ab37dd7a') {
-            setLoadVSL(true);
-          } else if (videoId === 'eb803435-50c6-47bb-b214-8ee4b6e80a18') {
-            setLoadTestimonial(true);
-          }
-          return;
-        }
-        target = target.parentElement;
-      }
-    };
-
-    // Use capture phase to get events before React
-    document.addEventListener('click', handleVideoClick, true);
-    document.addEventListener('touchstart', handleVideoClick, true);
-
-    return () => {
-      document.removeEventListener('click', handleVideoClick, true);
-      document.removeEventListener('touchstart', handleVideoClick, true);
-    };
-  }, []);
+  // Video click handling is done via vanilla JS script injected by prerender.js
+  // This bypasses React entirely for maximum iOS Safari compatibility
 
   // Use desktop styles until mounted to prevent flash
   const mobile = mounted ? isMobile : false;

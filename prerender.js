@@ -117,12 +117,35 @@ let lcpPreloads = []
         .replace(/<link rel="preconnect" href="https:\/\/assets\.calendly\.com"[^>]*>/, '') // Remove Calendly
         .replace(/<link rel="dns-prefetch" href="https:\/\/assets\.calendly\.com"[^>]*>/, '')
         .replace(/<link rel="preload" href="\/fonts\/Inter-SemiBold\.woff2"[^>]*>/, '') // Remove extra font preload
-        // Remove the event delegation video script (we use inline onclick instead)
+        // Remove the event delegation video script from index.html
         .replace(/<script>\s*\/\/ Video click handler[\s\S]*?<\/script>/, '')
-        // Add inline onclick to video buttons (most basic JS - works everywhere)
+        // Inject video handler script at the end of body (runs after React hydration)
         .replace(
-          /<button([^>]*data-video-id="([^"]+)"[^>]*)>/g,
-          '<button$1 onclick="this.parentElement.innerHTML=\'<iframe src=&quot;https://iframe.mediadelivery.net/embed/585643/$2?autoplay=true&muted=false&preload=true&responsive=true&quot; style=&quot;border:0;position:absolute;top:0;left:0;height:100%;width:100%&quot; allow=&quot;accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;fullscreen&quot; allowfullscreen></iframe>\'">'
+          /<\/body>/,
+          `<script>
+(function(){
+  var done = {};
+  function handle(e) {
+    var t = e.target;
+    for (var i = 0; i < 10 && t; i++) {
+      var vid = t.getAttribute && t.getAttribute('data-video-id');
+      if (vid && !done[vid]) {
+        done[vid] = 1;
+        var p = t.parentElement;
+        if (p) {
+          p.innerHTML = '<iframe src="https://iframe.mediadelivery.net/embed/585643/' + vid + '?autoplay=true&muted=false&preload=true&responsive=true" style="border:0;position:absolute;top:0;left:0;height:100%;width:100%" loading="eager" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;fullscreen" allowfullscreen></iframe>';
+        }
+        e.preventDefault();
+        e.stopPropagation();
+        return;
+      }
+      t = t.parentElement;
+    }
+  }
+  document.addEventListener('touchstart', handle, {capture:true, passive:false});
+  document.addEventListener('click', handle, {capture:true, passive:false});
+})();
+</script></body>`
         )
     }
 
