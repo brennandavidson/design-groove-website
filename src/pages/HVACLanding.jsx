@@ -68,8 +68,6 @@ const HVACLanding = () => {
   const [showHowItWorks, setShowHowItWorks] = useState(false);
   const howItWorksRef = useRef(null);
   const calRef = useRef(null);
-  const vslButtonRef = useRef(null);
-  const testimonialButtonRef = useRef(null);
 
   useEffect(() => {
     setMounted(true);
@@ -79,43 +77,37 @@ const HVACLanding = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Native event listeners for video buttons (bypasses React synthetic events for iOS Safari)
+  // Document-level event delegation for video buttons (iOS Safari compatible)
   useEffect(() => {
-    const vslBtn = vslButtonRef.current;
-    const testimonialBtn = testimonialButtonRef.current;
+    const handleVideoClick = (e) => {
+      // Find the button with data-video-id (could be target or ancestor)
+      let target = e.target;
+      while (target && target !== document.body) {
+        const videoId = target.getAttribute('data-video-id');
+        if (videoId) {
+          e.preventDefault();
+          e.stopPropagation();
 
-    const handleVSLClick = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setLoadVSL(true);
+          if (videoId === '40b82242-a8f5-4be5-8dc1-2115ab37dd7a') {
+            setLoadVSL(true);
+          } else if (videoId === 'eb803435-50c6-47bb-b214-8ee4b6e80a18') {
+            setLoadTestimonial(true);
+          }
+          return;
+        }
+        target = target.parentElement;
+      }
     };
 
-    const handleTestimonialClick = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setLoadTestimonial(true);
-    };
-
-    if (vslBtn && !loadVSL) {
-      vslBtn.addEventListener('click', handleVSLClick, { passive: false });
-      vslBtn.addEventListener('touchend', handleVSLClick, { passive: false });
-    }
-    if (testimonialBtn && !loadTestimonial) {
-      testimonialBtn.addEventListener('click', handleTestimonialClick, { passive: false });
-      testimonialBtn.addEventListener('touchend', handleTestimonialClick, { passive: false });
-    }
+    // Use capture phase to get events before React
+    document.addEventListener('click', handleVideoClick, true);
+    document.addEventListener('touchstart', handleVideoClick, true);
 
     return () => {
-      if (vslBtn) {
-        vslBtn.removeEventListener('click', handleVSLClick);
-        vslBtn.removeEventListener('touchend', handleVSLClick);
-      }
-      if (testimonialBtn) {
-        testimonialBtn.removeEventListener('click', handleTestimonialClick);
-        testimonialBtn.removeEventListener('touchend', handleTestimonialClick);
-      }
+      document.removeEventListener('click', handleVideoClick, true);
+      document.removeEventListener('touchstart', handleVideoClick, true);
     };
-  }, [loadVSL, loadTestimonial]);
+  }, []);
 
   // Use desktop styles until mounted to prevent flash
   const mobile = mounted ? isMobile : false;
@@ -230,7 +222,6 @@ const HVACLanding = () => {
                 />
               ) : (
                 <button
-                  ref={vslButtonRef}
                   type="button"
                   data-video-id="40b82242-a8f5-4be5-8dc1-2115ab37dd7a"
                   style={{
@@ -369,7 +360,6 @@ const HVACLanding = () => {
                       />
                     ) : (
                       <button
-                        ref={testimonialButtonRef}
                         type="button"
                         data-video-id="eb803435-50c6-47bb-b214-8ee4b6e80a18"
                         style={{
