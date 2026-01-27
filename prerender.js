@@ -133,7 +133,16 @@ let lcpPreloads = []
         done[vid] = 1;
         var p = t.parentElement;
         if (p) {
-          p.innerHTML = '<iframe src="https://iframe.mediadelivery.net/embed/585643/' + vid + '?autoplay=true&muted=true&preload=true&responsive=true" style="border:0;position:absolute;top:0;left:0;height:100%;width:100%" loading="eager" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;fullscreen" allowfullscreen></iframe><div onclick="this.remove();this.parentElement.querySelector(\\'iframe\\').src=this.parentElement.querySelector(\\'iframe\\').src.replace(\\'muted=true\\',\\'muted=false\\')" style="position:absolute;top:16px;right:16px;background:rgba(0,0,0,0.8);color:#fff;padding:12px 20px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;z-index:10;font-family:Inter,sans-serif"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>TAP TO UNMUTE</div>';
+          p.innerHTML = '<iframe id="vf-' + vid.substr(0,8) + '" src="https://iframe.mediadelivery.net/embed/585643/' + vid + '?autoplay=true&muted=true&preload=true&responsive=true" style="border:0;position:absolute;top:0;left:0;height:100%;width:100%" loading="eager" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;fullscreen" allowfullscreen></iframe><button id="unmute-' + vid.substr(0,8) + '" style="position:absolute;top:16px;right:16px;background:rgba(0,0,0,0.8);color:#fff;padding:12px 20px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;z-index:10;font-family:Inter,sans-serif;border:none"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>TAP TO UNMUTE</button>';
+          var btn = document.getElementById('unmute-' + vid.substr(0,8));
+          var ifr = document.getElementById('vf-' + vid.substr(0,8));
+          if (btn && ifr) {
+            btn.ontouchstart = btn.onclick = function(ev) {
+              ev.preventDefault();
+              ifr.src = ifr.src.replace('muted=true', 'muted=false');
+              btn.remove();
+            };
+          }
         }
         e.preventDefault();
         e.stopPropagation();

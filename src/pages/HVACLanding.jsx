@@ -60,35 +60,47 @@ const PlayButton = () => (
 );
 
 // Unmute overlay for muted autoplay videos
-const UnmuteOverlay = ({ onUnmute }) => (
-  <div
-    onClick={onUnmute}
-    style={{
-      position: 'absolute',
-      top: '16px',
-      right: '16px',
-      backgroundColor: 'rgba(0,0,0,0.8)',
-      color: '#fff',
-      padding: '12px 20px',
-      borderRadius: '8px',
-      cursor: 'pointer',
-      display: 'flex',
-      alignItems: 'center',
-      gap: '8px',
-      fontSize: '14px',
-      fontWeight: 600,
-      zIndex: 10,
-      animation: 'pulse 2s infinite'
-    }}
-  >
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <path d="M11 5L6 9H2v6h4l5 4V5z"/>
-      <line x1="23" y1="9" x2="17" y2="15"/>
-      <line x1="17" y1="9" x2="23" y2="15"/>
-    </svg>
-    TAP TO UNMUTE
-  </div>
-);
+const UnmuteOverlay = ({ onUnmute }) => {
+  const handleUnmute = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onUnmute();
+  };
+
+  return (
+    <button
+      type="button"
+      onTouchStart={handleUnmute}
+      onClick={handleUnmute}
+      style={{
+        position: 'absolute',
+        top: '16px',
+        right: '16px',
+        backgroundColor: 'rgba(0,0,0,0.8)',
+        color: '#fff',
+        padding: '12px 20px',
+        borderRadius: '8px',
+        cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        fontSize: '14px',
+        fontWeight: 600,
+        zIndex: 10,
+        border: 'none',
+        fontFamily: 'Inter, sans-serif',
+        animation: 'pulse 2s infinite'
+      }}
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+        <line x1="23" y1="9" x2="17" y2="15"/>
+        <line x1="17" y1="9" x2="23" y2="15"/>
+      </svg>
+      TAP TO UNMUTE
+    </button>
+  );
+};
 
 const HVACLanding = () => {
   const [isMobile, setIsMobile] = useState(false);
