@@ -1,4 +1,4 @@
-import React, { useEffect, useState, lazy, Suspense } from 'react';
+import React, { useEffect, useState, useRef, lazy, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
 import HVACCredibility from '../components/HVACCredibility';
 
@@ -63,12 +63,29 @@ const HVACLanding = () => {
   const [loadVSL, setLoadVSL] = useState(false);
   const [loadTestimonial, setLoadTestimonial] = useState(false);
   const [loadCal, setLoadCal] = useState(false);
+  const [showHowItWorks, setShowHowItWorks] = useState(false);
+  const howItWorksRef = useRef(null);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 900);
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Lazy load How It Works section
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShowHowItWorks(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '200px' }
+    );
+    if (howItWorksRef.current) observer.observe(howItWorksRef.current);
+    return () => observer.disconnect();
   }, []);
 
   
@@ -399,7 +416,7 @@ const HVACLanding = () => {
         </section>
 
         {/* HOW IT WORKS SECTION */}
-        <section style={{ padding: isMobile ? '2rem 5vw' : '3rem 5vw' }}>
+        <section ref={howItWorksRef} style={{ padding: isMobile ? '2rem 5vw' : '3rem 5vw', minHeight: '600px' }}>
           <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
             <h2 style={{
               fontFamily: 'Instrument Serif, serif',
@@ -414,7 +431,8 @@ const HVACLanding = () => {
               marginBottom: '3rem'
             }}>See EXACTLY how our system helps you make more money...</p>
 
-            {/* 3-Panel Visual Flow */}
+            {/* 3-Panel Visual Flow - Lazy loaded */}
+            {showHowItWorks ? (
             <div style={{
               display: 'grid',
               gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr 1fr',
@@ -847,6 +865,11 @@ const HVACLanding = () => {
               </div>
 
             </div>
+            ) : (
+              <div style={{ height: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <p style={{ color: '#999' }}>Loading...</p>
+              </div>
+            )}
           </div>
         </section>
 
