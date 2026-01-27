@@ -67,7 +67,7 @@ const HVACLanding = () => {
   const howItWorksRef = useRef(null);
   const calRef = useRef(null);
 
-  // Auto-play video using Player.js (muted first, then unmute)
+  // Auto-play video using Player.js
   const loadPlayerJsAndPlay = (iframeId) => {
     const initPlayer = () => {
       const iframe = document.getElementById(iframeId);
@@ -75,10 +75,6 @@ const HVACLanding = () => {
         const player = new window.playerjs.Player(iframe);
         player.on('ready', () => {
           player.play();
-          // Unmute after play starts (muted autoplay is always allowed)
-          setTimeout(() => {
-            player.setMuted(false);
-          }, 100);
         });
       } else if (iframe && !window.playerjs) {
         setTimeout(initPlayer, 100);
@@ -193,7 +189,7 @@ const HVACLanding = () => {
               {loadVSL ? (
                 <iframe
                   id="vsl-player"
-                  src="https://iframe.mediadelivery.net/embed/585643/40b82242-a8f5-4be5-8dc1-2115ab37dd7a?autoplay=true&muted=true&preload=false&responsive=true"
+                  src="https://iframe.mediadelivery.net/embed/585643/40b82242-a8f5-4be5-8dc1-2115ab37dd7a?autoplay=true&muted=false&preload=false&responsive=true"
                   style={{
                     border: 0,
                     position: 'absolute',
@@ -325,7 +321,7 @@ const HVACLanding = () => {
                     {loadTestimonial ? (
                       <iframe
                         id="testimonial-player"
-                        src="https://iframe.mediadelivery.net/embed/585643/eb803435-50c6-47bb-b214-8ee4b6e80a18?autoplay=true&muted=true&preload=false&responsive=true"
+                        src="https://iframe.mediadelivery.net/embed/585643/eb803435-50c6-47bb-b214-8ee4b6e80a18?autoplay=true&muted=false&preload=false&responsive=true"
                         style={{
                           border: 0,
                           position: 'absolute',
