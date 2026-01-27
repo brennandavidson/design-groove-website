@@ -66,14 +66,13 @@ const HVACLanding = () => {
   const [showHowItWorks, setShowHowItWorks] = useState(false);
   const howItWorksRef = useRef(null);
   const calRef = useRef(null);
-  const vslIframeRef = useRef(null);
-  const testimonialIframeRef = useRef(null);
 
   // Load Player.js script dynamically and auto-play
-  const loadPlayerJsAndPlay = (iframeRef) => {
+  const loadPlayerJsAndPlay = (iframeId) => {
     const initPlayer = () => {
-      if (iframeRef.current && window.playerjs) {
-        const player = new window.playerjs.Player(iframeRef.current);
+      const iframe = document.getElementById(iframeId);
+      if (iframe && window.playerjs) {
+        const player = new window.playerjs.Player(iframe);
         player.on('ready', () => {
           player.play();
         });
@@ -81,11 +80,12 @@ const HVACLanding = () => {
     };
 
     if (window.playerjs) {
-      initPlayer();
+      // Small delay to ensure iframe is fully loaded
+      setTimeout(initPlayer, 100);
     } else {
       const script = document.createElement('script');
       script.src = '//assets.mediadelivery.net/playerjs/playerjs-0.0.12.min.js';
-      script.onload = initPlayer;
+      script.onload = () => setTimeout(initPlayer, 100);
       document.head.appendChild(script);
     }
   };
@@ -192,7 +192,7 @@ const HVACLanding = () => {
             }}>
               {loadVSL ? (
                 <iframe
-                  ref={vslIframeRef}
+                  id="vsl-player"
                   src="https://iframe.mediadelivery.net/embed/585643/40b82242-a8f5-4be5-8dc1-2115ab37dd7a?autoplay=true&muted=false&preload=false&responsive=true"
                   style={{
                     border: 0,
@@ -204,7 +204,7 @@ const HVACLanding = () => {
                   }}
                   allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
                   allowFullScreen
-                  onLoad={() => loadPlayerJsAndPlay(vslIframeRef)}
+                  onLoad={() => loadPlayerJsAndPlay('vsl-player')}
                 />
               ) : (
                 <div onClick={() => setLoadVSL(true)} style={{
@@ -324,7 +324,7 @@ const HVACLanding = () => {
                   }}>
                     {loadTestimonial ? (
                       <iframe
-                        ref={testimonialIframeRef}
+                        id="testimonial-player"
                         src="https://iframe.mediadelivery.net/embed/585643/eb803435-50c6-47bb-b214-8ee4b6e80a18?autoplay=true&muted=false&preload=false&responsive=true"
                         style={{
                           border: 0,
@@ -336,7 +336,7 @@ const HVACLanding = () => {
                         }}
                         allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
                         allowFullScreen
-                        onLoad={() => loadPlayerJsAndPlay(testimonialIframeRef)}
+                        onLoad={() => loadPlayerJsAndPlay('testimonial-player')}
                       />
                     ) : (
                       <div onClick={() => setLoadTestimonial(true)} style={{
