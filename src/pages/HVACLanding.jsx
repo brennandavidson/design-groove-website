@@ -77,9 +77,11 @@ const HVACLanding = () => {
         <title>HVAC Lead System | Design Groove</title>
         <meta name="robots" content="noindex, nofollow" />
         <meta name="description" content="See how HVAC owners are using this system to grow their business for only $297/mo. No agency fees. No ad budgets." />
-        <link rel="preload" href="/assets/dg-logo-dark.svg" as="image" type="image/svg+xml" />
+        <link rel="preload" href="/assets/hvac-vsl-thumbnail.jpg" as="image" fetchpriority="high" />
+        <link rel="preload" href="/fonts/InstrumentSerif-Regular.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/Inter-Regular.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://iframe.mediadelivery.net" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://cal.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://app.cal.com" crossOrigin="anonymous" />
       </Helmet>
 
       <LandingNavbar />
@@ -162,6 +164,7 @@ const HVACLanding = () => {
                   <img
                     src="/assets/hvac-vsl-thumbnail.jpg"
                     alt="Watch video"
+                    fetchPriority="high"
                     onError={(e) => { e.target.style.display = 'none'; }}
                     style={{
                       width: '100%',
