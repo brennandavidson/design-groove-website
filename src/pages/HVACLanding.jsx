@@ -164,7 +164,7 @@ const HVACLanding = () => {
             👇 Watch this 4 minute video to see EXACTLY how it works and why it makes you more money
           </p>
 
-          {/* VSL - Direct iframe on mobile, thumbnail on desktop */}
+          {/* VSL - Click to load */}
           <div style={{
             width: '100%',
             maxWidth: '900px',
@@ -177,9 +177,9 @@ const HVACLanding = () => {
               position: 'relative',
               paddingTop: '56.25%'
             }}>
-              {(isMobile || loadVSL) ? (
+              {loadVSL ? (
                 <iframe
-                  src="https://iframe.mediadelivery.net/embed/585643/40b82242-a8f5-4be5-8dc1-2115ab37dd7a?preload=true&responsive=true"
+                  src="https://iframe.mediadelivery.net/embed/585643/40b82242-a8f5-4be5-8dc1-2115ab37dd7a?autoplay=true&muted=false&preload=true&responsive=true"
                   style={{
                     border: 0,
                     position: 'absolute',
@@ -188,7 +188,6 @@ const HVACLanding = () => {
                     height: '100%',
                     width: '100%'
                   }}
-                  loading={isMobile ? "eager" : "lazy"}
                   allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen"
                   allowFullScreen
                 />
@@ -316,9 +315,9 @@ const HVACLanding = () => {
                     paddingTop: '177.78%',
                     minHeight: isMobile ? '500px' : '600px'
                   }}>
-                    {(isMobile || loadTestimonial) ? (
+                    {loadTestimonial ? (
                       <iframe
-                        src="https://iframe.mediadelivery.net/embed/585643/eb803435-50c6-47bb-b214-8ee4b6e80a18?preload=true&responsive=true"
+                        src="https://iframe.mediadelivery.net/embed/585643/eb803435-50c6-47bb-b214-8ee4b6e80a18?autoplay=true&muted=false&preload=true&responsive=true"
                         style={{
                           border: 0,
                           position: 'absolute',
@@ -327,7 +326,6 @@ const HVACLanding = () => {
                           height: '100%',
                           width: '100%'
                         }}
-                        loading="lazy"
                         allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen"
                         allowFullScreen
                       />
