@@ -72,8 +72,15 @@ const HVACLanding = () => {
   // Send play command to Bunny iframe after it loads
   const handleIframeLoad = (iframeRef) => {
     if (iframeRef.current) {
-      // Bunny Stream uses playerjs protocol
-      iframeRef.current.contentWindow.postMessage('{"event":"command","func":"play","args":""}', '*');
+      const iframe = iframeRef.current;
+      // Try multiple message formats for Bunny Stream
+      iframe.contentWindow.postMessage({ event: 'play' }, '*');
+      iframe.contentWindow.postMessage('play', '*');
+      // Also try clicking the iframe programmatically after a short delay
+      setTimeout(() => {
+        iframe.focus();
+        iframe.contentWindow.postMessage({ event: 'play' }, '*');
+      }, 500);
     }
   };
 
