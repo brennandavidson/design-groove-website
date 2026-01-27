@@ -31,6 +31,39 @@ const LandingNavbar = () => (
   </nav>
 );
 
+// Unmute button overlay
+const UnmuteButton = ({ onUnmute }) => (
+  <button
+    type="button"
+    onClick={onUnmute}
+    style={{
+      position: 'absolute',
+      bottom: '16px',
+      left: '16px',
+      backgroundColor: 'rgba(0,0,0,0.8)',
+      color: '#fff',
+      padding: '10px 16px',
+      borderRadius: '8px',
+      cursor: 'pointer',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      fontSize: '14px',
+      fontWeight: 600,
+      zIndex: 10,
+      border: 'none',
+      fontFamily: 'Inter, sans-serif'
+    }}
+  >
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+      <line x1="23" y1="9" x2="17" y2="15"/>
+      <line x1="17" y1="9" x2="23" y2="15"/>
+    </svg>
+    Tap to unmute
+  </button>
+);
+
 // Play button overlay for video facades
 const PlayButton = () => (
   <div style={{
@@ -64,7 +97,11 @@ const HVACLanding = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [loadVSL, setLoadVSL] = useState(false);
+  const [vslMuted, setVslMuted] = useState(true);
   const [loadTestimonial, setLoadTestimonial] = useState(false);
+  const [testimonialMuted, setTestimonialMuted] = useState(true);
+  const vslVideoRef = useRef(null);
+  const testimonialVideoRef = useRef(null);
   const [loadCal, setLoadCal] = useState(false);
   const [showHowItWorks, setShowHowItWorks] = useState(false);
   const howItWorksRef = useRef(null);
@@ -176,20 +213,53 @@ const HVACLanding = () => {
               paddingTop: '56.25%'
             }}>
               {loadVSL ? (
-                <iframe
-                  src="https://iframe.mediadelivery.net/embed/585643/40b82242-a8f5-4be5-8dc1-2115ab37dd7a?preload=true&responsive=true"
-                  style={{
-                    border: 0,
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    height: '100%',
-                    width: '100%'
-                  }}
-                  loading="lazy"
-                  allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen"
-                  allowFullScreen
-                />
+                isMobile ? (
+                  <>
+                    <video
+                      ref={vslVideoRef}
+                      src="https://vz-84943860-85d.b-cdn.net/40b82242-a8f5-4be5-8dc1-2115ab37dd7a/playlist.m3u8"
+                      autoPlay
+                      muted={vslMuted}
+                      playsInline
+                      controls
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'contain',
+                        backgroundColor: '#000'
+                      }}
+                      onPlay={() => {
+                        // Video started playing
+                      }}
+                    />
+                    {vslMuted && (
+                      <UnmuteButton onUnmute={() => {
+                        setVslMuted(false);
+                        if (vslVideoRef.current) {
+                          vslVideoRef.current.muted = false;
+                        }
+                      }} />
+                    )}
+                  </>
+                ) : (
+                  <iframe
+                    src="https://iframe.mediadelivery.net/embed/585643/40b82242-a8f5-4be5-8dc1-2115ab37dd7a?preload=true&responsive=true"
+                    style={{
+                      border: 0,
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      height: '100%',
+                      width: '100%'
+                    }}
+                    loading="lazy"
+                    allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen"
+                    allowFullScreen
+                  />
+                )
               ) : (
                 <button
                   type="button"
