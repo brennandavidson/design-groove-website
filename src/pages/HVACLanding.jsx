@@ -61,6 +61,7 @@ const PlayButton = () => (
 
 const HVACLanding = () => {
   const [isMobile, setIsMobile] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const [loadVSL, setLoadVSL] = useState(false);
   const [loadTestimonial, setLoadTestimonial] = useState(false);
   const [loadCal, setLoadCal] = useState(false);
@@ -69,11 +70,15 @@ const HVACLanding = () => {
   const calRef = useRef(null);
 
   useEffect(() => {
+    setMounted(true);
     const checkMobile = () => setIsMobile(window.innerWidth < 900);
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  // Use desktop styles until mounted to prevent flash
+  const mobile = mounted ? isMobile : false;
 
 
   // Lazy load Cal.com when booker section comes into view
@@ -108,7 +113,7 @@ const HVACLanding = () => {
 
   
   return (
-    <div suppressHydrationWarning>
+    <>
       <Helmet>
         <title>HVAC Lead System | Design Groove</title>
         <meta name="robots" content="noindex, nofollow" />
@@ -184,9 +189,9 @@ const HVACLanding = () => {
                   allowFullScreen
                 />
               ) : (
-                <div
+                <button
+                  type="button"
                   onClick={() => setLoadVSL(true)}
-                  onTouchEnd={(e) => { e.preventDefault(); setLoadVSL(true); }}
                   style={{
                     position: 'absolute',
                     top: 0,
@@ -195,7 +200,9 @@ const HVACLanding = () => {
                     height: '100%',
                     cursor: 'pointer',
                     backgroundColor: '#0a0a0a',
-                    touchAction: 'manipulation'
+                    border: 'none',
+                    padding: 0,
+                    margin: 0
                   }}
                 >
                   <img
@@ -211,7 +218,7 @@ const HVACLanding = () => {
                     }}
                   />
                   <PlayButton />
-                </div>
+                </button>
               )}
             </div>
           </div>
@@ -320,9 +327,9 @@ const HVACLanding = () => {
                         allowFullScreen
                       />
                     ) : (
-                      <div
+                      <button
+                        type="button"
                         onClick={() => setLoadTestimonial(true)}
-                        onTouchEnd={(e) => { e.preventDefault(); setLoadTestimonial(true); }}
                         style={{
                           position: 'absolute',
                           top: 0,
@@ -331,7 +338,9 @@ const HVACLanding = () => {
                           height: '100%',
                           cursor: 'pointer',
                           backgroundColor: '#0a0a0a',
-                          touchAction: 'manipulation'
+                          border: 'none',
+                          padding: 0,
+                          margin: 0
                         }}
                       >
                         <img
@@ -347,7 +356,7 @@ const HVACLanding = () => {
                           }}
                         />
                         <PlayButton />
-                      </div>
+                      </button>
                     )}
                   </div>
                 </div>
@@ -938,7 +947,7 @@ const HVACLanding = () => {
         </section>
 
       </main>
-    </div>
+    </>
   );
 };
 
