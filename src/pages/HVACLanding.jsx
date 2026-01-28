@@ -323,14 +323,11 @@ const HVACLanding = () => {
               marginTop: '0'
             }}>Book a call below 👇</h2>
 
-            <div style={{
-              height: isMobile ? '700px' : '750px',
-              overflow: 'scroll'
-            }}>
+            <div>
               {loadCal ? (
                 <Suspense fallback={
                   <div style={{
-                    height: '100%',
+                    minHeight: '400px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -343,13 +340,13 @@ const HVACLanding = () => {
                   <Cal
                     namespace="one-stop-hvac-system-demo"
                     calLink="team/design-groove/one-stop-hvac-system-demo"
-                    style={{ width: '100%', height: '100%', overflow: 'scroll' }}
+                    style={{ width: '100%', minHeight: '600px' }}
                     config={{ layout: 'month_view', theme: 'light' }}
                   />
                 </Suspense>
               ) : (
                 <div style={{
-                  height: '100%',
+                  minHeight: '400px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
