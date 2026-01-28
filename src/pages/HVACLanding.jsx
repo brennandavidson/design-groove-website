@@ -189,15 +189,22 @@ const HVACLanding = () => {
             🎁 PLUS... it comes with a free website
           </p>
 
-          <p style={{
-            fontSize: isMobile ? '1rem' : '1.15rem',
-            lineHeight: 1.5,
-            color: '#555',
+          <div style={{
+            fontSize: isMobile ? '1rem' : '1.1rem',
+            lineHeight: 1.7,
+            color: '#1a1a1a',
             maxWidth: '700px',
-            margin: '0 auto 2.5rem'
+            margin: '0 auto 2rem',
+            textAlign: 'left',
+            display: 'inline-block'
           }}>
-            👇 Watch this 4 minute video to see EXACTLY how it works and why it makes you more money
-          </p>
+            <p style={{ margin: '0 0 0.25rem' }}>
+              🔊 <strong>Step 1:</strong> Watch this <span style={{ textDecoration: 'underline', fontWeight: 600 }}>5 minute video</span> <span style={{ color: '#555' }}>( YOU NEED TO TURN SOUND ON )</span>
+            </p>
+            <p style={{ margin: 0, paddingLeft: '1.5rem' }}>
+              <strong>Step 2:</strong> <span style={{ textDecoration: 'underline' }}>Book a call</span> below if you think we might be a good fit
+            </p>
+          </div>
 
           {/* VSL - Click to load */}
           <div style={{
