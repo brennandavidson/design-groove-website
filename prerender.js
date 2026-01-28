@@ -23,10 +23,11 @@ let routes = [
   '/contact',
   '/book',
   '/hvac-system', // Landing page (noindex)
+  '/hvac-ty', // Thank you page (noindex)
 ]
 
 // Routes to exclude from sitemap (noindex pages)
-const excludeFromSitemap = ['/hvac-system']
+const excludeFromSitemap = ['/hvac-system', '/hvac-ty']
 
 // Store LCP image URLs for homepage preload
 let lcpPreloads = []
@@ -110,7 +111,7 @@ let lcpPreloads = []
     if (url === '/hvac-system') {
       htmlFile = htmlFile
         .replace(/<div id="static-mask"[^>]*><\/div>/, '') // Remove mask div
-        .replace(/<script>[\s\S]*?window\.__removeMask[\s\S]*?<\/script>/, '') // Remove mask script
+        .replace(/<script>\s*\/\/ Remove mask[\s\S]*?window\.__removeMask[\s\S]*?<\/script>/, '') // Remove mask script
         .replace(/<link rel="preconnect" href="https:\/\/cdn\.sanity\.io"[^>]*>/, '') // Remove Sanity preconnects
         .replace(/<link rel="preconnect" href="https:\/\/8jhw3vic\.apicdn\.sanity\.io"[^>]*>/, '')
         .replace(/<link rel="dns-prefetch" href="https:\/\/cdn\.sanity\.io"[^>]*>/, '')

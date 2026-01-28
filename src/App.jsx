@@ -19,6 +19,7 @@ const BookPage = lazy(() => import('./pages/BookPage'));
 const ProcessPage = lazy(() => import('./pages/ProcessPage'));
 const AboutPage = lazy(() => import('./pages/AboutPage'));
 const HVACLanding = lazy(() => import('./pages/HVACLanding'));
+const HVACThankYou = lazy(() => import('./pages/HVACThankYou'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 function App() {
@@ -27,16 +28,16 @@ function App() {
   const [showPreloader, setShowPreloader] = useState(() => {
     if (typeof window !== 'undefined') {
       if (window.__IS_404__) return false; // Skip preloader on 404
-      if (window.location.pathname === '/hvac-system') return false; // Skip on landing page
+      if (window.location.pathname.startsWith('/hvac')) return false; // Skip on landing/thank you pages
       return !sessionStorage.getItem('hasVisited');
     }
     return true; // Enable preloader on server/initial HTML to cover content
   });
-  
+
   // If hasVisited is set, isLoaded starts as true (content ready)
   const [isLoaded, setIsLoaded] = useState(() => {
     if (typeof window !== 'undefined') {
-      if (window.location.pathname === '/hvac-system') return true; // Skip on landing page
+      if (window.location.pathname.startsWith('/hvac')) return true; // Skip on landing/thank you pages
       return !!sessionStorage.getItem('hasVisited');
     }
     return false; // Content is not loaded on server/initial HTML
@@ -154,6 +155,7 @@ function App() {
           <Route path="/process" element={<ProcessPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/hvac-system" element={<HVACLanding />} />
+          <Route path="/hvac-ty" element={<HVACThankYou />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
@@ -161,9 +163,9 @@ function App() {
   );
 
   const location = useLocation();
-  const isLandingPage = location.pathname === '/hvac-system';
+  const isLandingPage = location.pathname.startsWith('/hvac');
 
-  // Disable Lenis on mobile and on landing pages (conflicts with Calendly embed)
+  // Disable Lenis on mobile and on landing pages
   return (!isMobile && !isLandingPage) ? (
     <ReactLenis root options={{
       lerp: 0.1,

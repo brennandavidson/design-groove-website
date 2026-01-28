@@ -119,12 +119,16 @@ const HVACLanding = () => {
   const mobile = mounted ? isMobile : false;
 
 
-  // Lazy load Cal.com when booker section comes into view
+  // Lazy load Cal.com when booker section comes into view + track booker_viewed
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setLoadCal(true);
+          // Track booker viewed event
+          if (typeof window !== 'undefined' && window.dataLayer) {
+            window.dataLayer.push({ event: 'booker_viewed' });
+          }
           observer.disconnect();
         }
       },
@@ -282,7 +286,12 @@ const HVACLanding = () => {
               ) : (
                 <button
                   type="button"
-                  onClick={() => setLoadVSL(true)}
+                  onClick={() => {
+                    setLoadVSL(true);
+                    if (typeof window !== 'undefined' && window.dataLayer) {
+                      window.dataLayer.push({ event: 'video_play', video_name: 'hvac_vsl' });
+                    }
+                  }}
                   style={{
                     position: 'absolute',
                     top: 0,
@@ -418,7 +427,12 @@ const HVACLanding = () => {
                     ) : (
                       <button
                         type="button"
-                        onClick={() => setLoadTestimonial(true)}
+                        onClick={() => {
+                          setLoadTestimonial(true);
+                          if (typeof window !== 'undefined' && window.dataLayer) {
+                            window.dataLayer.push({ event: 'testimonial_play' });
+                          }
+                        }}
                         style={{
                           position: 'absolute',
                           top: 0,
@@ -1029,6 +1043,11 @@ const HVACLanding = () => {
               }}
               onMouseEnter={(e) => e.target.style.backgroundColor = '#005bb5'}
               onMouseLeave={(e) => e.target.style.backgroundColor = '#0073E6'}
+              onClick={() => {
+                if (typeof window !== 'undefined' && window.dataLayer) {
+                  window.dataLayer.push({ event: 'cta_click', cta_location: 'bottom_section' });
+                }
+              }}
             >
               Book My Call
             </a>

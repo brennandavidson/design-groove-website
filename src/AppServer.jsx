@@ -17,22 +17,24 @@ import BookPage from './pages/BookPage';
 import ProcessPage from './pages/ProcessPage';
 import AboutPage from './pages/AboutPage';
 import HVACLanding from './pages/HVACLanding';
+import HVACThankYou from './pages/HVACThankYou';
 import NotFound from './pages/NotFound';
 
 function AppServer() {
   const location = useLocation();
-  const isLandingPage = location.pathname === '/hvac-system';
+  const isLandingPage = location.pathname === '/hvac-system' || location.pathname === '/hvac-ty';
 
   // Static state for server rendering
   const showPreloader = !isLandingPage;
   const isLoaded = false;
 
-  // HVAC Landing page - minimal shell
+  // HVAC Landing/Thank You pages - minimal shell
   if (isLandingPage) {
     return (
       <div className="App">
         <Routes>
           <Route path="/hvac-system" element={<HVACLanding />} />
+          <Route path="/hvac-ty" element={<HVACThankYou />} />
         </Routes>
       </div>
     );
