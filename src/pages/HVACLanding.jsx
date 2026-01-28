@@ -157,6 +157,16 @@ const HVACLanding = () => {
         <meta name="robots" content="noindex, nofollow" />
         <meta name="description" content="See how HVAC owners are using this system to grow their business for only $297/mo. No agency fees. No ad budgets." />
         <link rel="preload" href="/assets/hvac-vsl-thumbnail.jpg" as="image" fetchpriority="high" />
+        <style>{`
+          .hvac-hero-title { font-size: 2.2rem; }
+          .hvac-hero-subtitle { font-size: 1.2rem; }
+          .hvac-section-padding { padding-top: 7rem; }
+          @media (min-width: 900px) {
+            .hvac-hero-title { font-size: 3.5rem; }
+            .hvac-hero-subtitle { font-size: 1.5rem; }
+            .hvac-section-padding { padding-top: 9rem; }
+          }
+        `}</style>
       </Helmet>
 
       <LandingNavbar />
@@ -164,15 +174,16 @@ const HVACLanding = () => {
       <main style={{ backgroundColor: '#ffffff', color: '#1a1a1a', fontFamily: 'Inter, sans-serif' }}>
         
         {/* HERO SECTION */}
-        <section style={{
-          padding: isMobile ? '7rem 5vw 0' : '9rem 5vw 0',
+        <section className="hvac-section-padding" style={{
+          paddingLeft: '5vw',
+          paddingRight: '5vw',
+          paddingBottom: 0,
           textAlign: 'center',
           maxWidth: '1200px',
           margin: '0 auto'
         }}>
-          <h1 style={{
+          <h1 className="hvac-hero-title" style={{
             fontFamily: 'Instrument Serif, serif',
-            fontSize: isMobile ? '2.2rem' : '3.5rem',
             lineHeight: 1.15,
             marginBottom: '1.25rem',
             color: '#1a1a1a'
@@ -180,8 +191,7 @@ const HVACLanding = () => {
             See how HVAC owners are using this system to <span style={{ color: '#0073E6' }}>GROW</span> their business for only $297/mo (No agency fees. No ad budgets. No bullsh*t.)
           </h1>
 
-          <p style={{
-            fontSize: isMobile ? '1.2rem' : '1.5rem',
+          <p className="hvac-hero-subtitle" style={{
             fontWeight: 600,
             color: '#1a1a1a',
             margin: '0 auto 1rem'
