@@ -117,6 +117,11 @@ let lcpPreloads = []
         .replace(/<link rel="preconnect" href="https:\/\/assets\.calendly\.com"[^>]*>/, '') // Remove Calendly
         .replace(/<link rel="dns-prefetch" href="https:\/\/assets\.calendly\.com"[^>]*>/, '')
         .replace(/<link rel="preload" href="\/fonts\/Inter-SemiBold\.woff2"[^>]*>/, '') // Remove extra font preload
+        // Add critical CSS for mobile-first responsive styles (prevents flash)
+        .replace(
+          /<\/head>/,
+          `<style>.hvac-hero-title{font-size:2.2rem}.hvac-hero-subtitle{font-size:1.2rem}.hvac-section-padding{padding-top:7rem}@media(min-width:900px){.hvac-hero-title{font-size:3.5rem}.hvac-hero-subtitle{font-size:1.5rem}.hvac-section-padding{padding-top:9rem}}</style></head>`
+        )
     }
 
     const filePath = `dist${url === '/' ? '/index.html' : `${url}/index.html`}`
