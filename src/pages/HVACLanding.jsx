@@ -190,18 +190,20 @@ const HVACLanding = () => {
           </p>
 
           <div style={{
-            fontSize: isMobile ? '1rem' : '1.1rem',
-            lineHeight: 1.7,
+            fontSize: isMobile ? '0.95rem' : '1.1rem',
+            lineHeight: 1.6,
             color: '#1a1a1a',
-            maxWidth: '700px',
+            maxWidth: '600px',
             margin: '0 auto 2rem',
-            textAlign: 'left',
-            display: 'inline-block'
+            textAlign: 'center'
           }}>
-            <p style={{ margin: '0 0 0.25rem' }}>
-              🔊 <strong>Step 1:</strong> Watch this <span style={{ textDecoration: 'underline', fontWeight: 600 }}>5 minute video</span> <span style={{ color: '#555' }}>( YOU NEED TO TURN SOUND ON )</span>
+            <p style={{ margin: '0 0 0.5rem' }}>
+              🔊 <strong>Step 1:</strong> Watch this <span style={{ textDecoration: 'underline', fontWeight: 600 }}>5 minute video</span> to see EXACTLY how it works
             </p>
-            <p style={{ margin: 0, paddingLeft: '1.5rem' }}>
+            <p style={{ margin: 0, fontSize: '0.85em', color: '#666' }}>
+              ( YOU NEED TO TURN SOUND ON )
+            </p>
+            <p style={{ margin: '0.75rem 0 0' }}>
               <strong>Step 2:</strong> <span style={{ textDecoration: 'underline' }}>Book a call</span> below if you think we might be a good fit
             </p>
           </div>
