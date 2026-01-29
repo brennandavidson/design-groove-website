@@ -1,5 +1,6 @@
 import json
 import os
+import traceback
 from http.server import BaseHTTPRequestHandler
 import gspread
 from google.oauth2.service_account import Credentials
@@ -29,9 +30,13 @@ class handler(BaseHTTPRequestHandler):
             # Authenticate with Google Sheets
             creds_json = os.environ.get('GOOGLE_CREDENTIALS')
             if not creds_json:
-                raise Exception('GOOGLE_CREDENTIALS not set')
+                raise Exception('GOOGLE_CREDENTIALS environment variable not set')
 
-            creds_dict = json.loads(creds_json)
+            try:
+                creds_dict = json.loads(creds_json)
+            except json.JSONDecodeError as e:
+                raise Exception(f'Invalid JSON in GOOGLE_CREDENTIALS: {str(e)}')
+
             creds = Credentials.from_service_account_info(creds_dict, scopes=SCOPES)
             client = gspread.authorize(creds)
 
@@ -43,16 +48,23 @@ class handler(BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
             self.end_headers()
-            self.wfile.write(json.dumps({'success': True}).encode())
+            response = {'success': True, 'data': {'name': name, 'email': email}}
+            self.wfile.write(json.dumps(response).encode())
 
         except Exception as e:
             self.send_response(500)
             self.send_header('Content-type', 'application/json')
             self.end_headers()
-            self.wfile.write(json.dumps({'error': str(e)}).encode())
+            error_msg = f'{type(e).__name__}: {str(e)}\n{traceback.format_exc()}'
+            self.wfile.write(json.dumps({'error': error_msg}).encode())
 
     def do_GET(self):
         self.send_response(200)
         self.send_header('Content-type', 'application/json')
         self.end_headers()
-        self.wfile.write(json.dumps({'status': 'Cal.com webhook endpoint ready'}).encode())
+        # Check if credentials are set
+        creds_set = bool(os.environ.get('GOOGLE_CREDENTIALS'))
+        self.wfile.write(json.dumps({
+            'status': 'Cal.com webhook endpoint ready',
+            'credentials_configured': creds_set
+        }).encode())
