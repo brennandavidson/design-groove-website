@@ -111,6 +111,9 @@ function App() {
     };
   }, [isScrollRestoring]);
 
+  const location = useLocation();
+  const isLandingPage = location.pathname.startsWith('/hvac');
+
   const content = (
     <div className="App">
       <Helmet>
@@ -126,11 +129,11 @@ function App() {
         // Remove the static HTML mask once preloader is done
         if (window.__removeMask) window.__removeMask();
       }} />}
-      
+
       {/* Scroll Restoration Mask - Pure White Overlay */}
       {/* Only active if Preloader is NOT active (Refresh scenario) */}
       {!showPreloader && isScrollRestoring && (
-        <div 
+        <div
           style={{
             position: 'fixed',
             inset: 0,
@@ -140,9 +143,9 @@ function App() {
           }}
         />
       )}
-      
-      {/* Fixed Navigation (Always on top) */}
-      <Navbar />
+
+      {/* Fixed Navigation - Hide on HVAC landing pages */}
+      {!isLandingPage && <Navbar />}
       
       <Suspense fallback={<div style={{ height: '100vh', width: '100%', backgroundColor: '#fff' }} />}>
         <Routes>
@@ -161,9 +164,6 @@ function App() {
       </Suspense>
     </div>
   );
-
-  const location = useLocation();
-  const isLandingPage = location.pathname.startsWith('/hvac');
 
   // Disable Lenis on mobile and on landing pages
   return (!isMobile && !isLandingPage) ? (
