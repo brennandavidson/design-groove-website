@@ -85,7 +85,7 @@ let lcpPreloads = []
 
   // Prerender pages
   for (const url of routes) {
-    const isHvacPage = url.startsWith('/hvac')
+    const isHvacPage = url === '/1-stop-hvac' || url === '/hvac-ty'
     const context = {}
 
     // Use appropriate renderer and template for HVAC pages

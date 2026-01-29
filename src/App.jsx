@@ -28,7 +28,7 @@ function App() {
   const [showPreloader, setShowPreloader] = useState(() => {
     if (typeof window !== 'undefined') {
       if (window.__IS_404__) return false; // Skip preloader on 404
-      if (window.location.pathname.startsWith('/hvac')) return false; // Skip on landing/thank you pages
+      if (window.location.pathname === '/1-stop-hvac' || window.location.pathname === '/hvac-ty') return false; // Skip on landing/thank you pages
       return !sessionStorage.getItem('hasVisited');
     }
     return true; // Enable preloader on server/initial HTML to cover content
@@ -37,7 +37,7 @@ function App() {
   // If hasVisited is set, isLoaded starts as true (content ready)
   const [isLoaded, setIsLoaded] = useState(() => {
     if (typeof window !== 'undefined') {
-      if (window.location.pathname.startsWith('/hvac')) return true; // Skip on landing/thank you pages
+      if (window.location.pathname === '/1-stop-hvac' || window.location.pathname === '/hvac-ty') return true; // Skip on landing/thank you pages
       return !!sessionStorage.getItem('hasVisited');
     }
     return false; // Content is not loaded on server/initial HTML
@@ -112,7 +112,7 @@ function App() {
   }, [isScrollRestoring]);
 
   const location = useLocation();
-  const isLandingPage = location.pathname.startsWith('/hvac');
+  const isLandingPage = location.pathname === '/1-stop-hvac' || location.pathname === '/hvac-ty';
 
   const content = (
     <div className="App">
