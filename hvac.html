@@ -1,14 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-P34RGBRC');</script>
-    <!-- End Google Tag Manager -->
     <meta charset="UTF-8" />
+    <!-- GTM dataLayer init (GTM script loads after page render) -->
+    <script>window.dataLayer=window.dataLayer||[];</script>
     <link rel="preconnect" href="https://iframe.mediadelivery.net" crossorigin />
     <link rel="dns-prefetch" href="https://iframe.mediadelivery.net" />
     <!-- Critical Font Preloads -->
@@ -52,6 +47,23 @@
 
         document.body.addEventListener('click', loadVideo, true);
         document.body.addEventListener('touchstart', loadVideo, true);
+      })();
+    </script>
+    <!-- Delayed GTM - loads after page is interactive for better PageSpeed -->
+    <script>
+      (function(){
+        function loadGTM(){
+          var j=document.createElement('script');
+          j.async=true;
+          j.src='https://www.googletagmanager.com/gtm.js?id=GTM-P34RGBRC';
+          document.head.appendChild(j);
+          window.dataLayer.push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+        }
+        if(window.requestIdleCallback){
+          requestIdleCallback(loadGTM,{timeout:3000});
+        }else{
+          setTimeout(loadGTM,2000);
+        }
       })();
     </script>
   </body>
