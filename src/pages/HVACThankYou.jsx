@@ -1,6 +1,32 @@
 import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 
+// Simple Navbar for Landing Page (matches HVACLanding)
+const LandingNavbar = () => (
+  <nav style={{
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    padding: '2rem 4vw',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
+    backgroundColor: 'transparent'
+  }}>
+    <div style={{ display: 'block' }}>
+      <img
+        src="/assets/dg-logo-dark.svg"
+        alt="Design Groove"
+        width="120"
+        height="32"
+        style={{ height: '32px', width: 'auto' }}
+      />
+    </div>
+  </nav>
+);
+
 const HVACThankYou = () => {
   // Fire conversion event on page load
   useEffect(() => {
@@ -15,6 +41,8 @@ const HVACThankYou = () => {
         <title>You're Booked! | Design Groove</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
+
+      <LandingNavbar />
 
       <div style={{
         minHeight: '100vh',
