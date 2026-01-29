@@ -99,7 +99,7 @@ const HVACThankYou = () => {
           </div>
 
           <a
-            href="/hvac-system"
+            href="/1-stop-hvac"
             style={{
               display: 'inline-block',
               color: '#0073E6',

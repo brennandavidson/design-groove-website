@@ -64,7 +64,7 @@ function HVACApp() {
       <style>{styles}</style>
       <BrowserRouter>
         <Routes>
-          <Route path="/hvac-system" element={<HVACLanding />} />
+          <Route path="/1-stop-hvac" element={<HVACLanding />} />
           <Route path="/hvac-ty" element={<HVACThankYou />} />
         </Routes>
       </BrowserRouter>

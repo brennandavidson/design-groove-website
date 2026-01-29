@@ -22,7 +22,7 @@ import NotFound from './pages/NotFound';
 
 function AppServer() {
   const location = useLocation();
-  const isLandingPage = location.pathname === '/hvac-system' || location.pathname === '/hvac-ty';
+  const isLandingPage = location.pathname === '/1-stop-hvac' || location.pathname === '/hvac-ty';
 
   // Static state for server rendering
   const showPreloader = !isLandingPage;
@@ -33,7 +33,7 @@ function AppServer() {
     return (
       <div className="App">
         <Routes>
-          <Route path="/hvac-system" element={<HVACLanding />} />
+          <Route path="/1-stop-hvac" element={<HVACLanding />} />
           <Route path="/hvac-ty" element={<HVACThankYou />} />
         </Routes>
       </div>

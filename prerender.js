@@ -24,12 +24,12 @@ let routes = [
   '/about',
   '/contact',
   '/book',
-  '/hvac-system', // Landing page (noindex)
+  '/1-stop-hvac', // Landing page (noindex)
   '/hvac-ty', // Thank you page (noindex)
 ]
 
 // Routes to exclude from sitemap (noindex pages)
-const excludeFromSitemap = ['/hvac-system', '/hvac-ty']
+const excludeFromSitemap = ['/1-stop-hvac', '/hvac-ty']
 
 // Store LCP image URLs for homepage preload
 let lcpPreloads = []

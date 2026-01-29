@@ -58,7 +58,7 @@ function App() {
   // This mask covers the screen for a split second on refresh to hide that jump.
   const [isScrollRestoring, setIsScrollRestoring] = useState(() => {
     if (typeof window !== 'undefined') {
-      if (window.location.pathname === '/hvac-system') return false; // Skip on landing page
+      if (window.location.pathname === '/1-stop-hvac') return false; // Skip on landing page
       // If we've visited, we might be restoring scroll.
       // If preloader is showing (first visit), mask is redundant but harmless.
       // If preloader is skipped (refresh), mask is CRITICAL.
@@ -157,7 +157,7 @@ function App() {
           <Route path="/book" element={<BookPage />} />
           <Route path="/process" element={<ProcessPage />} />
           <Route path="/about" element={<AboutPage />} />
-          <Route path="/hvac-system" element={<HVACLanding />} />
+          <Route path="/1-stop-hvac" element={<HVACLanding />} />
           <Route path="/hvac-ty" element={<HVACThankYou />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

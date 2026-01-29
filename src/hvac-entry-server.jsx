@@ -13,7 +13,7 @@ export function render(url, context) {
       <HelmetProvider context={helmetContext}>
         <StaticRouter location={url} context={context}>
           <Routes>
-            <Route path="/hvac-system" element={<HVACLanding />} />
+            <Route path="/1-stop-hvac" element={<HVACLanding />} />
             <Route path="/hvac-ty" element={<HVACThankYou />} />
           </Routes>
         </StaticRouter>

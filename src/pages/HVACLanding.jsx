@@ -157,7 +157,7 @@ const HVACLanding = () => {
   return (
     <>
       <Helmet>
-        <title>HVAC Lead System | Design Groove</title>
+        <title>One-Stop HVAC System | Design Groove</title>
         <meta name="robots" content="noindex, nofollow" />
         <meta name="description" content="See how HVAC owners are using this system to grow their business for only $297/mo. No agency fees. No ad budgets." />
         <link rel="preload" href="/assets/hvac-vsl-thumbnail.jpg" as="image" fetchpriority="high" />
