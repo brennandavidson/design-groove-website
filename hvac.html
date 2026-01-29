@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-P34RGBRC');</script>
+    <!-- End Google Tag Manager -->
+    <meta charset="UTF-8" />
+    <link rel="preconnect" href="https://iframe.mediadelivery.net" crossorigin />
+    <link rel="dns-prefetch" href="https://iframe.mediadelivery.net" />
+    <!-- Critical Font Preloads -->
+    <link rel="preload" href="/fonts/InstrumentSerif-Regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/Inter-SemiBold.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/assets/hvac-vsl-thumbnail.jpg" as="image" fetchpriority="high" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HVAC Lead System | Design Groove</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="description" content="See how HVAC owners are using this system to grow their business for only $297/mo. No agency fees. No ad budgets." />
+    <!--hvac-head-->
+  </head>
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P34RGBRC"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <div id="root"><!--hvac-html--></div>
+    <script type="module" src="/src/hvac-entry.jsx"></script>
+    <script>
+      // Video click handler
+      (function() {
+        function loadVideo(e) {
+          var btn = e.target;
+          while (btn && !btn.getAttribute('data-video-id')) {
+            btn = btn.parentElement;
+          }
+          if (!btn || btn.getAttribute('data-clicked')) return;
+
+          e.preventDefault();
+          e.stopPropagation();
+          btn.setAttribute('data-clicked', 'true');
+
+          var id = btn.getAttribute('data-video-id');
+          var container = btn.parentElement;
+          if (container) {
+            container.innerHTML = '<iframe src="https://iframe.mediadelivery.net/embed/585643/' + id + '?autoplay=true&muted=false&preload=true&responsive=true" style="border:0;position:absolute;top:0;left:0;height:100%;width:100%" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;fullscreen" allowfullscreen playsinline webkit-playsinline></iframe>';
+          }
+        }
+
+        document.body.addEventListener('click', loadVideo, true);
+        document.body.addEventListener('touchstart', loadVideo, true);
+      })();
+    </script>
+  </body>
+</html>

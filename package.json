@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run build:client && npm run build:server && npm run generate",
+    "build": "npm run build:client && npm run build:server && npm run build:hvac-server && npm run generate",
     "build:client": "vite build --outDir dist",
     "build:server": "vite build --ssr src/entry-server.jsx --outDir dist/server",
+    "build:hvac-server": "vite build --ssr src/hvac-entry-server.jsx --outDir dist/hvac-server",
     "generate": "node prerender.js",
     "preview": "vite preview"
   },

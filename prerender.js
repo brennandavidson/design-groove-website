@@ -7,7 +7,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const toAbsolute = (p) => path.resolve(__dirname, p)
 
 const template = fs.readFileSync(toAbsolute('dist/index.html'), 'utf-8')
+const hvacTemplate = fs.readFileSync(toAbsolute('dist/hvac.html'), 'utf-8')
 const { render } = await import('./dist/server/entry-server.js')
+const { render: renderHvac } = await import('./dist/hvac-server/hvac-entry-server.js')
 
 // Find and read the CSS file for inlining
 const cssFileName = fs.readdirSync(toAbsolute('dist/assets')).find(f => f.endsWith('.css'))
@@ -83,9 +85,11 @@ let lcpPreloads = []
 
   // Prerender pages
   for (const url of routes) {
+    const isHvacPage = url.startsWith('/hvac')
     const context = {}
-    const { html, helmet } = render(url, context)
 
+    // Use appropriate renderer and template for HVAC pages
+    const { html, helmet } = isHvacPage ? renderHvac(url, context) : render(url, context)
     const appHtml = html
 
     // Add LCP preloads for homepage only
@@ -93,36 +97,33 @@ let lcpPreloads = []
       ? lcpPreloads.map(imgUrl => `<link rel="preload" as="image" href="${imgUrl}" fetchpriority="high" />`).join('\n      ')
       : ''
 
-    const helmetHtml = `
-      ${helmet.title ? helmet.title.toString() : ''}
-      ${helmet.meta ? helmet.meta.toString() : ''}
-      ${helmet.link ? helmet.link.toString() : ''}
-      ${helmet.script ? helmet.script.toString() : ''}
-      ${lcpPreload}
-      ${cssContent ? `<style>${cssContent}</style>` : ''}
-    `
+    let htmlFile
 
-    let htmlFile = template
-      .replace(`<!--app-head-->`, helmetHtml)
-      .replace(`<!--app-html-->`, appHtml)
-      .replace(/<link rel="stylesheet"[^>]*href="\/assets\/[^"]+\.css"[^>]*>/, '') // Remove external CSS link
-
-    // Remove static mask and unnecessary preloads for HVAC landing page
-    if (url === '/hvac-system') {
-      htmlFile = htmlFile
-        .replace(/<div id="static-mask"[^>]*><\/div>/, '') // Remove mask div
-        .replace(/<script>\s*\/\/ Remove mask[\s\S]*?window\.__removeMask[\s\S]*?<\/script>/, '') // Remove mask script
-        .replace(/<link rel="preconnect" href="https:\/\/cdn\.sanity\.io"[^>]*>/, '') // Remove Sanity preconnects
-        .replace(/<link rel="preconnect" href="https:\/\/8jhw3vic\.apicdn\.sanity\.io"[^>]*>/, '')
-        .replace(/<link rel="dns-prefetch" href="https:\/\/cdn\.sanity\.io"[^>]*>/, '')
-        .replace(/<link rel="preconnect" href="https:\/\/assets\.calendly\.com"[^>]*>/, '') // Remove Calendly
-        .replace(/<link rel="dns-prefetch" href="https:\/\/assets\.calendly\.com"[^>]*>/, '')
-        .replace(/<link rel="preload" href="\/fonts\/Inter-SemiBold\.woff2"[^>]*>/, '') // Remove extra font preload
-        // Add critical CSS for mobile-first responsive styles (prevents flash)
-        .replace(
-          /<\/head>/,
-          `<style>.hvac-hero-title{font-size:2.2rem}.hvac-hero-subtitle{font-size:1.2rem}.hvac-section-padding{padding-top:7rem}@media(min-width:900px){.hvac-hero-title{font-size:3.5rem}.hvac-hero-subtitle{font-size:1.5rem}.hvac-section-padding{padding-top:9rem}}</style></head>`
-        )
+    if (isHvacPage) {
+      // Use HVAC-specific template (lightweight, no main app bundle)
+      const hvacHelmetHtml = `
+        ${helmet.title ? helmet.title.toString() : ''}
+        ${helmet.meta ? helmet.meta.toString() : ''}
+        ${helmet.link ? helmet.link.toString() : ''}
+        ${helmet.script ? helmet.script.toString() : ''}
+      `
+      htmlFile = hvacTemplate
+        .replace(`<!--hvac-head-->`, hvacHelmetHtml)
+        .replace(`<!--hvac-html-->`, appHtml)
+    } else {
+      // Use main template for other pages
+      const helmetHtml = `
+        ${helmet.title ? helmet.title.toString() : ''}
+        ${helmet.meta ? helmet.meta.toString() : ''}
+        ${helmet.link ? helmet.link.toString() : ''}
+        ${helmet.script ? helmet.script.toString() : ''}
+        ${lcpPreload}
+        ${cssContent ? `<style>${cssContent}</style>` : ''}
+      `
+      htmlFile = template
+        .replace(`<!--app-head-->`, helmetHtml)
+        .replace(`<!--app-html-->`, appHtml)
+        .replace(/<link rel="stylesheet"[^>]*href="\/assets\/[^"]+\.css"[^>]*>/, '') // Remove external CSS link
     }
 
     const filePath = `dist${url === '/' ? '/index.html' : `${url}/index.html`}`
