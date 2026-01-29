@@ -41,14 +41,21 @@ class handler(BaseHTTPRequestHandler):
             client = gspread.authorize(creds)
 
             # Append to sheet
-            sheet = client.open_by_key(SHEET_ID).sheet1
-            sheet.append_row([name, email, phone, booking_time, booked_at, status])
+            spreadsheet = client.open_by_key(SHEET_ID)
+            sheet = spreadsheet.sheet1
+            result = sheet.append_row([name, email, phone, booking_time, booked_at, status])
 
             # Success response
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
             self.end_headers()
-            response = {'success': True, 'data': {'name': name, 'email': email}}
+            response = {
+                'success': True,
+                'data': {'name': name, 'email': email},
+                'sheet_title': spreadsheet.title,
+                'sheet_url': spreadsheet.url,
+                'append_result': str(result)
+            }
             self.wfile.write(json.dumps(response).encode())
 
         except Exception as e:
