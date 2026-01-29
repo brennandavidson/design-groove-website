@@ -5,7 +5,8 @@
   "redirects": [
     { "source": "/portfolio", "destination": "/work", "permanent": true },
     { "source": "/expert-web-development", "destination": "/services", "permanent": true },
-    { "source": "/case-studies/:slug", "destination": "/work/:slug", "permanent": true }
+    { "source": "/case-studies/:slug", "destination": "/work/:slug", "permanent": true },
+    { "source": "/hvac-system", "destination": "/1-stop-hvac", "permanent": true }
   ],
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
