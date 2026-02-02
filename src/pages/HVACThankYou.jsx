@@ -28,10 +28,15 @@ const LandingNavbar = () => (
 );
 
 const HVACThankYou = () => {
-  // Fire conversion event on page load
+  // Fire conversion events on page load
   useEffect(() => {
+    // GTM dataLayer event
     if (typeof window !== 'undefined' && window.dataLayer) {
       window.dataLayer.push({ event: 'lead', lead_source: 'hvac_landing' });
+    }
+    // Meta Pixel Lead event
+    if (typeof window !== 'undefined' && typeof window.fbq === 'function') {
+      window.fbq('track', 'Lead');
     }
   }, []);
 
