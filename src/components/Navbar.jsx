@@ -261,13 +261,13 @@ const Navbar = () => {
               </a>
             ))}
             
-            <a 
+            <a
               href="/book"
               onClick={(e) => {
                 e.preventDefault();
-                router.push('/book');
+                navigate('/book');
               }}
-              style={{ 
+              style={{
                 padding: '12px 24px',
                 backgroundColor: '#1a1a1a',
                 border: '1px solid #1a1a1a',
@@ -406,13 +406,13 @@ const Navbar = () => {
                 </a>
               ))}
               
-              <a 
+              <a
                 href="/book"
                 onClick={(e) => {
                   e.preventDefault();
-                  router.push('/book');
+                  navigate('/book');
                 }}
-                style={{ 
+                style={{
                   padding: '12px 24px',
                   backgroundColor: '#1a1a1a',
                   border: '1px solid #1a1a1a',
