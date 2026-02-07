@@ -112,7 +112,28 @@ const HVACLanding = () => {
     const checkMobile = () => setIsMobile(window.innerWidth < 900);
     checkMobile();
     window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+
+    // Scroll depth tracking (25%, 50%, 75%)
+    const firedDepths = new Set();
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (docHeight <= 0) return;
+      const percent = Math.round((scrollTop / docHeight) * 100);
+      [25, 50, 75].forEach(threshold => {
+        if (percent >= threshold && !firedDepths.has(threshold)) {
+          firedDepths.add(threshold);
+          if (window.fbq) window.fbq('trackCustom', 'ScrollDepth', { percent: threshold });
+          if (window.dataLayer) window.dataLayer.push({ event: 'scroll_depth', depth: threshold });
+        }
+      });
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   // Use desktop styles until mounted to prevent flash
@@ -128,6 +149,9 @@ const HVACLanding = () => {
           // Track booker viewed event
           if (typeof window !== 'undefined' && window.dataLayer) {
             window.dataLayer.push({ event: 'booker_viewed' });
+          }
+          if (typeof window !== 'undefined' && window.fbq) {
+            window.fbq('track', 'ViewContent', { content_name: 'Booker' });
           }
           observer.disconnect();
         }
@@ -291,6 +315,9 @@ const HVACLanding = () => {
                     if (typeof window !== 'undefined' && window.dataLayer) {
                       window.dataLayer.push({ event: 'video_play', video_name: 'hvac_vsl' });
                     }
+                    if (typeof window !== 'undefined' && window.fbq) {
+                      window.fbq('trackCustom', 'VSLPlay');
+                    }
                   }}
                   style={{
                     position: 'absolute',
@@ -431,6 +458,9 @@ const HVACLanding = () => {
                           setLoadTestimonial(true);
                           if (typeof window !== 'undefined' && window.dataLayer) {
                             window.dataLayer.push({ event: 'testimonial_play' });
+                          }
+                          if (typeof window !== 'undefined' && window.fbq) {
+                            window.fbq('trackCustom', 'TestimonialPlay');
                           }
                         }}
                         style={{
@@ -1046,6 +1076,9 @@ const HVACLanding = () => {
               onClick={() => {
                 if (typeof window !== 'undefined' && window.dataLayer) {
                   window.dataLayer.push({ event: 'cta_click', cta_location: 'bottom_section' });
+                }
+                if (typeof window !== 'undefined' && window.fbq) {
+                  window.fbq('trackCustom', 'CTAClick', { location: 'bottom_section' });
                 }
               }}
             >
