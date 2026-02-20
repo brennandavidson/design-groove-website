@@ -131,7 +131,7 @@ const ContactPage = () => {
           >
             <div>
               <h3 style={{ fontFamily: 'Inter', fontSize: '1rem', fontWeight: 600, marginBottom: '0.5rem' }}>Email</h3>
-              <a href="mailto:hello@designgroove.com" style={{ fontFamily: 'Inter', fontSize: isMobile ? '1rem' : '1.1rem', color: '#4a4a4a', textDecoration: 'none' }}>hello@designgroove.com</a>
+              <a href="mailto:contact@designgroove.io" style={{ fontFamily: 'Inter', fontSize: isMobile ? '1rem' : '1.1rem', color: '#4a4a4a', textDecoration: 'none' }}>contact@designgroove.io</a>
             </div>
 
             <div>
