@@ -25,11 +25,12 @@ let routes = [
   '/contact',
   '/book',
   '/1-stop-hvac', // Landing page (noindex)
+  '/hvac-guarantee', // Guarantee offer landing page (noindex)
   '/hvac-ty', // Thank you page (noindex)
 ]
 
 // Routes to exclude from sitemap (noindex pages)
-const excludeFromSitemap = ['/1-stop-hvac', '/hvac-ty']
+const excludeFromSitemap = ['/1-stop-hvac', '/hvac-guarantee', '/hvac-ty']
 
 // Store LCP image URLs for homepage preload
 let lcpPreloads = []
@@ -85,7 +86,7 @@ let lcpPreloads = []
 
   // Prerender pages
   for (const url of routes) {
-    const isHvacPage = url === '/1-stop-hvac' || url === '/hvac-ty'
+    const isHvacPage = url === '/1-stop-hvac' || url === '/hvac-guarantee' || url === '/hvac-ty'
     const context = {}
 
     // Use appropriate renderer and template for HVAC pages

@@ -17,12 +17,13 @@ import BookPage from './pages/BookPage';
 import ProcessPage from './pages/ProcessPage';
 import AboutPage from './pages/AboutPage';
 import HVACLanding from './pages/HVACLanding';
+import HVACGuarantee from './pages/HVACGuarantee';
 import HVACThankYou from './pages/HVACThankYou';
 import NotFound from './pages/NotFound';
 
 function AppServer() {
   const location = useLocation();
-  const isLandingPage = location.pathname === '/1-stop-hvac' || location.pathname === '/hvac-ty';
+  const isLandingPage = location.pathname === '/1-stop-hvac' || location.pathname === '/hvac-guarantee' || location.pathname === '/hvac-ty';
 
   // Static state for server rendering
   const showPreloader = !isLandingPage;
@@ -34,6 +35,7 @@ function AppServer() {
       <div className="App">
         <Routes>
           <Route path="/1-stop-hvac" element={<HVACLanding />} />
+          <Route path="/hvac-guarantee" element={<HVACGuarantee />} />
           <Route path="/hvac-ty" element={<HVACThankYou />} />
         </Routes>
       </div>
