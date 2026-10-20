@@ -182,7 +182,6 @@ const STATS = [
 
 const ASH_VIDEO = 'https://iframe.mediadelivery.net/embed/585643/eb803435-50c6-47bb-b214-8ee4b6e80a18';
 
-const HOW = ['Ads that find install buyers', 'Every lead called in seconds', 'Tracked to a booked estimate'];
 
 const CalendarIcon = () => (
   <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -236,6 +235,7 @@ const HVACGuarantee = () => {
           .hg h1 span { color: #5aa9ff; font-weight: 700; }
           .hg-frame { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 14px; overflow: hidden; background: #111; box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 20px 60px rgba(0,115,230,0.12); }
           .hg-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+          .hg-sound.hg-sound-idle { cursor: default; }
           .hg-sound { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 0.5rem; background: transparent; border: 0; color: #fff; font: 700 0.8rem Inter, sans-serif; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; text-shadow: 0 1px 8px rgba(0,0,0,0.6); }
           .hg-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; border: 0; cursor: pointer; font-family: Inter, sans-serif; font-weight: 700; color: #fff; text-decoration: none; border-radius: 10px; background: linear-gradient(90deg, #005ec2, #2b8cff); }
           .hg-cta { margin-top: 1.5rem; }
@@ -243,12 +243,6 @@ const HVACGuarantee = () => {
           .hg-cta .hg-btn:hover { transform: translateY(-1px); box-shadow: 0 14px 48px rgba(43,140,255,0.45); }
           .hg-cta p { margin: 0.75rem 0 0; color: #9a9a9a; font-size: 0.88rem; }
           .hg-btn:focus-visible, .hg-sound:focus-visible { outline: 3px solid #5aa9ff; outline-offset: 3px; }
-          .hg-poster { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.25rem; padding: 1.5rem; background: radial-gradient(120% 90% at 50% 0%, #10233d 0%, #0a0a0a 60%); }
-          .hg-poster-kicker { margin: 0; color: #5aa9ff; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
-          .hg-poster ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.6rem; width: 100%; max-width: 640px; }
-          .hg-poster li { display: flex; align-items: center; gap: 0.85rem; text-align: left; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 0.7rem 0.9rem; font-weight: 600; font-size: 0.95rem; }
-          .hg-poster li b { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: ${BLUE}; display: grid; place-items: center; font-size: 0.85rem; }
-          .hg-poster-foot { margin: 0; color: #9a9a9a; font-size: 0.85rem; max-width: 520px; }
           .hg-proof { display: grid; justify-items: center; gap: 0.9rem; margin: 2.25rem auto 0; max-width: 720px; }
           .hg-ash { display: flex; align-items: center; gap: 0.9rem; background: none; border: 0; padding: 0; color: inherit; cursor: pointer; text-align: left; font: inherit; }
           .hg-ash-thumb { position: relative; flex-shrink: 0; width: 46px; height: 46px; border-radius: 50%; overflow: hidden; box-shadow: 0 0 0 2px ${BLUE}; }
@@ -327,14 +321,8 @@ const HVACGuarantee = () => {
                 )}
               </>
             ) : (
-              <div className="hg-poster">
-                <p className="hg-poster-kicker">How it works</p>
-                <ol>
-                  {HOW.map((h, i) => (
-                    <li key={h}><b>{i + 1}</b><span>{h}</span></li>
-                  ))}
-                </ol>
-                <p className="hg-poster-foot">60 booked install estimates in 90 days, or you don’t pay us until you have them.</p>
+              <div className="hg-sound hg-sound-idle" aria-hidden="true">
+                <SoundIcon /> Click to play with sound
               </div>
             )}
           </div>
