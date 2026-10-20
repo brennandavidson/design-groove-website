@@ -9,9 +9,9 @@ import HVACCredibility from '../components/HVACCredibility';
 
 const Cal = lazy(() => import('@calcom/embed-react').then(mod => ({ default: mod.default })));
 
-// TODO(brennan): swap for a dedicated Cal event for this offer.
-const CAL_NAMESPACE = 'one-stop-hvac-system-demo';
-const CAL_LINK = 'team/design-groove/one-stop-hvac-system-demo';
+// Free personal Cal.com event; after booking it redirects to /hvac-ty, which fires the Meta Lead event.
+const CAL_NAMESPACE = 'strategy-call';
+const CAL_LINK = 'brennan-davidson/strategy-call';
 
 const BLUE = '#0073E6';
 
