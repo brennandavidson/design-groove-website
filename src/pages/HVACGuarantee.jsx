@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef, lazy, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
-import HVACCredibility from '../components/HVACCredibility';
 
 // Guarantee offer landing page (/hvac-guarantee) for the managed lead engine: 60 booked install
 // estimates in 90 days. Flow: qualifier headline, VSL, one "Schedule a call" button that opens a
@@ -46,22 +45,10 @@ const track = (event, fbEvent, params) => {
   if (window.fbq) window.fbq('trackCustom', fbEvent, params);
 };
 
-const LandingNavbar = () => (
-  <nav className="hg-nav">
-    <img src="/assets/dg-logo-dark.svg" alt="Design Groove" width="120" height="32" style={{ height: '32px', width: 'auto' }} />
-  </nav>
-);
-
 const PlayButton = () => (
   <div className="hg-play" aria-hidden="true">
     <svg width="28" height="28" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z" /></svg>
   </div>
-);
-
-const CtaButton = ({ location, onOpen, children }) => (
-  <button type="button" className="hg-btn" onClick={() => onOpen(location)}>
-    {children}
-  </button>
 );
 
 // The "Schedule a call" popup: a few qualifying questions, then the calendar with the answers prefilled.
@@ -187,83 +174,41 @@ const BookingModal = ({ onClose }) => {
 };
 
 const STATS = [
-  { value: '163', label: 'install leads in one month', note: 'at $114 each, all-in (Aug 2026)' },
-  { value: '$480k', label: 'in sales in year one', note: 'from a brand new business' },
-  { value: '10 → 70+', label: 'Google reviews', note: 'in under a year' },
+  ['163', 'install leads in one month at $114 each'],
+  ['$480k', 'in sales in year one'],
+  ['10 → 70+', 'Google reviews in under a year'],
 ];
 
-const STEPS = [
-  {
-    title: 'Ads that find install buyers',
-    body: 'We run your Facebook and Instagram ads around install offers, using short videos of you and your crew. You fund the ad budget directly with Meta. It is never part of our fee.',
-  },
-  {
-    title: 'Every lead called in seconds',
-    body: 'The moment a homeowner asks for a quote, the agent calls your team and connects them while the homeowner is still on your site. After hours, it texts them and lines up the callback.',
-  },
-  {
-    title: 'Nobody slips through',
-    body: 'Missed calls get a text back. Leads who don’t answer get followed up. Booked estimates get a confirmation and a reminder. Unsold estimates get a follow-up. Finished jobs get a review request.',
-  },
-  {
-    title: 'You see every booking',
-    body: 'Every lead is tracked from the first click to a booked estimate in your Groove Portal, connected to your CRM. That count is what the guarantee is measured on, so you never have to take our word for it.',
-  },
-];
+const LOGOS = ['ash-heating-cooling', 'top-tech-air', 'arizona-family-air', 'trustworthy-air', 'az-cooling-specialists'];
 
-const FAQS = [
-  {
-    q: 'What does “AI agent” actually mean here?',
-    a: 'Software that answers, calls, texts and follows up with every lead for you, around the clock, plus our team running and improving your ads every week. You and your team just show up to the estimates.',
-  },
-  {
-    q: 'Do I pay for ads on top of your fee?',
-    a: 'Yes. You pay Meta directly for ad spend, at a budget we agree on before we start. For a 60-estimate guarantee that is usually $10k to $13k a month. Phone numbers, texting and the software are included in our fee.',
-  },
-  {
-    q: 'Is there a contract?',
-    a: 'Pay for 90 days up front and get the 60-in-90 guarantee, then it goes month to month. Or start month to month with a guarantee of 20 booked install estimates each month.',
-  },
-  {
-    q: 'What if we can’t handle 60 more estimates in 90 days?',
-    a: 'We set a smaller guarantee with a smaller ad budget. The math is the same, just scaled to what your team can run.',
-  },
-  {
-    q: 'When does the 90 days start?',
-    a: 'The first full month after your ads go live. That gives us time to set up your pages, tracking and phone numbers properly.',
-  },
-  {
-    q: 'Which CRMs do you connect to?',
-    a: 'Housecall Pro connects out of the box. Using something else? Ask on the call.',
-  },
-  {
-    q: 'Who owns the ad account and the data?',
-    a: 'You do. Your ad account, Facebook Page, pixel, CRM, domain and customer data stay yours. We work in them as your partner, and you can remove our access any time.',
-  },
-];
+const CalendarIcon = () => (
+  <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="5" width="18" height="16" rx="2" /><path d="M3 10h18M8 3v4M16 3v4" />
+  </svg>
+);
+
+const SoundIcon = () => (
+  <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M11 5 6 9H2v6h4l5 4V5Z" /><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14" />
+  </svg>
+);
+
+const AshQuote = ({ className }) => (
+  <div className={className}>
+    <blockquote>“We went from 10 Google reviews to over 70 in less than a year. Did over $480,000 in sales. Everything comes to your phone, you hit the button and you go.”</blockquote>
+    <cite><b>Ashton, ASH Cooling &amp; Heating</b>Mesa, AZ</cite>
+    <ul className="hg-stats">
+      {STATS.map(([v, l]) => (
+        <li key={l}><b>{v}</b>{l}</li>
+      ))}
+    </ul>
+  </div>
+);
 
 const HVACGuarantee = () => {
   const [bookingOpen, setBookingOpen] = useState(false);
+  const [vslSound, setVslSound] = useState(false);
   const [loadTestimonial, setLoadTestimonial] = useState(false);
-  const [loadVsl, setLoadVsl] = useState(false);
-
-  // Scroll depth (same thresholds as /1-stop-hvac so the two pages compare in Meta).
-  useEffect(() => {
-    const fired = new Set();
-    const onScroll = () => {
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      if (docHeight <= 0) return;
-      const percent = Math.round((window.scrollY / docHeight) * 100);
-      [25, 50, 75, 100].forEach((t) => {
-        if (percent >= t && !fired.has(t)) {
-          fired.add(t);
-          if (window.fbq) window.fbq('trackCustom', 'ScrollDepth', { percent: t, page: 'hvac-guarantee' });
-        }
-      });
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
 
   const openBooking = (location) => {
     track('cta_click', 'CTAClick', { location, page: 'hvac-guarantee' });
@@ -271,45 +216,63 @@ const HVACGuarantee = () => {
     setBookingOpen(true);
   };
 
+  const playWithSound = () => {
+    setVslSound(true);
+    track('vsl_play', 'VSLPlay', { page: 'hvac-guarantee' });
+  };
+
   return (
     <>
       <Helmet>
         <title>60 Booked Install Estimates in 90 Days | Design Groove</title>
         <meta name="robots" content="noindex, nofollow" />
-        <meta name="description" content="For HVAC companies doing $100k+ a month: an AI agent that guarantees 60 booked install estimates in 90 days. If we miss, you don't pay us another dollar until you have all 60." />
+        <meta name="description" content="HVAC companies above $100k/month: get 60 booked install estimates in 90 days, or you don't pay us until you have them." />
         <style>{`
-          .hg { background: #fff; color: #1a1a1a; font-family: Inter, sans-serif; }
-          .hg h1, .hg h2, .hg h3 { font-family: "Instrument Serif", serif; font-weight: 400; text-wrap: balance; }
-          .hg-nav { position: absolute; top: 0; left: 0; width: 100%; padding: 2rem 4vw; display: flex; justify-content: center; z-index: 10; }
-          .hg-wrap { max-width: 1100px; margin: 0 auto; padding: 0 5vw; }
-          .hg-narrow { max-width: 760px; margin: 0 auto; padding: 0 5vw; }
-          .hg-hero { padding-top: 7rem; text-align: center; }
-          .hg-eyebrow { display: inline-block; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: ${BLUE}; background: #e8f2fd; border-radius: 999px; padding: 0.4rem 0.9rem; margin-bottom: 1.25rem; }
-          .hg-hero h1 { font-size: 2.3rem; line-height: 1.12; margin: 0 auto 1.25rem; max-width: 980px; }
-          .hg-hero h1 span { color: ${BLUE}; }
-          .hg-sub { font-size: 1.2rem; font-weight: 600; margin: 0 auto 1.5rem; max-width: 640px; line-height: 1.45; }
-          .hg-steps { font-size: 1rem; line-height: 1.6; max-width: 600px; margin: 0 auto 2.5rem; }
-          .hg-steps p { margin: 0 0 0.4rem; }
-          .hg-stats { display: grid; grid-template-columns: 1fr; gap: 1rem; margin: 0 auto 3rem; max-width: 980px; }
-          .hg-stat { border: 1px solid #e6e6e6; border-radius: 12px; padding: 1.25rem 1.25rem 1.1rem; text-align: left; }
-          .hg-stat b { display: block; font-family: "Instrument Serif", serif; font-weight: 400; font-size: 2.6rem; line-height: 1; color: ${BLUE}; margin-bottom: 0.35rem; }
-          .hg-stat span { display: block; font-weight: 600; }
-          .hg-stat small { display: block; color: #666; font-size: 0.85rem; margin-top: 0.15rem; }
-          .hg-stats-label { font-size: 0.85rem; color: #666; margin: -2rem auto 3rem; }
-          .hg-h2 { font-size: 2rem; line-height: 1.15; text-align: center; margin: 0 0 0.75rem; }
-          .hg-lede { text-align: center; color: #555; font-size: 1.05rem; line-height: 1.6; max-width: 640px; margin: 0 auto 2rem; }
-          .hg-vsl { position: relative; max-width: 860px; margin: 0 auto 2rem; aspect-ratio: 16 / 9; border-radius: 14px; overflow: hidden; background: #0a0a0a; box-shadow: 0 10px 40px rgba(0,0,0,0.15); }
-          .hg-vsl iframe, .hg-vsl button { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-          .hg-vsl button { cursor: pointer; background: #0a0a0a; padding: 0; color: #fff; }
-          .hg-vsl-hint { position: absolute; left: 0; right: 0; bottom: 18%; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; font-size: 0.85rem; }
-          .hg-cta { margin: 0 auto 3rem; }
-          .hg-cta .hg-btn { font-size: 1.2rem; padding: 1.1rem 2.75rem; }
-          .hg-cta p { margin: 0.6rem 0 0; color: #666; font-size: 0.9rem; }
-          .hg-modal-back { position: fixed; inset: 0; z-index: 100; background: rgba(10,10,10,0.6); display: flex; align-items: flex-start; justify-content: center; overflow-y: auto; padding: max(16px, env(safe-area-inset-top, 0px)) 16px 16px; }
-          .hg-modal { position: relative; width: 100%; max-width: 520px; margin: 4vh auto; background: #fff; border-radius: 14px; padding: 2rem 1.5rem 1.5rem; box-shadow: 0 20px 60px rgba(0,0,0,0.3); font-family: Inter, sans-serif; color: #1a1a1a; }
+          body { background: #000; }
+          .hg { min-height: 100vh; background: #000; color: #fff; font-family: Inter, sans-serif; display: flex; flex-direction: column; }
+          .hg-top { display: flex; justify-content: center; padding: 1.75rem 16px 0; }
+          .hg-hero { flex: 1; width: 100%; max-width: 1100px; margin: 0 auto; padding: 2.5rem 16px 3rem; text-align: center; }
+          .hg-eyebrow { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #5aa9ff; margin: 0 0 0.9rem; }
+          .hg-eyebrow::before { content: "\\2022"; margin-right: 0.5rem; }
+          .hg h1 { font-family: Inter, sans-serif; font-weight: 800; font-size: 1.75rem; line-height: 1.2; letter-spacing: -0.02em; margin: 0 auto 1.75rem; max-width: 760px; text-wrap: balance; }
+          .hg h1 span { color: #5aa9ff; font-weight: 700; }
+          .hg-frame { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 14px; overflow: hidden; background: #111; box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 20px 60px rgba(0,115,230,0.12); }
+          .hg-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+          .hg-sound { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 0.5rem; background: transparent; border: 0; color: #fff; font: 700 0.8rem Inter, sans-serif; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; text-shadow: 0 1px 8px rgba(0,0,0,0.6); }
+          .hg-proofcard { display: grid; grid-template-columns: 1fr; text-align: left; background: #0d0d0d; border-radius: 14px; overflow: hidden; box-shadow: 0 0 0 1px rgba(255,255,255,0.06); }
+          .hg-tvid { position: relative; height: 44vh; min-height: 260px; background: #000; width: 100%; }
+          .hg-tvid iframe, .hg-tvid button { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+          .hg-tvid button { cursor: pointer; background: #000; padding: 0; }
+          .hg-tvid img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+          .hg-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 68px; height: 68px; border-radius: 50%; background: ${BLUE}; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 24px rgba(0,115,230,0.5); }
+          .hg-desk { display: none !important; }
+          .hg-mob { margin-top: 2rem; text-align: left; background: #0d0d0d; border-radius: 14px; box-shadow: 0 0 0 1px rgba(255,255,255,0.06); }
+          .hg-quote { padding: 1.5rem; display: flex; flex-direction: column; justify-content: center; gap: 1rem; }
+          .hg-quote blockquote { margin: 0; font-size: 1.1rem; line-height: 1.6; color: #e8e8e8; }
+          .hg-quote cite { font-style: normal; color: #9a9a9a; font-size: 0.9rem; }
+          .hg-quote cite b { color: #fff; font-weight: 600; display: block; }
+          .hg-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; border: 0; cursor: pointer; font-family: Inter, sans-serif; font-weight: 700; color: #fff; text-decoration: none; border-radius: 10px; background: linear-gradient(90deg, #005ec2, #2b8cff); }
+          .hg-cta { margin-top: 1.5rem; }
+          .hg-cta .hg-btn { width: 100%; font-size: 1.15rem; padding: 1.15rem 1.5rem; box-shadow: 0 10px 40px rgba(43,140,255,0.35); transition: transform 0.15s ease, box-shadow 0.15s ease; }
+          .hg-cta .hg-btn:hover { transform: translateY(-1px); box-shadow: 0 14px 48px rgba(43,140,255,0.45); }
+          .hg-cta p { margin: 0.75rem 0 0; color: #9a9a9a; font-size: 0.88rem; }
+          .hg-btn:focus-visible, .hg-sound:focus-visible, .hg-tvid button:focus-visible { outline: 3px solid #5aa9ff; outline-offset: 3px; }
+          .hg-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.75rem; margin: 0.5rem 0 0; padding: 1rem 0 0; list-style: none; border-top: 1px solid #222; }
+          .hg-stats li { color: #9a9a9a; font-size: 0.8rem; line-height: 1.35; }
+          .hg-stats b { display: block; color: #5aa9ff; font-weight: 800; font-size: 1.35rem; letter-spacing: -0.01em; margin-bottom: 0.15rem; }
+          .hg-logos-label { color: #666; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; margin: 2.75rem 0 0; }
+          .hg-logos { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 1.25rem 2.5rem; margin: 1.1rem 0 0; }
+          .hg-logos img { height: 34px; width: auto; filter: brightness(0) invert(1); opacity: 0.55; }
+          .hg-foot { border-top: 1px solid #1a1a1a; }
+          .hg-foot div { max-width: 1100px; margin: 0 auto; padding: 1.25rem max(16px, 4vw); display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; color: #777; font-size: 0.8rem; }
+          .hg-foot a { color: #777; text-decoration: none; margin-left: 1.25rem; }
+          .hg-foot a:hover { color: #bbb; }
+          .hg-cal-wait { min-height: 420px; display: flex; align-items: center; justify-content: center; background: #f9f9f9; border-radius: 8px; color: #666; }
+          .hg-modal-back { position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,0.75); display: flex; align-items: flex-start; justify-content: center; overflow-y: auto; padding: max(16px, env(safe-area-inset-top, 0px)) 16px 16px; }
+          .hg-modal { position: relative; width: 100%; max-width: 520px; margin: 4vh auto; background: #fff; border-radius: 14px; padding: 2rem 1.5rem 1.5rem; box-shadow: 0 20px 60px rgba(0,0,0,0.5); font-family: Inter, sans-serif; color: #1a1a1a; text-align: left; }
           .hg-modal-wide { max-width: 980px; }
           .hg-modal-x { position: absolute; top: 0.6rem; right: 0.75rem; width: 40px; height: 40px; border: 0; background: transparent; font-size: 1.8rem; line-height: 1; color: #666; cursor: pointer; border-radius: 8px; }
-          .hg-modal-title { font-family: "Instrument Serif", serif; font-weight: 400; font-size: 1.9rem; line-height: 1.15; margin: 0 0 1.25rem; padding-right: 2rem; }
+          .hg-modal-title { font-family: Inter, sans-serif; font-weight: 800; letter-spacing: -0.01em; font-size: 1.5rem; line-height: 1.2; margin: 0 0 1.25rem; padding-right: 2rem; }
           .hg-q { border: 0; margin: 0 0 1.25rem; padding: 0; display: grid; gap: 0.5rem; }
           .hg-q legend { font-weight: 600; margin-bottom: 0.6rem; padding: 0; }
           .hg-opt { display: flex; align-items: center; gap: 0.65rem; border: 1px solid #ddd; border-radius: 10px; padding: 0.8rem 0.9rem; cursor: pointer; font-size: 0.98rem; }
@@ -321,241 +284,98 @@ const HVACGuarantee = () => {
           .hg-fields input { font: inherit; font-size: 1rem; border: 1px solid #ccc; border-radius: 8px; padding: 0.75rem 0.85rem; }
           .hg-fields input:focus, .hg-opt:focus-within { outline: 2px solid ${BLUE}; outline-offset: 1px; }
           .hg-err { color: #b42318; font-size: 0.9rem; margin: 0 0 0.75rem; }
-          .hg-btn-full { display: block; width: 100%; text-align: center; border: 0; cursor: pointer; font-family: inherit; }
+          .hg-btn-full { display: flex; width: 100%; padding: 0.95rem 1.25rem; font-size: 1.05rem; }
           .hg-consent { font-size: 0.78rem; color: #777; line-height: 1.5; margin: 0.75rem 0 0; }
           .hg-modal-msg p { color: #444; line-height: 1.65; margin: 0 0 1.25rem; }
           .hg-link { display: block; margin: 0.9rem auto 0; background: none; border: 0; color: ${BLUE}; font: inherit; font-weight: 600; cursor: pointer; text-decoration: underline; }
-          .hg-btn { border: 0; cursor: pointer; font-family: inherit; }
-          .hg-cal-wait { min-height: 420px; display: flex; align-items: center; justify-content: center; background: #f9f9f9; border-radius: 8px; color: #666; }
-          .hg-section { padding: 3.5rem 0; }
-          .hg-alt { background: #f7f8fa; }
-          .hg-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
-          .hg-card { background: #fff; border: 1px solid #e6e6e6; border-radius: 12px; padding: 1.5rem; }
-          .hg-card h3 { font-size: 1.6rem; line-height: 1.15; margin: 0 0 0.5rem; }
-          .hg-card p { margin: 0; color: #444; line-height: 1.65; }
-          .hg-card .hg-num { font-size: 0.8rem; font-weight: 600; color: ${BLUE}; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 0.5rem; display: block; }
-          .hg-terms { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
-          .hg-term { border-top: 3px solid #1a1a1a; padding-top: 1rem; }
-          .hg-term.hg-promise { border-top-color: ${BLUE}; }
-          .hg-term h3 { font-size: 1.5rem; margin: 0 0 0.5rem; }
-          .hg-term p, .hg-term li { color: #444; line-height: 1.65; margin: 0; }
-          .hg-term ul { margin: 0; padding-left: 1.1rem; display: grid; gap: 0.35rem; }
-          .hg-proof { display: grid; grid-template-columns: 1fr; gap: 2rem; align-items: start; margin-bottom: 3rem; }
-          .hg-video { width: 100%; max-width: 380px; margin: 0 auto; border-radius: 16px; overflow: hidden; background: #000; box-shadow: 0 8px 30px rgba(0,0,0,0.12); }
-          .hg-video-inner { position: relative; padding-top: 177.78%; }
-          .hg-video iframe, .hg-video button { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-          .hg-video button { cursor: pointer; background: #0a0a0a; padding: 0; }
-          .hg-video img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
-          .hg-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 72px; height: 72px; border-radius: 50%; background: ${BLUE}; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 20px rgba(0,115,230,0.4); }
-          .hg-quote { padding: 2rem; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
-          .hg-quote p { font-size: 1.15rem; color: #333; line-height: 1.7; margin: 0 0 1.25rem; }
-          .hg-who { display: flex; align-items: center; gap: 0.75rem; }
-          .hg-avatar { width: 48px; height: 48px; border-radius: 50%; background: ${BLUE}; color: #fff; font-weight: 600; display: flex; align-items: center; justify-content: center; }
-          .hg-fit { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
-          .hg-fit ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.6rem; }
-          .hg-fit li { display: grid; grid-template-columns: 1.4rem 1fr; gap: 0.5rem; line-height: 1.55; color: #333; }
-          .hg-fit li::before { content: "✓"; color: ${BLUE}; font-weight: 700; }
-          .hg-fit .hg-no li::before { content: "✕"; color: #999; }
-          .hg-faq details { border-bottom: 1px solid #e6e6e6; padding: 1.1rem 0; }
-          .hg-faq summary { cursor: pointer; font-weight: 600; font-size: 1.05rem; list-style: none; display: flex; justify-content: space-between; gap: 1rem; }
-          .hg-faq summary::-webkit-details-marker { display: none; }
-          .hg-faq summary::after { content: "+"; color: ${BLUE}; font-size: 1.3rem; line-height: 1; }
-          .hg-faq details[open] summary::after { content: "–"; }
-          .hg-faq p { margin: 0.75rem 0 0; color: #444; line-height: 1.65; }
-          .hg-final { padding: 4rem 0; text-align: center; background: #f9f9f9; }
-          .hg-btn { display: inline-block; background: ${BLUE}; color: #fff; padding: 1rem 2.5rem; border-radius: 8px; font-size: 1.1rem; font-weight: 600; text-decoration: none; transition: background-color 0.2s ease; }
-          .hg-btn:hover { background: #005bb5; }
-          .hg-btn:focus-visible, .hg-faq summary:focus-visible, .hg-video button:focus-visible { outline: 3px solid ${BLUE}; outline-offset: 3px; }
-          .hg-fine { font-size: 0.8rem; color: #777; line-height: 1.55; max-width: 760px; margin: 2rem auto 0; text-align: center; }
-          @media (min-width: 900px) {
-            .hg-hero { padding-top: 9rem; }
-            .hg-hero h1 { font-size: 3.5rem; }
-            .hg-sub { font-size: 1.45rem; }
-            .hg-stats { grid-template-columns: repeat(3, 1fr); }
-            .hg-h2 { font-size: 2.75rem; }
-            .hg-section { padding: 5rem 0; }
-            .hg-grid { grid-template-columns: repeat(2, 1fr); }
-            .hg-terms { grid-template-columns: repeat(3, 1fr); gap: 2rem; }
-            .hg-proof { grid-template-columns: 1fr 1fr; }
-            .hg-fit { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+          @media (min-width: 760px) {
+            .hg-hero { padding-top: 3rem; }
+            .hg h1 { font-size: 2.5rem; max-width: 960px; }
+            .hg-quote blockquote { max-width: 36ch; }
+            .hg-proofcard { grid-template-columns: minmax(0, 270px) 1fr; }
+            .hg-tvid { height: auto; min-height: 0; aspect-ratio: 9 / 16; }
+            .hg-desk { display: flex !important; }
+            .hg-mob { display: none; }
+            .hg-quote { padding: 2rem 2.25rem; }
+            .hg-quote blockquote { font-size: 1.3rem; }
           }
-          @media (prefers-reduced-motion: reduce) { .hg-btn { transition: none; } }
+          @media (prefers-reduced-motion: reduce) { .hg-cta .hg-btn { transition: none; } }
         `}</style>
       </Helmet>
 
-      <LandingNavbar />
-
       <main className="hg">
-        {/* HERO */}
-        <section className="hg-hero hg-wrap">
-          <span className="hg-eyebrow">HVAC companies above $100k/month</span>
+        <header className="hg-top">
+          <img src="/assets/dg-logo-white.svg" alt="Design Groove" width="120" height="32" style={{ height: '30px', width: 'auto' }} />
+        </header>
+
+        <section className="hg-hero">
+          <p className="hg-eyebrow">HVAC companies above $100k/month:</p>
           <h1>
             Get <span>60 booked install estimates</span> in 90 days, or you don’t pay us until you have them.
           </h1>
-          <p className="hg-sub">We install an AI agent that runs your ads, calls every lead in seconds and tracks every one to a booked estimate.</p>
 
-          {VSL_EMBED_URL && (
-            <div className="hg-vsl">
-              {loadVsl ? (
-                <iframe src={`${VSL_EMBED_URL}?autoplay=true&responsive=true`} title="How the Design Groove Lead Engine works" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen />
-              ) : (
-                <button type="button" aria-label="Play the video with sound" onClick={() => { setLoadVsl(true); track('vsl_play', 'VSLPlay', { page: 'hvac-guarantee' }); }}>
-                  <PlayButton />
-                  <span className="hg-vsl-hint">Click to play with sound</span>
+          {VSL_EMBED_URL ? (
+            <div className="hg-frame">
+              <iframe
+                key={vslSound ? 'sound' : 'muted'}
+                src={`${VSL_EMBED_URL}?autoplay=true&responsive=true&preload=true${vslSound ? '' : '&muted=true&loop=true'}`}
+                title="How the Design Groove Lead Engine works"
+                allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+                allowFullScreen
+              />
+              {!vslSound && (
+                <button type="button" className="hg-sound" onClick={playWithSound}>
+                  <SoundIcon /> Click to play with sound
                 </button>
               )}
+            </div>
+          ) : (
+            <div className="hg-proofcard">
+              <div className="hg-tvid">
+                {loadTestimonial ? (
+                  <iframe
+                    src="https://iframe.mediadelivery.net/embed/585643/eb803435-50c6-47bb-b214-8ee4b6e80a18?autoplay=true&responsive=true"
+                    title="Ashton, ASH Cooling & Heating"
+                    allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen"
+                    allowFullScreen
+                  />
+                ) : (
+                  <button type="button" aria-label="Play Ashton's story with sound" onClick={() => { setLoadTestimonial(true); track('testimonial_play', 'TestimonialPlay', { page: 'hvac-guarantee' }); }}>
+                    <img src="/assets/hvac-testimonial-thumbnail.jpg" alt="" />
+                    <PlayButton />
+                  </button>
+                )}
+              </div>
+              <AshQuote className="hg-quote hg-desk" />
             </div>
           )}
 
           <div className="hg-cta">
-            <CtaButton location="hero" onOpen={openBooking}>Schedule a call here</CtaButton>
+            <button type="button" className="hg-btn" onClick={() => openBooking('hero')}>
+              <CalendarIcon /> Schedule A Call Here
+            </button>
             <p>Takes less than a minute</p>
           </div>
 
-          <div className="hg-stats">
-            {STATS.map((s) => (
-              <div className="hg-stat" key={s.label}>
-                <b>{s.value}</b>
-                <span>{s.label}</span>
-                <small>{s.note}</small>
-              </div>
-            ))}
-          </div>
-          <p className="hg-stats-label">ASH Cooling &amp; Heating, Mesa, AZ</p>
-        </section>
+          <AshQuote className="hg-quote hg-mob" />
 
-        {/* HOW IT WORKS */}
-        <section className="hg-section hg-alt">
-          <div className="hg-wrap">
-            <h2 className="hg-h2">What the AI agent actually does</h2>
-            <p className="hg-lede">Four parts, run for you. Your job is to show up to the estimates.</p>
-            <div className="hg-grid">
-              {STEPS.map((s, i) => (
-                <div className="hg-card" key={s.title}>
-                  <span className="hg-num">Part {i + 1}</span>
-                  <h3>{s.title}</h3>
-                  <p>{s.body}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* THE GUARANTEE */}
-        <section className="hg-section">
-          <div className="hg-wrap">
-            <h2 className="hg-h2">The guarantee, in plain English</h2>
-            <p className="hg-lede">It’s written into the agreement you sign, word for word.</p>
-            <div className="hg-terms">
-              <div className="hg-term">
-                <h3>What counts</h3>
-                <p>A new customer, not in your records from the past 12 months, books an in-home install estimate. By your office or by the homeowner. Service and repair calls don’t count.</p>
-              </div>
-              <div className="hg-term">
-                <h3>What you do</h3>
-                <ul>
-                  <li>Answer new leads fast.</li>
-                  <li>Mark how each lead went within 48 hours.</li>
-                  <li>Keep your CRM connected.</li>
-                  <li>Keep the agreed ad budget funded.</li>
-                </ul>
-              </div>
-              <div className="hg-term hg-promise">
-                <h3>If we miss</h3>
-                <p>We keep running everything at no charge. Your monthly fee doesn’t start until you have all 60. After the first 90 days, the goal is 20 a month with the same promise.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* PROOF */}
-        <section className="hg-section hg-alt">
-          <div className="hg-wrap">
-            <h2 className="hg-h2">See what our client Ashton had to say</h2>
-            <div className="hg-proof" style={{ marginTop: '2rem' }}>
-              <div className="hg-video">
-                <div className="hg-video-inner">
-                  {loadTestimonial ? (
-                    <iframe
-                      src="https://iframe.mediadelivery.net/embed/585643/eb803435-50c6-47bb-b214-8ee4b6e80a18?preload=true&responsive=true"
-                      title="Ashton, ASH Cooling & Heating"
-                      loading="lazy"
-                      allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen"
-                      allowFullScreen
-                    />
-                  ) : (
-                    <button type="button" aria-label="Play Ashton's testimonial" onClick={() => { setLoadTestimonial(true); track('testimonial_play', 'TestimonialPlay', { page: 'hvac-guarantee' }); }}>
-                      <img src="/assets/hvac-testimonial-thumbnail.jpg" alt="" loading="lazy" />
-                      <PlayButton />
-                    </button>
-                  )}
-                </div>
-              </div>
-              <div className="hg-quote">
-                <p>“We went from <strong>10 Google reviews to over 70</strong> in less than a year. Did over <strong>$480,000 in sales</strong>. It’s simple to use. I don’t have to think about it. Everything comes to your phone, you hit the button and you go.”</p>
-                <div className="hg-who">
-                  <div className="hg-avatar" aria-hidden="true">A</div>
-                  <div>
-                    <p style={{ fontWeight: 600, margin: 0, fontSize: '1rem' }}>Ashton, ASH Cooling &amp; Heating</p>
-                    <p style={{ color: '#666', fontSize: '0.9rem', margin: 0 }}>Mesa, AZ</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <h2 className="hg-h2" style={{ marginBottom: '1.5rem' }}>Trusted by HVAC businesses nationwide</h2>
-            <HVACCredibility />
-          </div>
-        </section>
-
-        {/* FIT */}
-        <section className="hg-section">
-          <div className="hg-narrow">
-            <h2 className="hg-h2">Is this for you?</h2>
-            <p className="hg-lede">We only take on companies we’re confident we can hit the number for.</p>
-            <div className="hg-fit">
-              <div>
-                <h3 style={{ fontSize: '1.5rem', margin: '0 0 0.75rem' }}>A fit if you</h3>
-                <ul>
-                  <li>Do $100k or more a month</li>
-                  <li>Can run 20 or more extra install estimates a month</li>
-                  <li>Can fund a Meta ad budget (usually $10k to $13k a month for this guarantee)</li>
-                  <li>Have someone who answers the phone when a lead comes in</li>
-                </ul>
-              </div>
-              <div className="hg-no">
-                <h3 style={{ fontSize: '1.5rem', margin: '0 0 0.75rem' }}>Not a fit if you</h3>
-                <ul>
-                  <li>Only want repair and maintenance calls</li>
-                  <li>Can’t take on more install work right now</li>
-                  <li>Want to keep ad spend under a few thousand a month</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* FAQ */}
-        <section className="hg-section hg-alt">
-          <div className="hg-narrow hg-faq">
-            <h2 className="hg-h2" style={{ marginBottom: '1.5rem' }}>Questions</h2>
-            {FAQS.map((f) => (
-              <details key={f.q}>
-                <summary>{f.q}</summary>
-                <p>{f.a}</p>
-              </details>
+          <p className="hg-logos-label">HVAC companies we work with</p>
+          <div className="hg-logos">
+            {LOGOS.map((l) => (
+              <img key={l} src={`/assets/hvac-logos/${l}.png`} alt={l.replace(/-/g, ' ')} loading="lazy" />
             ))}
           </div>
         </section>
 
-        {/* FINAL CTA */}
-        <section className="hg-final">
-          <div className="hg-narrow">
-            <h2 className="hg-h2">Ready for 60 more install estimates?</h2>
-            <p className="hg-lede">Book a 30-minute call. If the numbers work for your business, we’ll show you exactly how we get there.</p>
-            <CtaButton location="bottom_section" onOpen={openBooking}>Schedule a call</CtaButton>
-            <p className="hg-fine">Guarantee terms, conditions and the full remedy are in the service agreement. Ad spend is paid by you directly to Meta and is not part of our fee. Results shown are from one client and are not a promise of the same results.</p>
+        <footer className="hg-foot">
+          <div>
+            <span>© {new Date().getFullYear()} Design Groove. All rights reserved.</span>
+            <span>
+              <a href="https://app.designgroove.io/privacy">Privacy</a>
+              <a href="https://app.designgroove.io/terms">Terms</a>
+            </span>
           </div>
-        </section>
+        </footer>
       </main>
       {bookingOpen && <BookingModal onClose={() => setBookingOpen(false)} />}
     </>
