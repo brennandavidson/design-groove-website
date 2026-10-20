@@ -2,10 +2,12 @@ import React, { useEffect, useState, useRef, lazy, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
 import HVACCredibility from '../components/HVACCredibility';
 
-// Guarantee offer landing page (/hvac-guarantee). Same funnel as /1-stop-hvac (headline, booker,
-// proof, how it works, final CTA) but for the managed lead engine: 60 booked install estimates in
-// 90 days. Guarantee wording mirrors section 2 of the service agreement (design-groove-os
-// business/contract-v2.md); change both together.
+// Guarantee offer landing page (/hvac-guarantee) for the managed lead engine: 60 booked install
+// estimates in 90 days. Flow: qualifier headline, VSL, one "Schedule a call" button that opens a
+// short qualifying form, then the calendar (prefilled). Homeowners are screened out; companies under
+// $50k/month are pointed at /1-stop-hvac. Guarantee wording mirrors section 2 of the service
+// agreement (design-groove-os business/contract-v2.md); change both together. VSL script:
+// design-groove-os business/vsl-hvac-guarantee.md.
 
 const Cal = lazy(() => import('@calcom/embed-react').then(mod => ({ default: mod.default })));
 
@@ -13,7 +15,30 @@ const Cal = lazy(() => import('@calcom/embed-react').then(mod => ({ default: mod
 const CAL_NAMESPACE = 'strategy-call';
 const CAL_LINK = 'brennan-davidson/strategy-call';
 
+// Bunny Stream embed URL for the VSL (iframe.mediadelivery.net/embed/...). Empty until it's recorded;
+// the hero shows the proof stats in its place.
+const VSL_EMBED_URL = '';
+
 const BLUE = '#0073E6';
+
+const ROLES = [
+  ['owner', 'I own or run an HVAC company'],
+  ['staff', 'I work at an HVAC company'],
+  ['homeowner', "I'm a homeowner looking for HVAC service"],
+];
+// Labels match the "Monthly revenue" options on the Cal event exactly, so they prefill.
+const REVENUE = [
+  ['under50', 'Under $50k a month'],
+  ['50to100', '$50k to $100k a month'],
+  ['over100', '$100k+ a month'],
+];
+
+const toE164 = (raw) => {
+  const d = raw.replace(/\D/g, '');
+  if (d.length === 10) return `+1${d}`;
+  if (d.length === 11 && d.startsWith('1')) return `+${d}`;
+  return '';
+};
 
 const track = (event, fbEvent, params) => {
   if (typeof window === 'undefined') return;
@@ -33,11 +58,133 @@ const PlayButton = () => (
   </div>
 );
 
-const CtaButton = ({ location, children }) => (
-  <a href="#booker" className="hg-btn" onClick={() => track('cta_click', 'CTAClick', { location })}>
+const CtaButton = ({ location, onOpen, children }) => (
+  <button type="button" className="hg-btn" onClick={() => onOpen(location)}>
     {children}
-  </a>
+  </button>
 );
+
+// The "Schedule a call" popup: a few qualifying questions, then the calendar with the answers prefilled.
+const BookingModal = ({ onClose }) => {
+  const [step, setStep] = useState('form');
+  const [f, setF] = useState({ role: '', revenue: '', name: '', email: '', phone: '', website: '' });
+  const [error, setError] = useState('');
+  const firstRef = useRef(null);
+  const set = (k) => (e) => setF((p) => ({ ...p, [k]: e.target.value }));
+
+  useEffect(() => {
+    const onKey = (e) => e.key === 'Escape' && onClose();
+    document.addEventListener('keydown', onKey);
+    const overflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    firstRef.current?.focus();
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = overflow;
+    };
+  }, [onClose]);
+
+  const submit = (e) => {
+    e.preventDefault();
+    if (!f.role) return setError('Pick the option that best describes you.');
+    if (f.role === 'homeowner') {
+      track('application_homeowner', 'ApplicationHomeowner', { page: 'hvac-guarantee' });
+      return setStep('homeowner');
+    }
+    if (!f.revenue) return setError('Pick your monthly revenue.');
+    if (!f.name.trim() || !/^\S+@\S+\.\S+$/.test(f.email) || !toE164(f.phone) || !f.website.trim()) {
+      return setError('Fill in your name, a valid email, a 10-digit phone number and your website.');
+    }
+    setError('');
+    if (typeof window !== 'undefined') {
+      if (window.dataLayer) window.dataLayer.push({ event: 'application_submit', revenue: f.revenue, role: f.role });
+      if (window.fbq) window.fbq('track', 'SubmitApplication', { revenue: f.revenue, page: 'hvac-guarantee' });
+    }
+    setStep(f.revenue === 'under50' ? 'small' : 'calendar');
+  };
+
+  const calConfig = {
+    layout: 'month_view',
+    theme: 'light',
+    name: f.name.trim(),
+    email: f.email.trim(),
+    attendeePhoneNumber: toE164(f.phone),
+    'Monthly-revenue': REVENUE.find(([v]) => v === f.revenue)?.[1] ?? '',
+    notes: `Website: ${f.website.trim()} | ${ROLES.find(([v]) => v === f.role)?.[1] ?? ''}`,
+  };
+
+  return (
+    <div className="hg-modal-back" onClick={(e) => e.target === e.currentTarget && onClose()}>
+      <div className={`hg-modal${step === 'calendar' ? ' hg-modal-wide' : ''}`} role="dialog" aria-modal="true" aria-labelledby="hg-modal-title">
+        <button type="button" className="hg-modal-x" aria-label="Close" onClick={onClose}>×</button>
+
+        {step === 'form' && (
+          <form onSubmit={submit} noValidate>
+            <h2 id="hg-modal-title" className="hg-modal-title">Book your free strategy call</h2>
+            <fieldset className="hg-q">
+              <legend>Which best describes you?</legend>
+              {ROLES.map(([v, label], i) => (
+                <label key={v} className={`hg-opt${f.role === v ? ' hg-opt-on' : ''}`}>
+                  <input ref={i === 0 ? firstRef : undefined} type="radio" name="role" value={v} checked={f.role === v} onChange={set('role')} />
+                  {label}
+                </label>
+              ))}
+            </fieldset>
+            {f.role !== 'homeowner' && (
+              <>
+                <fieldset className="hg-q">
+                  <legend>What is your company's monthly revenue?</legend>
+                  {REVENUE.map(([v, label]) => (
+                    <label key={v} className={`hg-opt${f.revenue === v ? ' hg-opt-on' : ''}`}>
+                      <input type="radio" name="revenue" value={v} checked={f.revenue === v} onChange={set('revenue')} />
+                      {label}
+                    </label>
+                  ))}
+                </fieldset>
+                <p className="hg-q-lead">Enter your info below to book your call.</p>
+                <div className="hg-fields">
+                  <label>Full name<input autoComplete="name" value={f.name} onChange={set('name')} placeholder="Jane Smith" /></label>
+                  <label>Email<input type="email" autoComplete="email" value={f.email} onChange={set('email')} placeholder="jane@yourcompany.com" /></label>
+                  <label>Phone<input type="tel" autoComplete="tel" value={f.phone} onChange={set('phone')} placeholder="(480) 555-0123" /></label>
+                  <label>Company website<input autoComplete="url" value={f.website} onChange={set('website')} placeholder="yourcompany.com" /></label>
+                </div>
+              </>
+            )}
+            {error && <p className="hg-err" role="alert">{error}</p>}
+            <button type="submit" className="hg-btn hg-btn-full">Continue</button>
+            <p className="hg-consent">By continuing, you agree we may contact you by phone, text or email about your request. Message and data rates may apply.</p>
+          </form>
+        )}
+
+        {step === 'homeowner' && (
+          <div className="hg-modal-msg">
+            <h2 id="hg-modal-title" className="hg-modal-title">We work with HVAC companies</h2>
+            <p>Design Groove helps HVAC companies get more install jobs. We're not an HVAC company, so we can't send a technician. A licensed HVAC company near you can help.</p>
+            <button type="button" className="hg-btn hg-btn-full" onClick={onClose}>Close</button>
+          </div>
+        )}
+
+        {step === 'small' && (
+          <div className="hg-modal-msg">
+            <h2 id="hg-modal-title" className="hg-modal-title">There's a better fit for you right now</h2>
+            <p>The 60-in-90 guarantee needs an ad budget that usually makes sense from about $100k a month. At your size, our One-Stop HVAC System gets you more calls and reviews for $297 a month, no ad budget needed.</p>
+            <a className="hg-btn hg-btn-full" href="/1-stop-hvac">See the One-Stop HVAC System</a>
+            <button type="button" className="hg-link" onClick={() => setStep('calendar')}>Book a call anyway</button>
+          </div>
+        )}
+
+        {step === 'calendar' && (
+          <div>
+            <h2 id="hg-modal-title" className="hg-modal-title">Pick a time that works</h2>
+            <Suspense fallback={<div className="hg-cal-wait">Loading scheduler...</div>}>
+              <Cal namespace={CAL_NAMESPACE} calLink={CAL_LINK} style={{ width: '100%', minHeight: '560px' }} config={calConfig} />
+            </Suspense>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
 
 const STATS = [
   { value: '163', label: 'install leads in one month', note: 'at $114 each, all-in (Aug 2026)' },
@@ -96,9 +243,9 @@ const FAQS = [
 ];
 
 const HVACGuarantee = () => {
-  const [loadCal, setLoadCal] = useState(false);
+  const [bookingOpen, setBookingOpen] = useState(false);
   const [loadTestimonial, setLoadTestimonial] = useState(false);
-  const calRef = useRef(null);
+  const [loadVsl, setLoadVsl] = useState(false);
 
   // Scroll depth (same thresholds as /1-stop-hvac so the two pages compare in Meta).
   useEffect(() => {
@@ -118,21 +265,11 @@ const HVACGuarantee = () => {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Load Cal.com only when the booker comes near the viewport.
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setLoadCal(true);
-          if (window.fbq) window.fbq('track', 'ViewContent', { content_name: 'Booker', page: 'hvac-guarantee' });
-          observer.disconnect();
-        }
-      },
-      { rootMargin: '300px' }
-    );
-    if (calRef.current) observer.observe(calRef.current);
-    return () => observer.disconnect();
-  }, []);
+  const openBooking = (location) => {
+    track('cta_click', 'CTAClick', { location, page: 'hvac-guarantee' });
+    if (window.fbq) window.fbq('track', 'ViewContent', { content_name: 'Booking form', page: 'hvac-guarantee' });
+    setBookingOpen(true);
+  };
 
   return (
     <>
@@ -161,7 +298,34 @@ const HVACGuarantee = () => {
           .hg-stats-label { font-size: 0.85rem; color: #666; margin: -2rem auto 3rem; }
           .hg-h2 { font-size: 2rem; line-height: 1.15; text-align: center; margin: 0 0 0.75rem; }
           .hg-lede { text-align: center; color: #555; font-size: 1.05rem; line-height: 1.6; max-width: 640px; margin: 0 auto 2rem; }
-          .hg-booker { padding-bottom: 3.5rem; }
+          .hg-vsl { position: relative; max-width: 860px; margin: 0 auto 2rem; aspect-ratio: 16 / 9; border-radius: 14px; overflow: hidden; background: #0a0a0a; box-shadow: 0 10px 40px rgba(0,0,0,0.15); }
+          .hg-vsl iframe, .hg-vsl button { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+          .hg-vsl button { cursor: pointer; background: #0a0a0a; padding: 0; color: #fff; }
+          .hg-vsl-hint { position: absolute; left: 0; right: 0; bottom: 18%; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; font-size: 0.85rem; }
+          .hg-cta { margin: 0 auto 3rem; }
+          .hg-cta .hg-btn { font-size: 1.2rem; padding: 1.1rem 2.75rem; }
+          .hg-cta p { margin: 0.6rem 0 0; color: #666; font-size: 0.9rem; }
+          .hg-modal-back { position: fixed; inset: 0; z-index: 100; background: rgba(10,10,10,0.6); display: flex; align-items: flex-start; justify-content: center; overflow-y: auto; padding: max(16px, env(safe-area-inset-top, 0px)) 16px 16px; }
+          .hg-modal { position: relative; width: 100%; max-width: 520px; margin: 4vh auto; background: #fff; border-radius: 14px; padding: 2rem 1.5rem 1.5rem; box-shadow: 0 20px 60px rgba(0,0,0,0.3); font-family: Inter, sans-serif; color: #1a1a1a; }
+          .hg-modal-wide { max-width: 980px; }
+          .hg-modal-x { position: absolute; top: 0.6rem; right: 0.75rem; width: 40px; height: 40px; border: 0; background: transparent; font-size: 1.8rem; line-height: 1; color: #666; cursor: pointer; border-radius: 8px; }
+          .hg-modal-title { font-family: "Instrument Serif", serif; font-weight: 400; font-size: 1.9rem; line-height: 1.15; margin: 0 0 1.25rem; padding-right: 2rem; }
+          .hg-q { border: 0; margin: 0 0 1.25rem; padding: 0; display: grid; gap: 0.5rem; }
+          .hg-q legend { font-weight: 600; margin-bottom: 0.6rem; padding: 0; }
+          .hg-opt { display: flex; align-items: center; gap: 0.65rem; border: 1px solid #ddd; border-radius: 10px; padding: 0.8rem 0.9rem; cursor: pointer; font-size: 0.98rem; }
+          .hg-opt-on { border-color: ${BLUE}; background: #f0f7ff; }
+          .hg-opt input { accent-color: ${BLUE}; width: 18px; height: 18px; margin: 0; }
+          .hg-q-lead { font-weight: 600; margin: 0 0 0.75rem; }
+          .hg-fields { display: grid; gap: 0.75rem; margin-bottom: 1rem; }
+          .hg-fields label { display: grid; gap: 0.3rem; font-size: 0.9rem; font-weight: 500; }
+          .hg-fields input { font: inherit; font-size: 1rem; border: 1px solid #ccc; border-radius: 8px; padding: 0.75rem 0.85rem; }
+          .hg-fields input:focus, .hg-opt:focus-within { outline: 2px solid ${BLUE}; outline-offset: 1px; }
+          .hg-err { color: #b42318; font-size: 0.9rem; margin: 0 0 0.75rem; }
+          .hg-btn-full { display: block; width: 100%; text-align: center; border: 0; cursor: pointer; font-family: inherit; }
+          .hg-consent { font-size: 0.78rem; color: #777; line-height: 1.5; margin: 0.75rem 0 0; }
+          .hg-modal-msg p { color: #444; line-height: 1.65; margin: 0 0 1.25rem; }
+          .hg-link { display: block; margin: 0.9rem auto 0; background: none; border: 0; color: ${BLUE}; font: inherit; font-weight: 600; cursor: pointer; text-decoration: underline; }
+          .hg-btn { border: 0; cursor: pointer; font-family: inherit; }
           .hg-cal-wait { min-height: 420px; display: flex; align-items: center; justify-content: center; background: #f9f9f9; border-radius: 8px; color: #666; }
           .hg-section { padding: 3.5rem 0; }
           .hg-alt { background: #f7f8fa; }
@@ -224,14 +388,28 @@ const HVACGuarantee = () => {
       <main className="hg">
         {/* HERO */}
         <section className="hg-hero hg-wrap">
-          <span className="hg-eyebrow">For HVAC companies doing $100k+ a month</span>
+          <span className="hg-eyebrow">HVAC companies above $100k/month</span>
           <h1>
-            We’ll install an AI agent in your business that guarantees you <span>60 booked install estimates</span> in the next 90 days.
+            Get <span>60 booked install estimates</span> in 90 days, or you don’t pay us until you have them.
           </h1>
-          <p className="hg-sub">If we miss, you don’t pay us another dollar until you have all 60.</p>
-          <div className="hg-steps">
-            <p><strong>Step 1:</strong> See how it works below.</p>
-            <p><strong>Step 2:</strong> <a href="#booker" style={{ textDecoration: 'underline' }}>Book a call</a> if your team can run 20 more install estimates a month.</p>
+          <p className="hg-sub">We install an AI agent that runs your ads, calls every lead in seconds and tracks every one to a booked estimate.</p>
+
+          {VSL_EMBED_URL && (
+            <div className="hg-vsl">
+              {loadVsl ? (
+                <iframe src={`${VSL_EMBED_URL}?autoplay=true&responsive=true`} title="How the Design Groove Lead Engine works" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen />
+              ) : (
+                <button type="button" aria-label="Play the video with sound" onClick={() => { setLoadVsl(true); track('vsl_play', 'VSLPlay', { page: 'hvac-guarantee' }); }}>
+                  <PlayButton />
+                  <span className="hg-vsl-hint">Click to play with sound</span>
+                </button>
+              )}
+            </div>
+          )}
+
+          <div className="hg-cta">
+            <CtaButton location="hero" onOpen={openBooking}>Schedule a call here</CtaButton>
+            <p>Takes less than a minute</p>
           </div>
 
           <div className="hg-stats">
@@ -244,19 +422,6 @@ const HVACGuarantee = () => {
             ))}
           </div>
           <p className="hg-stats-label">ASH Cooling &amp; Heating, Mesa, AZ</p>
-
-          {/* BOOKER */}
-          <div id="booker" ref={calRef} className="hg-booker">
-            <h2 className="hg-h2">Book a call below</h2>
-            <p className="hg-lede">30 minutes. We look at your numbers and tell you straight whether the guarantee fits your business.</p>
-            {loadCal ? (
-              <Suspense fallback={<div className="hg-cal-wait">Loading scheduler...</div>}>
-                <Cal namespace={CAL_NAMESPACE} calLink={CAL_LINK} style={{ width: '100%', minHeight: '600px' }} config={{ layout: 'month_view', theme: 'light' }} />
-              </Suspense>
-            ) : (
-              <div className="hg-cal-wait">Loading scheduler...</div>
-            )}
-          </div>
         </section>
 
         {/* HOW IT WORKS */}
@@ -387,11 +552,12 @@ const HVACGuarantee = () => {
           <div className="hg-narrow">
             <h2 className="hg-h2">Ready for 60 more install estimates?</h2>
             <p className="hg-lede">Book a 30-minute call. If the numbers work for your business, we’ll show you exactly how we get there.</p>
-            <CtaButton location="bottom_section">Book My Call</CtaButton>
+            <CtaButton location="bottom_section" onOpen={openBooking}>Schedule a call</CtaButton>
             <p className="hg-fine">Guarantee terms, conditions and the full remedy are in the service agreement. Ad spend is paid by you directly to Meta and is not part of our fee. Results shown are from one client and are not a promise of the same results.</p>
           </div>
         </section>
       </main>
+      {bookingOpen && <BookingModal onClose={() => setBookingOpen(false)} />}
     </>
   );
 };
