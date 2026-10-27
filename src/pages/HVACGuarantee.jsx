@@ -175,9 +175,9 @@ const BookingModal = ({ onClose }) => {
 };
 
 const STATS = [
-  ['163', 'install leads in one month at $114 each'],
-  ['$480k', 'in sales in year one'],
-  ['10 → 70+', 'Google reviews in under a year'],
+  ['$1.4M+', 'in jobs since early 2025'],
+  ['476', 'jobs completed'],
+  ['183', 'Google reviews, 5.0 stars'],
 ];
 
 const ASH_VIDEO = 'https://iframe.mediadelivery.net/embed/585643/eb803435-50c6-47bb-b214-8ee4b6e80a18';
@@ -341,8 +341,8 @@ const HVACGuarantee = () => {
                 <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z" /></svg>
               </span>
               <span className="hg-ash-text">
-                “We went from 10 Google reviews to over 70 and did over $480,000 in sales in our first year.”
-                <em>Ashton, ASH Cooling &amp; Heating · Watch his story</em>
+                ASH Cooling &amp; Heating went from about 10 Google reviews to 183 and over $1.4M in jobs since we started in early 2025.
+                <em>Watch Ashton’s story</em>
               </span>
             </button>
             <ul className="hg-mini">
