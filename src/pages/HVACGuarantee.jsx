@@ -175,8 +175,8 @@ const BookingModal = ({ onClose }) => {
 };
 
 const STATS = [
-  ['$1.4M+', 'in jobs since early 2025'],
-  ['476', 'jobs completed'],
+  ['$1.4M+', 'in jobs in his first full year (2026, so far)'],
+  ['476', 'jobs completed this year'],
   ['183', 'Google reviews, 5.0 stars'],
 ];
 
@@ -341,7 +341,7 @@ const HVACGuarantee = () => {
                 <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z" /></svg>
               </span>
               <span className="hg-ash-text">
-                ASH Cooling &amp; Heating went from about 10 Google reviews to 183 and over $1.4M in jobs since we started in early 2025.
+                ASH Cooling &amp; Heating started with us in 2025 with about 10 Google reviews. His first full year: over $1.4M in jobs before it’s even over. Now 183 reviews.
                 <em>Watch Ashton’s story</em>
               </span>
             </button>
