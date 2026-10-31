@@ -5,6 +5,7 @@ import { HelmetProvider } from 'react-helmet-async'
 import HVACLanding from './pages/HVACLanding'
 import HVACGuarantee from './pages/HVACGuarantee'
 import HVACThankYou from './pages/HVACThankYou'
+import { hvacStyles } from './hvac-styles'
 
 export function render(url, context) {
   const helmetContext = {}
@@ -12,6 +13,7 @@ export function render(url, context) {
   const html = ReactDOMServer.renderToString(
     <React.StrictMode>
       <HelmetProvider context={helmetContext}>
+        <style dangerouslySetInnerHTML={{ __html: hvacStyles }} />
         <StaticRouter location={url} context={context}>
           <Routes>
             <Route path="/1-stop-hvac" element={<HVACLanding />} />

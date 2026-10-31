@@ -4,6 +4,22 @@
     <meta charset="UTF-8" />
     <!-- GTM dataLayer init (GTM script loads after page render) -->
     <script>window.dataLayer=window.dataLayer||[];</script>
+    <script>
+      // Cal forwards the booking's details to /hvac-ty in the URL. Strip them before any tag reads the page URL,
+      // and hand email/phone/name to the pixel as advanced matching (the pixel hashes them).
+      (function () {
+        if (location.pathname !== '/hvac-ty' || !location.search) return;
+        var q = new URLSearchParams(location.search), m = {}, keep = new URLSearchParams();
+        var email = q.get('email'), phone = (q.get('attendeePhoneNumber') || '').replace(/\D/g, ''), name = (q.get('attendeeName') || q.get('name') || '').trim().toLowerCase().split(/\s+/);
+        if (email) m.em = email.toLowerCase();
+        if (phone) m.ph = phone;
+        if (name[0]) m.fn = name[0];
+        if (name.length > 1) m.ln = name[name.length - 1];
+        window.__dgMatch = m;
+        q.forEach(function (v, k) { if (k.indexOf('utm_') === 0) keep.set(k, v); });
+        history.replaceState(null, '', location.pathname + (keep.toString() ? '?' + keep : ''));
+      })();
+    </script>
     <!-- Meta Pixel Code -->
     <script>
     !function(f,b,e,v,n,t,s)
@@ -14,24 +30,24 @@
     t.src=v;s=b.getElementsByTagName(e)[0];
     s.parentNode.insertBefore(t,s)}(window, document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '858463530334592');
+    fbq('init', '858463530334592', window.__dgMatch || {});
     fbq('track', 'PageView');
     </script>
     <noscript><img height="1" width="1" style="display:none"
     src="https://www.facebook.com/tr?id=858463530334592&ev=PageView&noscript=1"
     /></noscript>
     <!-- End Meta Pixel Code -->
+    <link rel="preconnect" href="https://app.cal.com" crossorigin />
     <link rel="preconnect" href="https://iframe.mediadelivery.net" crossorigin />
     <link rel="dns-prefetch" href="https://iframe.mediadelivery.net" />
     <!-- Critical Font Preloads -->
     <link rel="preload" href="/fonts/InstrumentSerif-Regular.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/Inter-SemiBold.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/Inter-ExtraBold.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/assets/hvac-vsl-thumbnail.jpg" as="image" fetchpriority="high" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>One-Stop HVAC System | Design Groove</title>
     <meta name="robots" content="noindex, nofollow" />
-    <meta name="description" content="See how HVAC owners are using this system to grow their business for only $297/mo. No agency fees. No ad budgets." />
     <!--hvac-head-->
   </head>
   <body>

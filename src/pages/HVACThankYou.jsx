@@ -28,16 +28,17 @@ const LandingNavbar = () => (
 );
 
 const HVACThankYou = () => {
-  // Fire conversion events on page load
+  // Fire conversion events once per booking; a refresh of this page isn't a new lead.
   useEffect(() => {
-    // GTM dataLayer event
-    if (typeof window !== 'undefined' && window.dataLayer) {
-      window.dataLayer.push({ event: 'lead', lead_source: 'hvac_landing' });
-    }
-    // Meta Pixel Lead event
-    if (typeof window !== 'undefined' && typeof window.fbq === 'function') {
-      window.fbq('track', 'Lead');
-    }
+    if (typeof window === 'undefined') return;
+    if (window.sessionStorage?.getItem('dg_lead_sent')) return;
+    window.sessionStorage?.setItem('dg_lead_sent', '1');
+    const lead_source = window.sessionStorage?.getItem('dg_funnel') || 'hvac_landing';
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: 'lead', lead_source });
+    if (!window.gtag) window.gtag = function gtag() { window.dataLayer.push(arguments); };
+    window.gtag('event', 'generate_lead', { lead_source, send_to: 'G-FW97C1MF02' });
+    if (typeof window.fbq === 'function') window.fbq('track', 'Lead', { lead_source });
   }, []);
 
   return (
@@ -103,17 +104,6 @@ const HVACThankYou = () => {
             </p>
           </div>
 
-          <a
-            href="/1-stop-hvac"
-            style={{
-              display: 'inline-block',
-              color: '#0073E6',
-              fontSize: '1rem',
-              textDecoration: 'none'
-            }}
-          >
-            ← Back to landing page
-          </a>
         </div>
       </div>
     </>

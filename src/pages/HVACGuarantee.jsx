@@ -15,9 +15,9 @@ const Cal = lazy(() => import('@calcom/embed-react').then(mod => ({ default: mod
 const CAL_NAMESPACE = 'strategy-call';
 const CAL_LINK = 'brennan-davidson/strategy-call';
 
-// Bunny Stream embed URL for the VSL (iframe.mediadelivery.net/embed/...). Empty until it's recorded;
-// the hero shows the proof stats in its place.
+// Bunny Stream embed URL for the VSL (iframe.mediadelivery.net/embed/...). Empty shows a plain frame.
 const VSL_EMBED_URL = '';
+const VSL_MARKS = [25, 50, 75, 95];
 
 const BLUE = '#0073E6';
 
@@ -40,10 +40,28 @@ const toE164 = (raw) => {
   return '';
 };
 
+// GTM only carries the base GA4 tag, so funnel steps go to GA4 directly as well as the dataLayer.
+// send_to is required: the tag ignores events that don't name it.
+const GA4_ID = 'G-FW97C1MF02';
+const ga4 = (event, params) => {
+  window.dataLayer = window.dataLayer || [];
+  if (!window.gtag) window.gtag = function gtag() { window.dataLayer.push(arguments); };
+  window.gtag('event', event, { ...params, send_to: GA4_ID });
+};
+
 const track = (event, fbEvent, params) => {
   if (typeof window === 'undefined') return;
   if (window.dataLayer) window.dataLayer.push({ event, ...params });
+  ga4(event, params);
   if (window.fbq) window.fbq('trackCustom', fbEvent, params);
+};
+
+// Ad UTMs on the page URL go through to the booking, so a booked call can be traced to its ad.
+const utmParams = () => {
+  if (typeof window === 'undefined') return {};
+  const out = {};
+  new URLSearchParams(window.location.search).forEach((v, k) => { if (k.startsWith('utm_')) out[k] = v; });
+  return out;
 };
 
 const PlayButton = () => (
@@ -86,6 +104,7 @@ const BookingModal = ({ onClose }) => {
     setError('');
     if (typeof window !== 'undefined') {
       if (window.dataLayer) window.dataLayer.push({ event: 'application_submit', revenue: f.revenue, role: f.role });
+      ga4('application_submit', { revenue: f.revenue, role: f.role, page: 'hvac-guarantee' });
       if (window.fbq) window.fbq('track', 'SubmitApplication', { revenue: f.revenue, page: 'hvac-guarantee' });
     }
     setStep(f.revenue === 'under50' ? 'small' : 'calendar');
@@ -99,6 +118,7 @@ const BookingModal = ({ onClose }) => {
     attendeePhoneNumber: toE164(f.phone),
     'Monthly-revenue': REVENUE.find(([v]) => v === f.revenue)?.[1] ?? '',
     notes: `Website: ${f.website.trim()} | ${ROLES.find(([v]) => v === f.role)?.[1] ?? ''}`,
+    ...utmParams(),
   };
 
   return (
@@ -164,9 +184,12 @@ const BookingModal = ({ onClose }) => {
         {step === 'calendar' && (
           <div>
             <h2 id="hg-modal-title" className="hg-modal-title">Pick a time that works</h2>
-            <Suspense fallback={<div className="hg-cal-wait">Loading scheduler...</div>}>
-              <Cal namespace={CAL_NAMESPACE} calLink={CAL_LINK} style={{ width: '100%', minHeight: '560px' }} config={calConfig} />
-            </Suspense>
+            <div className="hg-cal-box">
+              <div className="hg-cal-wait">Loading the calendar...</div>
+              <Suspense fallback={null}>
+                <Cal namespace={CAL_NAMESPACE} calLink={CAL_LINK} style={{ position: 'relative', width: '100%', minHeight: '560px' }} config={calConfig} />
+              </Suspense>
+            </div>
           </div>
         )}
       </div>
@@ -199,6 +222,35 @@ const HVACGuarantee = () => {
   const [bookingOpen, setBookingOpen] = useState(false);
   const [vslSound, setVslSound] = useState(false);
   const [ashOpen, setAshOpen] = useState(false);
+  const vslRef = useRef(null);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') window.sessionStorage?.setItem('dg_funnel', 'hvac_guarantee');
+  }, []);
+
+  // Watch-time: Bunny's player speaks player.js. Quartiles count only once sound is on, since the muted
+  // autoplay loops for everyone who lands.
+  useEffect(() => {
+    if (!VSL_EMBED_URL || !vslSound) return undefined;
+    const send = (method, value) => vslRef.current?.contentWindow?.postMessage(JSON.stringify({ context: 'player.js', version: '0.0.11', method, value, listener: 'dg' }), '*');
+    const hit = new Set();
+    const onMessage = (e) => {
+      if (e.source !== vslRef.current?.contentWindow) return;
+      let d = e.data;
+      try { if (typeof d === 'string') d = JSON.parse(d); } catch { return; }
+      if (d?.context !== 'player.js') return;
+      if (d.event === 'ready') send('addEventListener', 'timeupdate');
+      if (d.event === 'timeupdate' && d.value?.duration) {
+        const pct = (d.value.seconds / d.value.duration) * 100;
+        VSL_MARKS.filter((m) => pct >= m && !hit.has(m)).forEach((m) => {
+          hit.add(m);
+          track('vsl_progress', 'VSLProgress', { percent: m, page: 'hvac-guarantee' });
+        });
+      }
+    };
+    window.addEventListener('message', onMessage);
+    return () => window.removeEventListener('message', onMessage);
+  }, [vslSound]);
 
   useEffect(() => {
     if (!ashOpen) return undefined;
@@ -224,6 +276,11 @@ const HVACGuarantee = () => {
         <title>60 Booked Install Estimates in 90 Days | Design Groove</title>
         <meta name="robots" content="noindex, nofollow" />
         <meta name="description" content="HVAC companies above $100k/month: get 60 booked install estimates in 90 days, or you don't pay us until you have them." />
+        <meta property="og:title" content="60 Booked Install Estimates in 90 Days | Design Groove" />
+        <meta property="og:description" content="HVAC companies above $100k/month: get 60 booked install estimates in 90 days, or you don't pay us until you have them." />
+        <meta property="og:image" content="https://www.designgroove.io/og-image.jpg" />
+        <meta property="og:url" content="https://www.designgroove.io/hvac-guarantee" />
+        <meta property="og:type" content="website" />
         <style>{`
           body { background: #000; }
           .hg { min-height: 100vh; background: #000; color: #fff; font-family: Inter, sans-serif; display: flex; flex-direction: column; }
@@ -264,7 +321,8 @@ const HVACGuarantee = () => {
           .hg-foot div { max-width: 1100px; margin: 0 auto; padding: 1.25rem max(16px, 4vw); display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; color: #777; font-size: 0.8rem; }
           .hg-foot a { color: #777; text-decoration: none; margin-left: 1.25rem; }
           .hg-foot a:hover { color: #bbb; }
-          .hg-cal-wait { min-height: 420px; display: flex; align-items: center; justify-content: center; background: #f9f9f9; border-radius: 8px; color: #666; }
+          .hg-cal-box { position: relative; min-height: 560px; }
+          .hg-cal-wait { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #555; font-size: 1rem; }
           .hg-modal-back { position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,0.75); display: flex; align-items: flex-start; justify-content: center; overflow-y: auto; padding: max(16px, env(safe-area-inset-top, 0px)) 16px 16px; }
           .hg-modal { position: relative; width: 100%; max-width: 520px; margin: 4vh auto; background: #fff; border-radius: 14px; padding: 2rem 1.5rem 1.5rem; box-shadow: 0 20px 60px rgba(0,0,0,0.5); font-family: Inter, sans-serif; color: #1a1a1a; text-align: left; }
           .hg-modal-wide { max-width: 980px; }
@@ -308,6 +366,7 @@ const HVACGuarantee = () => {
             {VSL_EMBED_URL ? (
               <>
                 <iframe
+                  ref={vslRef}
                   key={vslSound ? 'sound' : 'muted'}
                   src={`${VSL_EMBED_URL}?autoplay=true&responsive=true&preload=true${vslSound ? '' : '&muted=true&loop=true'}`}
                   title="How the Design Groove Lead Engine works"

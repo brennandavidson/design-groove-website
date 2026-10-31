@@ -22,7 +22,7 @@ class handler(BaseHTTPRequestHandler):
 
             name = responses.get('name', {}).get('value') or attendees[0].get('name', '')
             email = responses.get('email', {}).get('value') or attendees[0].get('email', '')
-            phone = responses.get('smsReminderNumber', {}).get('value', '')
+            phone = responses.get('attendeePhoneNumber', {}).get('value') or responses.get('smsReminderNumber', {}).get('value', '')
             booking_time = payload.get('startTime', '')
             booked_at = data.get('createdAt', '')
             status = 'Booked'
