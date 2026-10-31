@@ -15,8 +15,8 @@ const Cal = lazy(() => import('@calcom/embed-react').then(mod => ({ default: mod
 const CAL_NAMESPACE = 'strategy-call';
 const CAL_LINK = 'brennan-davidson/strategy-call';
 
-// Bunny Stream embed URL for the VSL (iframe.mediadelivery.net/embed/...). Empty shows a plain frame.
-const VSL_EMBED_URL = '';
+// Bunny Stream embed URL for the VSL (iframe.mediadelivery.net/embed/...).
+const VSL_EMBED_URL = 'https://iframe.mediadelivery.net/embed/585643/9c6db702-50d7-4944-a8d8-e103666449d7';
 const VSL_MARKS = [25, 50, 75, 95];
 
 const BLUE = '#0073E6';
@@ -400,7 +400,7 @@ const HVACGuarantee = () => {
                 <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z" /></svg>
               </span>
               <span className="hg-ash-text">
-                ASH Cooling &amp; Heating started with us in 2025 with about 10 Google reviews. His first full year: over $1.4M in jobs before it’s even over. Now 183 reviews.
+                ASH Cooling &amp; Heating started with us in 2025 with less than 10 Google reviews. His first full year: over $1.4M in jobs before it’s even over. Now 183 reviews.
                 <em>Watch Ashton’s story</em>
               </span>
             </button>
