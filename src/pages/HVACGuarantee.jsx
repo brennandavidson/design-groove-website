@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useRef, lazy, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
 import HVACCredibility from '../components/HVACCredibility';
+import { note, noteWatch, startTelemetry } from '../lib/funnelTelemetry';
 
 // Guarantee offer landing page (/hvac-guarantee) for the managed lead engine: 60 booked install
 // estimates in 90 days. Flow: qualifier headline, VSL, one "Schedule a call" button that opens a
 // short qualifying form, then the calendar (prefilled). Homeowners are screened out; companies under
-// $50k/month are pointed at /1-stop-hvac. Guarantee wording mirrors section 2 of the service
+// $50k/month are told it may not fit, and can still book. Guarantee wording mirrors section 2 of the service
 // agreement (design-groove-os business/contract-v2.md); change both together. VSL script:
 // design-groove-os business/vsl-hvac-guarantee.md.
 
@@ -95,6 +96,7 @@ const BookingModal = ({ onClose }) => {
     if (!f.role) return setError('Pick the option that best describes you.');
     if (f.role === 'homeowner') {
       track('application_homeowner', 'ApplicationHomeowner', { page: 'hvac-guarantee' });
+      note({ screened_out: 'homeowner' });
       return setStep('homeowner');
     }
     if (!f.revenue) return setError('Pick your monthly revenue.');
@@ -107,12 +109,22 @@ const BookingModal = ({ onClose }) => {
       ga4('application_submit', { revenue: f.revenue, role: f.role, page: 'hvac-guarantee' });
       if (window.fbq) window.fbq('track', 'SubmitApplication', { revenue: f.revenue, page: 'hvac-guarantee' });
     }
+    note({ form_submitted: true, revenue_band: f.revenue, ...(f.revenue === 'under50' ? { screened_out: 'under50' } : {}) });
     setStep(f.revenue === 'under50' ? 'small' : 'calendar');
   };
 
+  useEffect(() => {
+    if (step !== 'calendar') return;
+    note({ calendar_opened: true });
+    import('@calcom/embed-react').then(async ({ getCalApi }) => {
+      const cal = await getCalApi({ namespace: CAL_NAMESPACE });
+      cal('ui', { theme: 'dark', cssVarsPerTheme: { dark: { 'cal-brand': '#2b8cff', 'cal-bg': '#0d1016', 'cal-bg-muted': '#12161e' } } });
+    });
+  }, [step]);
+
   const calConfig = {
     layout: 'month_view',
-    theme: 'light',
+    theme: 'dark',
     name: f.name.trim(),
     email: f.email.trim(),
     attendeePhoneNumber: toE164(f.phone),
@@ -174,10 +186,10 @@ const BookingModal = ({ onClose }) => {
 
         {step === 'small' && (
           <div className="hg-modal-msg">
-            <h2 id="hg-modal-title" className="hg-modal-title">There's a better fit for you right now</h2>
-            <p>The 60-in-90 guarantee needs an ad budget that usually makes sense from about $100k a month. At your size, our One-Stop HVAC System gets you more calls and reviews for $297 a month, no ad budget needed.</p>
-            <a className="hg-btn hg-btn-full" href="/1-stop-hvac">See the One-Stop HVAC System</a>
-            <button type="button" className="hg-link" onClick={() => setStep('calendar')}>Book a call anyway</button>
+            <h2 id="hg-modal-title" className="hg-modal-title">This may not be the right fit yet</h2>
+            <p>The 60-in-90 guarantee usually makes sense from about $100k a month. You're welcome to book a call anyway, and we'll tell you straight whether it fits.</p>
+            <button type="button" className="hg-btn hg-btn-full" onClick={() => setStep('calendar')}>Book a call anyway</button>
+            <button type="button" className="hg-link" onClick={onClose}>Close</button>
           </div>
         )}
 
@@ -226,6 +238,7 @@ const HVACGuarantee = () => {
 
   useEffect(() => {
     if (typeof window !== 'undefined') window.sessionStorage?.setItem('dg_funnel', 'hvac_guarantee');
+    return startTelemetry();
   }, []);
 
   // Watch-time: Bunny's player speaks player.js. Quartiles count only once sound is on, since the muted
@@ -241,6 +254,7 @@ const HVACGuarantee = () => {
       if (d?.context !== 'player.js') return;
       if (d.event === 'ready') send('addEventListener', 'timeupdate');
       if (d.event === 'timeupdate' && d.value?.duration) {
+        noteWatch(d.value.seconds, d.value.duration);
         const pct = (d.value.seconds / d.value.duration) * 100;
         VSL_MARKS.filter((m) => pct >= m && !hit.has(m)).forEach((m) => {
           hit.add(m);
@@ -261,6 +275,7 @@ const HVACGuarantee = () => {
 
   const openBooking = (location) => {
     track('cta_click', 'CTAClick', { location, page: 'hvac-guarantee' });
+    note({ cta_clicked: true });
     if (window.fbq) window.fbq('track', 'ViewContent', { content_name: 'Booking form', page: 'hvac-guarantee' });
     setBookingOpen(true);
   };
@@ -268,6 +283,7 @@ const HVACGuarantee = () => {
   const playWithSound = () => {
     setVslSound(true);
     track('vsl_play', 'VSLPlay', { page: 'hvac-guarantee' });
+    note({ vsl_sound_on: true });
   };
 
   return (
@@ -326,27 +342,28 @@ const HVACGuarantee = () => {
           .hg-foot a { color: #777; text-decoration: none; margin-left: 1.25rem; }
           .hg-foot a:hover { color: #bbb; }
           .hg-cal-box { position: relative; min-height: 560px; }
-          .hg-cal-wait { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #555; font-size: 1rem; }
+          .hg-cal-wait { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding-top: 5.5rem; color: #9a9a9a; font-size: 1rem; }
           .hg-modal-back { position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,0.75); display: flex; align-items: flex-start; justify-content: center; overflow-y: auto; padding: max(16px, env(safe-area-inset-top, 0px)) 16px 16px; }
-          .hg-modal { position: relative; width: 100%; max-width: 520px; margin: 4vh auto; background: #fff; border-radius: 14px; padding: 2rem 1.5rem 1.5rem; box-shadow: 0 20px 60px rgba(0,0,0,0.5); font-family: Inter, sans-serif; color: #1a1a1a; text-align: left; }
+          .hg-modal { position: relative; width: 100%; max-width: 520px; margin: 4vh auto; background: #0d1016; border-radius: 14px; padding: 2rem 1.5rem 1.5rem; box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 20px 60px rgba(0,115,230,0.18); font-family: Inter, sans-serif; color: #fff; color-scheme: dark; text-align: left; }
           .hg-modal-wide { max-width: 980px; }
-          .hg-modal-x { position: absolute; top: 0.6rem; right: 0.75rem; width: 40px; height: 40px; border: 0; background: transparent; font-size: 1.8rem; line-height: 1; color: #666; cursor: pointer; border-radius: 8px; }
+          .hg-modal-x { position: absolute; top: 0.6rem; right: 0.75rem; width: 40px; height: 40px; border: 0; background: transparent; font-size: 1.8rem; line-height: 1; color: #9a9a9a; cursor: pointer; border-radius: 8px; }
           .hg-modal-title { font-family: Inter, sans-serif; font-weight: 800; letter-spacing: -0.01em; font-size: 1.5rem; line-height: 1.2; margin: 0 0 1.25rem; padding-right: 2rem; }
           .hg-q { border: 0; margin: 0 0 1.25rem; padding: 0; display: grid; gap: 0.5rem; }
           .hg-q legend { font-weight: 600; margin-bottom: 0.6rem; padding: 0; }
-          .hg-opt { display: flex; align-items: center; gap: 0.65rem; border: 1px solid #ddd; border-radius: 10px; padding: 0.8rem 0.9rem; cursor: pointer; font-size: 0.98rem; }
-          .hg-opt-on { border-color: ${BLUE}; background: #f0f7ff; }
-          .hg-opt input { accent-color: ${BLUE}; width: 18px; height: 18px; margin: 0; }
+          .hg-opt { display: flex; align-items: center; gap: 0.65rem; border: 1px solid #2a303c; background: #12161e; color: #e6e8ec; border-radius: 10px; padding: 0.8rem 0.9rem; cursor: pointer; font-size: 0.98rem; }
+          .hg-opt-on { border-color: #2b8cff; background: rgba(43,140,255,0.14); color: #fff; }
+          .hg-opt input { accent-color: #2b8cff; width: 18px; height: 18px; margin: 0; }
           .hg-q-lead { font-weight: 600; margin: 0 0 0.75rem; }
           .hg-fields { display: grid; gap: 0.75rem; margin-bottom: 1rem; }
-          .hg-fields label { display: grid; gap: 0.3rem; font-size: 0.9rem; font-weight: 500; }
-          .hg-fields input { font: inherit; font-size: 1rem; border: 1px solid #ccc; border-radius: 8px; padding: 0.75rem 0.85rem; }
-          .hg-fields input:focus, .hg-opt:focus-within { outline: 2px solid ${BLUE}; outline-offset: 1px; }
-          .hg-err { color: #b42318; font-size: 0.9rem; margin: 0 0 0.75rem; }
+          .hg-fields label { display: grid; gap: 0.3rem; font-size: 0.9rem; font-weight: 500; color: #cfd3da; }
+          .hg-fields input { font: inherit; font-size: 1rem; color: #fff; background: #12161e; border: 1px solid #2a303c; border-radius: 8px; padding: 0.75rem 0.85rem; }
+          .hg-fields input::placeholder { color: #6b7280; }
+          .hg-fields input:focus, .hg-opt:focus-within { outline: 2px solid #2b8cff; outline-offset: 1px; }
+          .hg-err { color: #ff9a9a; font-size: 0.9rem; margin: 0 0 0.75rem; }
           .hg-btn-full { display: flex; width: 100%; padding: 0.95rem 1.25rem; font-size: 1.05rem; }
-          .hg-consent { font-size: 0.78rem; color: #777; line-height: 1.5; margin: 0.75rem 0 0; }
-          .hg-modal-msg p { color: #444; line-height: 1.65; margin: 0 0 1.25rem; }
-          .hg-link { display: block; margin: 0.9rem auto 0; background: none; border: 0; color: ${BLUE}; font: inherit; font-weight: 600; cursor: pointer; text-decoration: underline; }
+          .hg-consent { font-size: 0.78rem; color: #8a8a8a; line-height: 1.5; margin: 0.75rem 0 0; }
+          .hg-modal-msg p { color: #cfd3da; line-height: 1.65; margin: 0 0 1.25rem; }
+          .hg-link { display: block; margin: 0.9rem auto 0; background: none; border: 0; color: #5aa9ff; font: inherit; font-weight: 600; cursor: pointer; text-decoration: underline; }
           @media (min-width: 760px) {
             .hg-hero { padding-top: 3rem; }
             .hg h1 { font-size: 2.5rem; max-width: 960px; }
