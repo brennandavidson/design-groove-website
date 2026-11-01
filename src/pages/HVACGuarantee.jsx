@@ -346,10 +346,10 @@ const HVACGuarantee = () => {
           .hg-sound.hg-sound-hint { pointer-events: none; }
           .hg-sound-pill { display: inline-flex; align-items: center; gap: 0.55rem; padding: 0.8rem 1.25rem; border-radius: 999px; background: #0073E6; font-size: 0.95rem; box-shadow: 0 8px 26px rgba(0,0,0,0.38); animation: hg-sound-pulse 1.8s ease-in-out infinite; }
           @keyframes hg-sound-pulse { 50% { transform: scale(1.05); } }
-          @media (max-width: 600px) { .hg-sound-pill { padding: 0.55rem 0.9rem; font-size: 0.75rem; } }
+          @media (max-width: 600px) { .hg-sound-pill { padding: 0.5rem 0.8rem; font-size: 0.7rem; } }
           @media (prefers-reduced-motion: reduce) { .hg-sound-pill { animation: none; } }
           .hg-sound { position: absolute; inset: 0; display: flex; align-items: flex-start; padding-top: 5%; justify-content: center; gap: 0.5rem; background: transparent; border: 0; color: #fff; font: 700 0.8rem Inter, sans-serif; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; text-shadow: 0 1px 8px rgba(0,0,0,0.6); }
-          @media (max-width: 600px) { .hg-sound { align-items: flex-end; padding: 0 0 7%; } }
+          @media (max-width: 600px) { .hg-sound { align-items: flex-end; justify-content: flex-end; padding: 0 3% 7% 0; letter-spacing: 0.04em; } }
           .hg-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; border: 0; cursor: pointer; font-family: Inter, sans-serif; font-weight: 700; color: #fff; text-decoration: none; border-radius: 10px; background: linear-gradient(90deg, #005ec2, #2b8cff); }
           .hg-cta { margin-top: 1.5rem; }
           .hg-cta .hg-btn { width: 100%; font-size: 1.15rem; padding: 1.15rem 1.5rem; box-shadow: 0 10px 40px rgba(43,140,255,0.35); transition: transform 0.15s ease, box-shadow 0.15s ease; }
