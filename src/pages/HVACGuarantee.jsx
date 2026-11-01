@@ -132,7 +132,8 @@ const BookingModal = ({ onClose }) => {
     email: f.email.trim(),
     attendeePhoneNumber: toE164(f.phone),
     'Monthly-revenue': REVENUE.find(([v]) => v === f.revenue)?.[1] ?? '',
-    notes: `Website: ${f.website.trim()} | ${ROLES.find(([v]) => v === f.role)?.[1] ?? ''}`,
+    // api/cal_webhook.py splits this back into the sheet's Website and Role columns.
+    notes: `Website:${f.website.trim()} | ${ROLES.find(([v]) => v === f.role)?.[1] ?? ''}`,
     ...utmParams(),
   };
 
