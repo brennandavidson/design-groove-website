@@ -237,10 +237,12 @@ const HVACGuarantee = () => {
   const [bookingOpen, setBookingOpen] = useState(false);
   const [vslSound, setVslSound] = useState(false);
   const [vslFailed, setVslFailed] = useState(false);
+  const [vslControls, setVslControls] = useState(false);
   const [ashOpen, setAshOpen] = useState(false);
   const vslRef = useRef(null);
   const soundOn = useRef(false);
   const vslHit = useRef(new Set());
+  const vslHide = useRef(null);
 
   useEffect(() => {
     if (typeof window !== 'undefined') window.sessionStorage?.setItem('dg_funnel', 'hvac_guarantee');
@@ -278,8 +280,22 @@ const HVACGuarantee = () => {
     return () => {
       gone = true;
       hls?.destroy();
+      clearTimeout(vslHide.current);
     };
   }, []);
+
+  // Native controls have no timer of their own and can sit on screen, so they're switched off shortly after
+  // playback and back on with a tap or mouse move. While paused they stay up, or there'd be no way to resume.
+  const showVslControls = (ms) => {
+    setVslControls(true);
+    clearTimeout(vslHide.current);
+    vslHide.current = setTimeout(() => { if (!vslRef.current?.paused) setVslControls(false); }, ms);
+  };
+  const onVslPause = () => {
+    if (!soundOn.current) return;
+    clearTimeout(vslHide.current);
+    setVslControls(true);
+  };
 
   // Watch time and quartiles count only once sound is on, since the muted autoplay loops for everyone who lands.
   const onVslTime = (e) => {
@@ -316,6 +332,7 @@ const HVACGuarantee = () => {
     v.currentTime = 0.1;
     v.play().catch(() => {});
     setVslSound(true);
+    showVslControls(1500);
     track('vsl_play', 'VSLPlay', { page: 'hvac-guarantee' });
     note({ vsl_sound_on: true });
     // A refused stream can spin forever without an error event. Bunny's player beats an endless spinner.
@@ -442,7 +459,11 @@ const HVACGuarantee = () => {
                   preload="auto"
                   disableRemotePlayback
                   loop={!vslSound}
-                  controls={vslSound}
+                  controls={vslControls}
+                  onClick={() => showVslControls(3000)}
+                  onMouseMove={() => showVslControls(3000)}
+                  onPlay={() => { if (soundOn.current) showVslControls(1500); }}
+                  onPause={onVslPause}
                   onTimeUpdate={onVslTime}
                   onError={() => setVslFailed(true)}
                 />
