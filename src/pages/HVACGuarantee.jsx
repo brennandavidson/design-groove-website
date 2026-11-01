@@ -247,7 +247,8 @@ const HVACGuarantee = () => {
     return startTelemetry();
   }, []);
 
-  // iPhones have no MediaSource and play HLS themselves. Everything else streams through hls.js.
+  // hls.js first, iPhones on iOS 17.1+ included: its requests carry our referrer, while iOS's own HLS player
+  // drops it and Bunny's hotlink block answers 403. Native HLS is only for browsers hls.js can't run in.
   useEffect(() => {
     const v = vslRef.current;
     if (!v) return undefined;
@@ -258,21 +259,22 @@ const HVACGuarantee = () => {
     v.muted = true;
     // Low Power Mode and some in-app browsers refuse autoplay. The thumbnail stays up and a tap still starts it.
     const start = () => v.play().catch(() => {});
-    if (!window.MediaSource && v.canPlayType('application/vnd.apple.mpegurl')) {
-      v.src = VSL_HLS_URL;
-      start();
-    } else {
-      import('hls.js/light').then(({ default: Hls }) => {
-        if (gone) return;
-        if (!Hls.isSupported()) { setVslFailed(true); return; }
+    import('hls.js/light').then(({ default: Hls }) => {
+      if (gone) return;
+      if (Hls.isSupported()) {
         // The default 60MB buffer pulls 3+ minutes of video for every visitor, most of whom never turn the sound on.
         hls = new Hls({ capLevelToPlayerSize: true, maxBufferSize: 15 * 1000 * 1000 });
         hls.on(Hls.Events.ERROR, (_, d) => { if (d.fatal) setVslFailed(true); });
         hls.loadSource(VSL_HLS_URL);
         hls.attachMedia(v);
-        start();
-      }).catch(() => setVslFailed(true));
-    }
+      } else if (v.canPlayType('application/vnd.apple.mpegurl')) {
+        v.src = VSL_HLS_URL;
+      } else {
+        setVslFailed(true);
+        return;
+      }
+      start();
+    }).catch(() => setVslFailed(true));
     return () => {
       gone = true;
       hls?.destroy();
@@ -316,6 +318,8 @@ const HVACGuarantee = () => {
     setVslSound(true);
     track('vsl_play', 'VSLPlay', { page: 'hvac-guarantee' });
     note({ vsl_sound_on: true });
+    // A refused stream can spin forever without an error event. Bunny's player beats an endless spinner.
+    setTimeout(() => { if (v.currentTime < 0.3 && !v.paused) setVslFailed(true); }, 8000);
   };
 
   return (
