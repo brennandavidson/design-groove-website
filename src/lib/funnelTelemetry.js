@@ -29,7 +29,7 @@ const newSession = () => {
     id: crypto.randomUUID(),
     page: 'hvac-guarantee',
     ad_click: q.has('fbclid'),
-    device: window.innerWidth < 768 ? 'mobile' : 'desktop',
+    device: Math.min(window.innerWidth, window.screen.width) < 768 ? 'mobile' : 'desktop',
     active_seconds: 0,
     scroll_pct: 0,
     vsl_seconds: 0,

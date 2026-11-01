@@ -16,8 +16,11 @@ const Cal = lazy(() => import('@calcom/embed-react').then(mod => ({ default: mod
 const CAL_NAMESPACE = 'strategy-call';
 const CAL_LINK = 'brennan-davidson/strategy-call';
 
-// Bunny Stream embed URL for the VSL (iframe.mediadelivery.net/embed/...).
+// The VSL is a <video> on the page, not Bunny's iframe. iOS only starts sound from a tap in the same document as
+// the video, so a tap relayed into an iframe plays nothing. The iframe stays as the fallback if the stream fails.
+const VSL_HLS_URL = 'https://vz-84943860-85d.b-cdn.net/9c6db702-50d7-4944-a8d8-e103666449d7/playlist.m3u8';
 const VSL_EMBED_URL = 'https://iframe.mediadelivery.net/embed/585643/9c6db702-50d7-4944-a8d8-e103666449d7';
+const VSL_THUMB = '/assets/hvac-guarantee-vsl-thumb.jpg';
 const VSL_MARKS = [25, 50, 75, 95];
 
 const BLUE = '#0073E6';
@@ -233,60 +236,60 @@ const SoundIcon = () => (
 const HVACGuarantee = () => {
   const [bookingOpen, setBookingOpen] = useState(false);
   const [vslSound, setVslSound] = useState(false);
-  const [vslPlaying, setVslPlaying] = useState(false);
-  const [vslBlocked, setVslBlocked] = useState(false);
+  const [vslFailed, setVslFailed] = useState(false);
   const [ashOpen, setAshOpen] = useState(false);
   const vslRef = useRef(null);
   const soundOn = useRef(false);
-  const soundTicks = useRef(0);
-
-  const vslSend = (method, value) => vslRef.current?.contentWindow?.postMessage(JSON.stringify({ context: 'player.js', version: '0.0.11', method, value, listener: 'dg' }), '*');
-  // Sound starts in the player that's already running. Loading a new one left viewers on a blank frame for 5-10 seconds.
-  const startSound = () => {
-    vslSend('unmute');
-    vslSend('setVolume', 100);
-    vslSend('setLoop', false);
-    vslSend('setCurrentTime', 0);
-    vslSend('play');
-  };
+  const vslHit = useRef(new Set());
 
   useEffect(() => {
     if (typeof window !== 'undefined') window.sessionStorage?.setItem('dg_funnel', 'hvac_guarantee');
     return startTelemetry();
   }, []);
 
-  // Bunny's player speaks player.js. The thumbnail lifts on the first real frame. Watch time and quartiles
-  // count only once sound is on, since the muted autoplay loops for everyone who lands.
+  // iPhones have no MediaSource and play HLS themselves. Everything else streams through hls.js.
   useEffect(() => {
-    if (!VSL_EMBED_URL) return undefined;
-    const hit = new Set();
-    const onMessage = (e) => {
-      if (e.source !== vslRef.current?.contentWindow) return;
-      let d = e.data;
-      try { if (typeof d === 'string') d = JSON.parse(d); } catch { return; }
-      if (d?.context !== 'player.js') return;
-      if (d.event === 'ready') {
-        vslSend('addEventListener', 'timeupdate');
-        // Bunny remembers a past unmute and would ignore muted=true on a return visit.
-        if (soundOn.current) startSound();
-        else vslSend('mute');
-      }
-      if (d.event === 'timeupdate' && d.value?.duration) {
-        if (d.value.seconds > 0) setVslPlaying(true);
-        if (!soundOn.current) return;
-        soundTicks.current += 1;
-        if (soundTicks.current >= 3) setVslBlocked(false);
-        noteWatch(d.value.seconds, d.value.duration);
-        const pct = (d.value.seconds / d.value.duration) * 100;
-        VSL_MARKS.filter((m) => pct >= m && !hit.has(m)).forEach((m) => {
-          hit.add(m);
-          track('vsl_progress', 'VSLProgress', { percent: m, page: 'hvac-guarantee' });
-        });
-      }
+    const v = vslRef.current;
+    if (!v) return undefined;
+    let hls;
+    let gone = false;
+    // React leaves muted out of the prerendered HTML, and iOS only autoplays a video that starts muted.
+    v.defaultMuted = true;
+    v.muted = true;
+    // Low Power Mode and some in-app browsers refuse autoplay. The thumbnail stays up and a tap still starts it.
+    const start = () => v.play().catch(() => {});
+    if (!window.MediaSource && v.canPlayType('application/vnd.apple.mpegurl')) {
+      v.src = VSL_HLS_URL;
+      start();
+    } else {
+      import('hls.js/light').then(({ default: Hls }) => {
+        if (gone) return;
+        if (!Hls.isSupported()) { setVslFailed(true); return; }
+        // The default 60MB buffer pulls 3+ minutes of video for every visitor, most of whom never turn the sound on.
+        hls = new Hls({ capLevelToPlayerSize: true, maxBufferSize: 15 * 1000 * 1000 });
+        hls.on(Hls.Events.ERROR, (_, d) => { if (d.fatal) setVslFailed(true); });
+        hls.loadSource(VSL_HLS_URL);
+        hls.attachMedia(v);
+        start();
+      }).catch(() => setVslFailed(true));
+    }
+    return () => {
+      gone = true;
+      hls?.destroy();
     };
-    window.addEventListener('message', onMessage);
-    return () => window.removeEventListener('message', onMessage);
   }, []);
+
+  // Watch time and quartiles count only once sound is on, since the muted autoplay loops for everyone who lands.
+  const onVslTime = (e) => {
+    const { currentTime, duration } = e.currentTarget;
+    if (!soundOn.current || !duration) return;
+    noteWatch(currentTime, duration);
+    const pct = (currentTime / duration) * 100;
+    VSL_MARKS.filter((m) => pct >= m && !vslHit.current.has(m)).forEach((m) => {
+      vslHit.current.add(m);
+      track('vsl_progress', 'VSLProgress', { percent: m, page: 'hvac-guarantee' });
+    });
+  };
 
   useEffect(() => {
     if (!ashOpen) return undefined;
@@ -302,25 +305,24 @@ const HVACGuarantee = () => {
     setBookingOpen(true);
   };
 
+  // Has to run straight inside the tap: iOS refuses sound from anything later, so nothing async before play().
   const playWithSound = () => {
+    const v = vslRef.current;
     soundOn.current = true;
-    startSound();
+    v.muted = false;
+    // Not 0: the stream's first frame sits at 0.07s, so seeking to 0 lands in a gap the player can stall on.
+    v.currentTime = 0.1;
+    v.play().catch(() => {});
     setVslSound(true);
     track('vsl_play', 'VSLPlay', { page: 'hvac-guarantee' });
     note({ vsl_sound_on: true });
-    // A browser can refuse to start sound from our page. A tap on the player itself always works, so say so.
-    setTimeout(() => {
-      if (soundTicks.current >= 3) return;
-      setVslPlaying(true);
-      setVslBlocked(true);
-    }, 3000);
   };
 
   return (
     <>
       <Helmet>
-        <link rel="preconnect" href="https://iframe.mediadelivery.net" />
         <link rel="preconnect" href="https://vz-84943860-85d.b-cdn.net" />
+        <link rel="preload" as="image" href={VSL_THUMB} fetchPriority="high" />
         <title>60 Booked Install Estimates in 90 Days | Design Groove</title>
         <meta name="robots" content="noindex, nofollow" />
         <meta name="description" content="HVAC companies above $100k/month: get 60 booked install estimates in 90 days, or you don't pay us until you have them." />
@@ -339,14 +341,11 @@ const HVACGuarantee = () => {
           .hg h1 { font-family: Inter, sans-serif; font-weight: 800; font-size: 1.75rem; line-height: 1.2; letter-spacing: -0.02em; margin: 0 auto 1.75rem; max-width: 760px; text-wrap: balance; }
           .hg h1 span { color: #5aa9ff; font-weight: 700; }
           .hg-frame { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 14px; overflow: hidden; background: #111; box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 20px 60px rgba(0,115,230,0.12); }
-          .hg-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-          .hg-poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; transition: opacity 0.35s ease; }
-          .hg-poster-off { opacity: 0; }
-          .hg-sound.hg-sound-idle { cursor: default; }
-          .hg-sound.hg-sound-hint { pointer-events: none; }
+          .hg-frame iframe, .hg-frame video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; object-fit: cover; }
           .hg-sound-pill { display: inline-flex; align-items: center; gap: 0.55rem; padding: 0.8rem 1.25rem; border-radius: 999px; background: #0073E6; font-size: 0.95rem; box-shadow: 0 8px 26px rgba(0,0,0,0.38); animation: hg-sound-pulse 1.8s ease-in-out infinite; }
           @keyframes hg-sound-pulse { 50% { transform: scale(1.05); } }
-          @media (max-width: 600px) { .hg-sound-pill { padding: 0.5rem 0.8rem; font-size: 0.7rem; } }
+          .hg-sound-tap { display: none; }
+          @media (max-width: 600px) { .hg-sound-pill { padding: 0.5rem 0.8rem; font-size: 0.7rem; } .hg-sound-click { display: none; } .hg-sound-tap { display: inline; } }
           @media (prefers-reduced-motion: reduce) { .hg-sound-pill { animation: none; } }
           .hg-sound { position: absolute; inset: 0; display: flex; align-items: flex-start; padding-top: 5%; justify-content: center; gap: 0.5rem; background: transparent; border: 0; color: #fff; font: 700 0.8rem Inter, sans-serif; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; text-shadow: 0 1px 8px rgba(0,0,0,0.6); }
           @media (max-width: 600px) { .hg-sound { align-items: flex-end; justify-content: flex-end; padding: 0 3% 7% 0; letter-spacing: 0.04em; } }
@@ -420,31 +419,35 @@ const HVACGuarantee = () => {
           </h1>
 
           <div className="hg-frame">
-            {VSL_EMBED_URL ? (
+            {vslFailed ? (
+              <iframe
+                src={`${VSL_EMBED_URL}?responsive=true`}
+                title="How the Design Groove Lead Engine works"
+                allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+                allowFullScreen
+              />
+            ) : (
               <>
-                <iframe
+                <video
                   ref={vslRef}
-                  src={`${VSL_EMBED_URL}?autoplay=true&muted=true&loop=true&responsive=true&preload=true`}
-                  title="How the Design Groove Lead Engine works"
-                  allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-                  allowFullScreen
+                  poster={VSL_THUMB}
+                  aria-label="How the Design Groove Lead Engine works"
+                  autoPlay
+                  muted
+                  playsInline
+                  preload="auto"
+                  disableRemotePlayback
+                  loop={!vslSound}
+                  controls={vslSound}
+                  onTimeUpdate={onVslTime}
+                  onError={() => setVslFailed(true)}
                 />
-                <img className={`hg-poster${vslPlaying ? ' hg-poster-off' : ''}`} src="/assets/hvac-guarantee-vsl-poster.jpg" alt="" width="1280" height="720" fetchPriority="high" />
                 {!vslSound && (
                   <button type="button" className="hg-sound" onClick={playWithSound}>
-                    <span className="hg-sound-pill"><SoundIcon /> Click to play with sound</span>
+                    <span className="hg-sound-pill"><SoundIcon /> <span><span className="hg-sound-click">Click to play</span><span className="hg-sound-tap">Play</span> with sound</span></span>
                   </button>
                 )}
-                {vslBlocked && (
-                  <div className="hg-sound hg-sound-hint">
-                    <span className="hg-sound-pill"><SoundIcon /> Tap the video to play</span>
-                  </div>
-                )}
               </>
-            ) : (
-              <div className="hg-sound hg-sound-idle" aria-hidden="true">
-                <SoundIcon /> Click to play with sound
-              </div>
             )}
           </div>
 
