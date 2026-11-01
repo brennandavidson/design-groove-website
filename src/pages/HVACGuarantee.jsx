@@ -233,27 +233,49 @@ const SoundIcon = () => (
 const HVACGuarantee = () => {
   const [bookingOpen, setBookingOpen] = useState(false);
   const [vslSound, setVslSound] = useState(false);
+  const [vslPlaying, setVslPlaying] = useState(false);
+  const [vslBlocked, setVslBlocked] = useState(false);
   const [ashOpen, setAshOpen] = useState(false);
   const vslRef = useRef(null);
+  const soundOn = useRef(false);
+  const soundTicks = useRef(0);
+
+  const vslSend = (method, value) => vslRef.current?.contentWindow?.postMessage(JSON.stringify({ context: 'player.js', version: '0.0.11', method, value, listener: 'dg' }), '*');
+  // Sound starts in the player that's already running. Loading a new one left viewers on a blank frame for 5-10 seconds.
+  const startSound = () => {
+    vslSend('unmute');
+    vslSend('setVolume', 100);
+    vslSend('setLoop', false);
+    vslSend('setCurrentTime', 0);
+    vslSend('play');
+  };
 
   useEffect(() => {
     if (typeof window !== 'undefined') window.sessionStorage?.setItem('dg_funnel', 'hvac_guarantee');
     return startTelemetry();
   }, []);
 
-  // Watch-time: Bunny's player speaks player.js. Quartiles count only once sound is on, since the muted
-  // autoplay loops for everyone who lands.
+  // Bunny's player speaks player.js. The thumbnail lifts on the first real frame. Watch time and quartiles
+  // count only once sound is on, since the muted autoplay loops for everyone who lands.
   useEffect(() => {
-    if (!VSL_EMBED_URL || !vslSound) return undefined;
-    const send = (method, value) => vslRef.current?.contentWindow?.postMessage(JSON.stringify({ context: 'player.js', version: '0.0.11', method, value, listener: 'dg' }), '*');
+    if (!VSL_EMBED_URL) return undefined;
     const hit = new Set();
     const onMessage = (e) => {
       if (e.source !== vslRef.current?.contentWindow) return;
       let d = e.data;
       try { if (typeof d === 'string') d = JSON.parse(d); } catch { return; }
       if (d?.context !== 'player.js') return;
-      if (d.event === 'ready') send('addEventListener', 'timeupdate');
+      if (d.event === 'ready') {
+        vslSend('addEventListener', 'timeupdate');
+        // Bunny remembers a past unmute and would ignore muted=true on a return visit.
+        if (soundOn.current) startSound();
+        else vslSend('mute');
+      }
       if (d.event === 'timeupdate' && d.value?.duration) {
+        if (d.value.seconds > 0) setVslPlaying(true);
+        if (!soundOn.current) return;
+        soundTicks.current += 1;
+        if (soundTicks.current >= 3) setVslBlocked(false);
         noteWatch(d.value.seconds, d.value.duration);
         const pct = (d.value.seconds / d.value.duration) * 100;
         VSL_MARKS.filter((m) => pct >= m && !hit.has(m)).forEach((m) => {
@@ -264,7 +286,7 @@ const HVACGuarantee = () => {
     };
     window.addEventListener('message', onMessage);
     return () => window.removeEventListener('message', onMessage);
-  }, [vslSound]);
+  }, []);
 
   useEffect(() => {
     if (!ashOpen) return undefined;
@@ -281,14 +303,24 @@ const HVACGuarantee = () => {
   };
 
   const playWithSound = () => {
+    soundOn.current = true;
+    startSound();
     setVslSound(true);
     track('vsl_play', 'VSLPlay', { page: 'hvac-guarantee' });
     note({ vsl_sound_on: true });
+    // A browser can refuse to start sound from our page. A tap on the player itself always works, so say so.
+    setTimeout(() => {
+      if (soundTicks.current >= 3) return;
+      setVslPlaying(true);
+      setVslBlocked(true);
+    }, 3000);
   };
 
   return (
     <>
       <Helmet>
+        <link rel="preconnect" href="https://iframe.mediadelivery.net" />
+        <link rel="preconnect" href="https://vz-84943860-85d.b-cdn.net" />
         <title>60 Booked Install Estimates in 90 Days | Design Groove</title>
         <meta name="robots" content="noindex, nofollow" />
         <meta name="description" content="HVAC companies above $100k/month: get 60 booked install estimates in 90 days, or you don't pay us until you have them." />
@@ -308,12 +340,16 @@ const HVACGuarantee = () => {
           .hg h1 span { color: #5aa9ff; font-weight: 700; }
           .hg-frame { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 14px; overflow: hidden; background: #111; box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 20px 60px rgba(0,115,230,0.12); }
           .hg-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+          .hg-poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; transition: opacity 0.35s ease; }
+          .hg-poster-off { opacity: 0; }
           .hg-sound.hg-sound-idle { cursor: default; }
+          .hg-sound.hg-sound-hint { pointer-events: none; }
           .hg-sound-pill { display: inline-flex; align-items: center; gap: 0.55rem; padding: 0.8rem 1.25rem; border-radius: 999px; background: #0073E6; font-size: 0.95rem; box-shadow: 0 8px 26px rgba(0,0,0,0.38); animation: hg-sound-pulse 1.8s ease-in-out infinite; }
           @keyframes hg-sound-pulse { 50% { transform: scale(1.05); } }
           @media (max-width: 600px) { .hg-sound-pill { padding: 0.55rem 0.9rem; font-size: 0.75rem; } }
           @media (prefers-reduced-motion: reduce) { .hg-sound-pill { animation: none; } }
           .hg-sound { position: absolute; inset: 0; display: flex; align-items: flex-start; padding-top: 5%; justify-content: center; gap: 0.5rem; background: transparent; border: 0; color: #fff; font: 700 0.8rem Inter, sans-serif; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; text-shadow: 0 1px 8px rgba(0,0,0,0.6); }
+          @media (max-width: 600px) { .hg-sound { align-items: flex-end; padding: 0 0 7%; } }
           .hg-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; border: 0; cursor: pointer; font-family: Inter, sans-serif; font-weight: 700; color: #fff; text-decoration: none; border-radius: 10px; background: linear-gradient(90deg, #005ec2, #2b8cff); }
           .hg-cta { margin-top: 1.5rem; }
           .hg-cta .hg-btn { width: 100%; font-size: 1.15rem; padding: 1.15rem 1.5rem; box-shadow: 0 10px 40px rgba(43,140,255,0.35); transition: transform 0.15s ease, box-shadow 0.15s ease; }
@@ -388,16 +424,21 @@ const HVACGuarantee = () => {
               <>
                 <iframe
                   ref={vslRef}
-                  key={vslSound ? 'sound' : 'muted'}
-                  src={`${VSL_EMBED_URL}?autoplay=true&responsive=true&preload=true${vslSound ? '' : '&muted=true&loop=true'}`}
+                  src={`${VSL_EMBED_URL}?autoplay=true&muted=true&loop=true&responsive=true&preload=true`}
                   title="How the Design Groove Lead Engine works"
                   allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
                   allowFullScreen
                 />
+                <img className={`hg-poster${vslPlaying ? ' hg-poster-off' : ''}`} src="/assets/hvac-guarantee-vsl-poster.jpg" alt="" width="1280" height="720" fetchPriority="high" />
                 {!vslSound && (
                   <button type="button" className="hg-sound" onClick={playWithSound}>
                     <span className="hg-sound-pill"><SoundIcon /> Click to play with sound</span>
                   </button>
+                )}
+                {vslBlocked && (
+                  <div className="hg-sound hg-sound-hint">
+                    <span className="hg-sound-pill"><SoundIcon /> Tap the video to play</span>
+                  </div>
                 )}
               </>
             ) : (
