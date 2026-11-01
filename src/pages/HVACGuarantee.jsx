@@ -347,9 +347,9 @@ const HVACGuarantee = () => {
         <link rel="preload" as="image" href={VSL_THUMB} fetchPriority="high" />
         <title>60 Booked Install Estimates in 90 Days | Design Groove</title>
         <meta name="robots" content="noindex, nofollow" />
-        <meta name="description" content="HVAC companies above $100k/month: get 60 booked install estimates in 90 days, or you don't pay us until you have them." />
+        <meta name="description" content="HVAC companies above $100k/month: get 60 booked install estimates in 90 days, or we keep working for free." />
         <meta property="og:title" content="60 Booked Install Estimates in 90 Days | Design Groove" />
-        <meta property="og:description" content="HVAC companies above $100k/month: get 60 booked install estimates in 90 days, or you don't pay us until you have them." />
+        <meta property="og:description" content="HVAC companies above $100k/month: get 60 booked install estimates in 90 days, or we keep working for free." />
         <meta property="og:image" content="https://www.designgroove.io/og-image.jpg" />
         <meta property="og:url" content="https://www.designgroove.io/hvac-guarantee" />
         <meta property="og:type" content="website" />
@@ -437,7 +437,7 @@ const HVACGuarantee = () => {
         <section className="hg-hero">
           <p className="hg-eyebrow">HVAC companies above $100k/month:</p>
           <h1>
-            Get <span>60 booked install estimates</span> in 90 days, or you don’t pay us until you have them.
+            Get <span>60 booked install estimates</span> in 90 days, or we keep working for free.
           </h1>
 
           <div className="hg-frame">
