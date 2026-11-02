@@ -437,7 +437,7 @@ const HVACGuarantee = () => {
         <section className="hg-hero">
           <p className="hg-eyebrow">HVAC companies above $100k/month:</p>
           <h1>
-            Get <span>60 booked install estimates</span> in 90 days, or we keep working for free.
+            Get <span>60 booked install estimates</span> in 90 days, or we keep working for free. Click the video to see how.
           </h1>
 
           <div className="hg-frame">
