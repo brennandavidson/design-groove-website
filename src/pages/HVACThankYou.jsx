@@ -9,6 +9,8 @@ const HVACThankYou = () => {
   // Fire conversion events once per booking; a refresh of this page isn't a new lead.
   useEffect(() => {
     if (typeof window === 'undefined') return;
+    // Our own browsers (?internal=1 once) never send a Lead to Meta or GA.
+    if (window.localStorage?.getItem('dg_internal')) return;
     if (window.sessionStorage?.getItem('dg_lead_sent')) return;
     window.sessionStorage?.setItem('dg_lead_sent', '1');
     const lead_source = window.sessionStorage?.getItem('dg_funnel') || 'hvac_landing';
