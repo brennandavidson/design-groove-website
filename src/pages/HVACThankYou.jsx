@@ -2,6 +2,9 @@ import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { markBooked } from '../lib/funnelTelemetry';
 
+// The guarantee page's VSL, so people who booked without watching see it before the call.
+const VSL_EMBED_URL = 'https://iframe.mediadelivery.net/embed/585643/9c6db702-50d7-4944-a8d8-e103666449d7';
+
 const HVACThankYou = () => {
   // Fire conversion events once per booking; a refresh of this page isn't a new lead.
   useEffect(() => {
@@ -33,6 +36,9 @@ const HVACThankYou = () => {
           .ty-lead { color: #d6d6d6; font-size: 1.1rem; line-height: 1.6; margin: 0 0 2rem; }
           .ty-box { text-align: left; background: #0d1016; border-radius: 14px; padding: 1.25rem 1.4rem; box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 20px 60px rgba(0,115,230,0.12); color: #cfd3da; line-height: 1.6; font-size: 1rem; }
           .ty-box strong { color: #fff; }
+          .ty-vsl-title { font-family: Inter, sans-serif; font-weight: 800; font-size: 1.3rem; line-height: 1.25; margin: 2.5rem 0 1rem; text-wrap: balance; }
+          .ty-frame { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 14px; overflow: hidden; background: #111; box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 20px 60px rgba(0,115,230,0.12); }
+          .ty-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
           .ty-foot { border-top: 1px solid #1a1a1a; }
           .ty-foot div { max-width: 1100px; margin: 0 auto; padding: 1.25rem max(16px, 4vw); display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; color: #777; font-size: 0.8rem; }
           .ty-foot span:last-child { display: flex; gap: 1.25rem; }
@@ -55,6 +61,10 @@ const HVACThankYou = () => {
           <p className="ty-lead">Check your email for the calendar invite. We'll see you on the call!</p>
           <div className="ty-box">
             <strong>Before the call:</strong> Think about how many leads you're currently getting per month and what your average job value is. This will help us show you exactly what's possible.
+          </div>
+          <h2 className="ty-vsl-title">Before the call, watch the 5-minute breakdown of how the system works</h2>
+          <div className="ty-frame">
+            <iframe src={`${VSL_EMBED_URL}?responsive=true`} title="How the Design Groove Lead Engine works" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen />
           </div>
         </section>
 

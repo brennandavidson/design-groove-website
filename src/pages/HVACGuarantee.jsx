@@ -3,10 +3,10 @@ import { Helmet } from 'react-helmet-async';
 import HVACCredibility from '../components/HVACCredibility';
 import { note, noteWatch, startTelemetry } from '../lib/funnelTelemetry';
 
-// Guarantee offer landing page (/hvac-guarantee) for the managed lead engine: 60 booked install
-// estimates in 90 days. Flow: qualifier headline, VSL, one "Schedule a call" button that opens a
-// short qualifying form, then the calendar (prefilled). Homeowners are screened out; companies under
-// $50k/month are told it may not fit, and can still book. Guarantee wording mirrors section 2 of the service
+// Guarantee offer landing page (/hvac-guarantee) for the managed lead engine: 60 new HVAC installation
+// estimates in 90 days. Callout headline and guarantee, the VSL, then "See If You Qualify" (Nov 7 2026).
+// The button opens four qualifying questions, then contact details, then the calendar (prefilled). Homeowners are screened out; under $50k/month or booked out is told
+// it may not fit, and can still book. Guarantee wording mirrors section 2 of the service
 // agreement (design-groove-os business/contract-v2.md); change both together. VSL script:
 // design-groove-os business/vsl-hvac-guarantee.md.
 
@@ -36,6 +36,25 @@ const REVENUE = [
   ['50to100', '$50k to $100k a month'],
   ['over100', '$100k+ a month'],
 ];
+const LEADS = [
+  ['under10', 'Under 10 a month'],
+  ['10to30', '10 to 30 a month'],
+  ['30to60', '30 to 60 a month'],
+  ['over60', '60+ a month'],
+];
+const BOOKED = [
+  ['under10', 'Under 10 a month'],
+  ['10to25', '10 to 25 a month'],
+  ['25to50', '25 to 50 a month'],
+  ['over50', '50+ a month'],
+];
+// "none" is the booked-out company the guarantee can't help: it gets the may-not-fit screen.
+const CAPACITY = [
+  ['lots', 'Yes, room for a lot more installs'],
+  ['some', 'Some room'],
+  ['none', "No, we're booked out for weeks"],
+];
+const labelOf = (list, v) => list.find(([k]) => k === v)?.[1] ?? '';
 
 const toE164 = (raw) => {
   const d = raw.replace(/\D/g, '');
@@ -74,12 +93,27 @@ const PlayButton = () => (
   </div>
 );
 
-// The "Schedule a call" popup: a few qualifying questions, then the calendar with the answers prefilled.
+const Choice = ({ name, legend, options, value, onChange, inputRef }) => (
+  <fieldset className="hg-q">
+    <legend>{legend}</legend>
+    {options.map(([v, label], i) => (
+      <label key={v} className={`hg-opt${value === v ? ' hg-opt-on' : ''}`}>
+        <input ref={i === 0 ? inputRef : undefined} type="radio" name={name} value={v} checked={value === v} onChange={onChange} />
+        {label}
+      </label>
+    ))}
+  </fieldset>
+);
+
+// The "See if you qualify" popup: qualifying questions, then contact details, then the calendar with the
+// answers prefilled. Homeowners are screened out; under $50k or booked out gets the may-not-fit screen.
 const BookingModal = ({ onClose }) => {
   const [step, setStep] = useState('form');
-  const [f, setF] = useState({ role: '', revenue: '', name: '', email: '', phone: '', website: '' });
+  const [f, setF] = useState({ role: '', revenue: '', leads: '', booked: '', capacity: '', name: '', email: '', phone: '', website: '' });
+  const [unfit, setUnfit] = useState('');
   const [error, setError] = useState('');
   const firstRef = useRef(null);
+  const backRef = useRef(null);
   const set = (k) => (e) => setF((p) => ({ ...p, [k]: e.target.value }));
 
   useEffect(() => {
@@ -94,7 +128,7 @@ const BookingModal = ({ onClose }) => {
     };
   }, [onClose]);
 
-  const submit = (e) => {
+  const qualify = (e) => {
     e.preventDefault();
     if (!f.role) return setError('Pick the option that best describes you.');
     if (f.role === 'homeowner') {
@@ -102,7 +136,17 @@ const BookingModal = ({ onClose }) => {
       note({ screened_out: 'homeowner' });
       return setStep('homeowner');
     }
-    if (!f.revenue) return setError('Pick your monthly revenue.');
+    if (!f.revenue || !f.leads || !f.booked || !f.capacity) return setError('Answer all four questions.');
+    setError('');
+    track('qualify_submit', 'QualifySubmit', { revenue: f.revenue, capacity: f.capacity, page: 'hvac-guarantee' });
+    const reason = f.revenue === 'under50' ? 'under50' : f.capacity === 'none' ? 'capacity' : '';
+    note({ revenue_band: f.revenue, ...(reason ? { screened_out: reason } : {}) });
+    setUnfit(reason);
+    setStep(reason ? 'small' : 'contact');
+  };
+
+  const submit = (e) => {
+    e.preventDefault();
     if (!f.name.trim() || !/^\S+@\S+\.\S+$/.test(f.email) || !toE164(f.phone) || !f.website.trim()) {
       return setError('Fill in your name, a valid email, a 10-digit phone number and your website.');
     }
@@ -112,9 +156,12 @@ const BookingModal = ({ onClose }) => {
       ga4('application_submit', { revenue: f.revenue, role: f.role, page: 'hvac-guarantee' });
       if (window.fbq) window.fbq('track', 'SubmitApplication', { revenue: f.revenue, page: 'hvac-guarantee' });
     }
-    note({ form_submitted: true, revenue_band: f.revenue, ...(f.revenue === 'under50' ? { screened_out: 'under50' } : {}) });
-    setStep(f.revenue === 'under50' ? 'small' : 'calendar');
+    note({ form_submitted: true, revenue_band: f.revenue });
+    setStep('calendar');
   };
+
+  // Each step starts at the top, not wherever the last one was scrolled to.
+  useEffect(() => { backRef.current?.scrollTo(0, 0); }, [step]);
 
   useEffect(() => {
     if (step !== 'calendar') return;
@@ -131,49 +178,51 @@ const BookingModal = ({ onClose }) => {
     name: f.name.trim(),
     email: f.email.trim(),
     attendeePhoneNumber: toE164(f.phone),
-    'Monthly-revenue': REVENUE.find(([v]) => v === f.revenue)?.[1] ?? '',
-    // api/cal_webhook.py splits this back into the sheet's Website and Role columns.
-    notes: `Website:${f.website.trim()} | ${ROLES.find(([v]) => v === f.role)?.[1] ?? ''}`,
+    'Monthly-revenue': labelOf(REVENUE, f.revenue),
+    'install-estimates': labelOf(BOOKED, f.booked),
+    // The portal's Cal webhook (groove-portal src/lib/cal-booking.ts) splits this into website, role and answers.
+    notes: [
+      `Website:${f.website.trim()}`,
+      labelOf(ROLES, f.role),
+      `Install leads: ${labelOf(LEADS, f.leads)}`,
+      `Booked estimates: ${labelOf(BOOKED, f.booked)}`,
+      `90-day capacity: ${labelOf(CAPACITY, f.capacity)}`,
+    ].join(' | '),
     ...utmParams(),
   };
 
   return (
-    <div className="hg-modal-back" onClick={(e) => e.target === e.currentTarget && onClose()}>
+    <div ref={backRef} className="hg-modal-back" onClick={(e) => e.target === e.currentTarget && onClose()}>
       <div className={`hg-modal${step === 'calendar' ? ' hg-modal-wide' : ''}`} role="dialog" aria-modal="true" aria-labelledby="hg-modal-title">
         <button type="button" className="hg-modal-x" aria-label="Close" onClick={onClose}>×</button>
 
         {step === 'form' && (
-          <form onSubmit={submit} noValidate>
-            <h2 id="hg-modal-title" className="hg-modal-title">Book your free strategy call</h2>
-            <fieldset className="hg-q">
-              <legend>Which best describes you?</legend>
-              {ROLES.map(([v, label], i) => (
-                <label key={v} className={`hg-opt${f.role === v ? ' hg-opt-on' : ''}`}>
-                  <input ref={i === 0 ? firstRef : undefined} type="radio" name="role" value={v} checked={f.role === v} onChange={set('role')} />
-                  {label}
-                </label>
-              ))}
-            </fieldset>
+          <form onSubmit={qualify} noValidate>
+            <h2 id="hg-modal-title" className="hg-modal-title">See if your HVAC company qualifies</h2>
+            <Choice name="role" legend="Which best describes you?" options={ROLES} value={f.role} onChange={set('role')} inputRef={firstRef} />
             {f.role !== 'homeowner' && (
               <>
-                <fieldset className="hg-q">
-                  <legend>What is your company's monthly revenue?</legend>
-                  {REVENUE.map(([v, label]) => (
-                    <label key={v} className={`hg-opt${f.revenue === v ? ' hg-opt-on' : ''}`}>
-                      <input type="radio" name="revenue" value={v} checked={f.revenue === v} onChange={set('revenue')} />
-                      {label}
-                    </label>
-                  ))}
-                </fieldset>
-                <p className="hg-q-lead">Enter your info below to book your call.</p>
-                <div className="hg-fields">
-                  <label>Full name<input autoComplete="name" value={f.name} onChange={set('name')} placeholder="Jane Smith" /></label>
-                  <label>Email<input type="email" autoComplete="email" value={f.email} onChange={set('email')} placeholder="jane@yourcompany.com" /></label>
-                  <label>Phone<input type="tel" autoComplete="tel" value={f.phone} onChange={set('phone')} placeholder="(480) 555-0123" /></label>
-                  <label>Company website<input autoComplete="url" value={f.website} onChange={set('website')} placeholder="yourcompany.com" /></label>
-                </div>
+                <Choice name="revenue" legend="What is your company's monthly revenue?" options={REVENUE} value={f.revenue} onChange={set('revenue')} />
+                <Choice name="leads" legend="How many installation leads do you get a month right now?" options={LEADS} value={f.leads} onChange={set('leads')} />
+                <Choice name="booked" legend="How many install estimates do you book a month right now?" options={BOOKED} value={f.booked} onChange={set('booked')} />
+                <Choice name="capacity" legend="Could your team take on more installs in the next 90 days?" options={CAPACITY} value={f.capacity} onChange={set('capacity')} />
               </>
             )}
+            {error && <p className="hg-err" role="alert">{error}</p>}
+            <button type="submit" className="hg-btn hg-btn-full">Continue</button>
+          </form>
+        )}
+
+        {step === 'contact' && (
+          <form onSubmit={submit} noValidate>
+            <h2 id="hg-modal-title" className="hg-modal-title">Book your free strategy call</h2>
+            <p className="hg-q-lead">Enter your info below to pick a time.</p>
+            <div className="hg-fields">
+              <label>Full name<input autoFocus autoComplete="name" value={f.name} onChange={set('name')} placeholder="Jane Smith" /></label>
+              <label>Email<input type="email" autoComplete="email" value={f.email} onChange={set('email')} placeholder="jane@yourcompany.com" /></label>
+              <label>Phone<input type="tel" autoComplete="tel" value={f.phone} onChange={set('phone')} placeholder="(480) 555-0123" /></label>
+              <label>Company website<input autoComplete="url" value={f.website} onChange={set('website')} placeholder="yourcompany.com" /></label>
+            </div>
             {error && <p className="hg-err" role="alert">{error}</p>}
             <button type="submit" className="hg-btn hg-btn-full">Continue</button>
             <p className="hg-consent">By continuing, you agree we may contact you by phone, text or email about your request. Message and data rates may apply.</p>
@@ -191,8 +240,13 @@ const BookingModal = ({ onClose }) => {
         {step === 'small' && (
           <div className="hg-modal-msg">
             <h2 id="hg-modal-title" className="hg-modal-title">This may not be the right fit yet</h2>
-            <p>The 60-in-90 guarantee usually makes sense from about $100k a month. You're welcome to book a call anyway, and we'll tell you straight whether it fits.</p>
-            <button type="button" className="hg-btn hg-btn-full" onClick={() => setStep('calendar')}>Book a call anyway</button>
+            <p>
+              {unfit === 'capacity'
+                ? 'The 60-in-90 guarantee only works if your team has room on the install schedule.'
+                : 'The 60-in-90 guarantee usually makes sense from about $100k a month.'}
+              {' '}You're welcome to book a call anyway, and we'll tell you straight whether it fits.
+            </p>
+            <button type="button" className="hg-btn hg-btn-full" onClick={() => setStep('contact')}>Book a call anyway</button>
             <button type="button" className="hg-link" onClick={onClose}>Close</button>
           </div>
         )}
@@ -221,12 +275,6 @@ const STATS = [
 
 const ASH_VIDEO = 'https://iframe.mediadelivery.net/embed/585643/eb803435-50c6-47bb-b214-8ee4b6e80a18';
 
-
-const CalendarIcon = () => (
-  <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="3" y="5" width="18" height="16" rx="2" /><path d="M3 10h18M8 3v4M16 3v4" />
-  </svg>
-);
 
 const SoundIcon = () => (
   <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -344,12 +392,11 @@ const HVACGuarantee = () => {
     <>
       <Helmet>
         <link rel="preconnect" href="https://vz-84943860-85d.b-cdn.net" />
-        <link rel="preload" as="image" href={VSL_THUMB} fetchPriority="high" />
-        <title>60 Booked Install Estimates in 90 Days | Design Groove</title>
+        <title>60 New HVAC Installation Estimates in 90 Days | Design Groove</title>
         <meta name="robots" content="noindex, nofollow" />
-        <meta name="description" content="HVAC companies above $100k/month: get 60 booked install estimates in 90 days, or we keep working for free." />
-        <meta property="og:title" content="60 Booked Install Estimates in 90 Days | Design Groove" />
-        <meta property="og:description" content="HVAC companies above $100k/month: get 60 booked install estimates in 90 days, or we keep working for free." />
+        <meta name="description" content="HVAC companies doing $100K+/month: get 60 new HVAC installation estimates in 90 days, or it's free. Miss 60 and we refund 100% of our management fee." />
+        <meta property="og:title" content="60 New HVAC Installation Estimates in 90 Days | Design Groove" />
+        <meta property="og:description" content="HVAC companies doing $100K+/month: get 60 new HVAC installation estimates in 90 days, or it's free. Miss 60 and we refund 100% of our management fee." />
         <meta property="og:image" content="https://www.designgroove.io/og-image.jpg" />
         <meta property="og:url" content="https://www.designgroove.io/hvac-guarantee" />
         <meta property="og:type" content="website" />
@@ -372,6 +419,9 @@ const HVACGuarantee = () => {
           .hg-sound { position: absolute; inset: 0; display: flex; align-items: flex-start; padding-top: 5%; justify-content: center; gap: 0.5rem; background: transparent; border: 0; color: #fff; font: 700 0.8rem Inter, sans-serif; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; text-shadow: 0 1px 8px rgba(0,0,0,0.6); }
           @media (max-width: 600px) { .hg-sound { align-items: flex-end; justify-content: flex-end; padding: 0 3% 7% 0; letter-spacing: 0.04em; } }
           .hg-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; border: 0; cursor: pointer; font-family: Inter, sans-serif; font-weight: 700; color: #fff; text-decoration: none; border-radius: 10px; background: linear-gradient(90deg, #005ec2, #2b8cff); }
+          .hg-sub { font-size: clamp(1.6rem, 5vw, 2.2rem); font-weight: 800; font-style: italic; color: #fff; margin: -0.6rem auto 0.4rem; letter-spacing: -0.01em; }
+          .hg-sub span { color: #5aa9ff; }
+          .hg-terms { font-size: 0.95rem; color: #bdbdbd; margin: 0 auto 1.5rem; max-width: 34rem; }
           .hg-cta { margin-top: 1.5rem; }
           .hg-cta .hg-btn { width: 100%; font-size: 1.15rem; padding: 1.15rem 1.5rem; box-shadow: 0 10px 40px rgba(43,140,255,0.35); transition: transform 0.15s ease, box-shadow 0.15s ease; }
           .hg-cta .hg-btn:hover { transform: translateY(-1px); box-shadow: 0 14px 48px rgba(43,140,255,0.45); }
@@ -435,10 +485,12 @@ const HVACGuarantee = () => {
         </header>
 
         <section className="hg-hero">
-          <p className="hg-eyebrow">HVAC companies above $100k/month:</p>
+          <p className="hg-eyebrow">HVAC Companies Doing $100K+/Month</p>
           <h1>
-            Get <span>60 booked install estimates</span> in 90 days, or we keep working for free. Click the video to see how.
+            Get <span>60 New HVAC Installation Estimates</span> in 90 Days
           </h1>
+          <p className="hg-sub">Or it's <span>free.</span></p>
+          <p className="hg-terms">Miss 60 and we refund 100% of our management fee. It's in the contract.</p>
 
           <div className="hg-frame">
             {vslFailed ? (
@@ -479,9 +531,9 @@ const HVACGuarantee = () => {
 
           <div className="hg-cta">
             <button type="button" className="hg-btn" onClick={() => openBooking('hero')}>
-              <CalendarIcon /> Schedule A Call Here
+              See If You Qualify
             </button>
-            <p>Takes less than a minute</p>
+            <p>60-second qualification. Limited to companies with installation capacity.</p>
           </div>
 
           <div className="hg-proof">
